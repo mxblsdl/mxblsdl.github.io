@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<style type="text/css">
+
+	.text-center{
+		box-shadow: inset 0 0 10px black;
+		padding-top: 0px;
+    margin-left: 220px;
+    margin-right: 220px;
+	}
+	.image{
+		width: 50%;
+		height: auto;
+		display: block;
+		margin-left: 20px;
+		margin-right: auto; 
+	}
+	.container{
+    display: flex;
+    justify-content: space-between;
+    padding-top: 10px;
+    padding-bottom: 10px;
+	}
+  .body{
+    background-color: #D3D3D3;
+  }
+  p{
+    border-style: inset;
+  }
+  .link{
+    justify-content: left;
+    margin-bottom: 5px;
+  }
+	</style>
+
+<link rel="stylesheet" type="text/css" href="../Styling/animate.css"> 
+<link rel="stylesheet" type="text/css" href="../bootstrap-3.3.7-dist/css/bootstrap-theme.css">
+<link rel="stylesheet" type="text/css" href="../bootstrap-3.3.7-dist/css/bootstrap-theme.min.css">
+<link rel="stylesheet" type="text/css" href="../bootstrap-3.3.7-dist/css/bootstrap.min.css">
+<title>Interests/Other Projects</title>
+</head>
+
+<body class="body">
+ <!-- The below code creates a window alert when you first enter the site -->
+ <!-- <script>
+  window.alert("Welcome to my Page")
+</script>-->
+<span class="container">
+    <!-- The target "_blank" tag opens a new page when a link is selected-->
+    <button><a href="index.html">Main</a></button>
+    <button><a href="Resume.html">Resume</a></button>
+    <button><a href="Thesis.html" title="Graduate Thesis as presented to committee"> Thesis</a></button>
+    <button><strong>Other Projects/Links</strong></button>
+  </span>
+
+<h3 id="demo"></h3>  
+
+
+<h3 style="margin-left: 20px;">
+  Brooks Falls
+</h3>
+
+     <div class="image">
+      <p style="font-family: verdana;, font-size: 150%">
+        The bears of Kodiak Alaska are some of the most iconic brown bears in the United States. They will wait at Brooks Falls in Katmai National Park in Alaska and catch salmon as the fish try to swim up the falls to their spawning grounds. There is a video camera set up so that many people can see this event without having to travel to the falls, which are only accessible by plane, and disrupt the bears.
+      </p>
+      <button class="link">
+        <a href="https://explore.org/livecams/brown-bears/brown-bear-salmon-cam-brooks-falls"> Link to the Bear Cam
+        </a>
+      </button>
+      <a href="https://explore.org/livecams/brown-bears/brown-bear-salmon-cam-brooks-falls">
+      <img src="http://www.alaskabearsandwolves.com/wp-content/uploads/2011/04/bearcarry1.jpg" alt="Brooks Falls Bear cam in Alaska. The bears are hibernating until June but you can always watch heighlights."> <br></a>  
+      </div>	
+
+      <h3 style="margin-left: 20px;">Katmai National Park</h3>
+
+<div id="map" style="width:500px;height:500px;background:gray;margin-left: 20px;"></div>
+<script>
+function myMap() {
+var mapOptions = {
+    center: new google.maps.LatLng(58.58, -154.73),
+    zoom: 7,
+    
+}
+var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+}
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDnKyhPlLDco3E5-AAWuyxVi0jwlO8iNqk&callback=myMap"></script>
+
+
+<!--
+To use this code on your website, get a free API key from Google.
+Read more at: https://www.w3schools.com/graphics/google_maps_basic.asp
+-->
+
+<div class="text-center">
+<h2 class="animated bounce">under construction</h2>
+<a style="padding-bottom: 5%" href="index.html" >Check back later.</a>
+</div>
+</body>
+
+</html>
