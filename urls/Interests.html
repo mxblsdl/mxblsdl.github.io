@@ -48,21 +48,6 @@
 <link rel="stylesheet" type="text/css" href="../bootstrap-3.3.7-dist/css/bootstrap.min.css">
 <title>Interests/Other Projects</title>
 
-
-  <script>
-function myMap() {
-    var mapOptions = {
-        center: new google.maps.LatLng(51.5, -0.12),
-        zoom: 10,
-        mapTypeId: google.maps.MapTypeId.HYBRID
-    }
-var map = new google.maps.Map(document.getElementById("map"), mapOptions);
-}
-    </script>
-    
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA3qlnQaEccXQbYLH6qZA2gs8-qn3Cmdlk&callback=myMap"
-    async defer></script>
-
 </head>
 
 <body class="body">
@@ -103,8 +88,21 @@ var map = new google.maps.Map(document.getElementById("map"), mapOptions);
 <div id="map" style="width:500px;height:500px;background:gray;margin-left: 20px;">
 </div>
   
+  <script>
+function myMap() {
+    var mapOptions = {
+        center: new google.maps.LatLng(51.5, -0.12),
+        zoom: 10,
+        mapTypeId: google.maps.MapTypeId.HYBRID
+    }
+var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+}
+    </script>
+    
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA3qlnQaEccXQbYLH6qZA2gs8-qn3Cmdlk&callback=myMap"
+    async defer></script>
 
-<iframe width="600" height="450" frameborder="3" style="border:0" src="https://www.google.com/maps/embed/v1/place?q=place_id:ChIJlVS0K-7C6VYR8unqDr4HTUw&key=AIzaSyA3qlnQaEccXQbYLH6qZA2gs8-qn3Cmdlk" allowfullscreen></iframe>
+<iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d8325.635114224313!2d-155.7915477!3d58.5549838!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xc19a758be71259a1!2sBrooks+Falls!5e0!3m2!1sen!2sus!4v1533421654439" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
 
 <!--
 To use this code on your website, get a free API key from Google.
