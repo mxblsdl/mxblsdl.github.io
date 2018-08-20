@@ -48,6 +48,20 @@
 <link rel="stylesheet" type="text/css" href="../bootstrap-3.3.7-dist/css/bootstrap.min.css">
 <title>Interests/Other Projects</title>
 
+<script>
+var x = document.getElementById("demo");
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+        x.innerHTML = "Geolocation is not supported by this browser.";
+    }
+}
+function showPosition(position) {
+    x.innerHTML = "Latitude: " + position.coords.latitude + 
+    "<br>Longitude: " + position.coords.longitude; 
+}
+</script>
 </head>
 
 <body class="body">
@@ -70,37 +84,34 @@
 <h3 style="margin-left: 20px;">
   Brooks Falls
 </h3>
-
      <div class="image">
       <p style="font-family: verdana;, font-size: 150%">
         The bears of Kodiak Alaska are some of the most iconic brown bears in the United States. They will wait at Brooks Falls in Katmai National Park in Alaska and catch salmon as the fish try to swim up the falls to their spawning grounds. There is a video camera set up so that many people can see this event without having to travel to the falls, which are only accessible by plane, and disrupt the bears.
       </p>
-      <button class="link">
+      <div><button class="link">
         <a href="https://explore.org/livecams/brown-bears/brown-bear-salmon-cam-brooks-falls"> Link to the Bear Cam
         </a>
       </button>
+    </div>
       <a href="https://explore.org/livecams/brown-bears/brown-bear-salmon-cam-brooks-falls">
       <img src="http://www.alaskabearsandwolves.com/wp-content/uploads/2011/04/bearcarry1.jpg" alt="Brooks Falls Bear cam in Alaska. The bears are hibernating until June but you can always watch heighlights."> <br></a>  
       </div>	
 
       <h3 style="margin-left: 20px;">Katmai National Park</h3>
 
-<div id="map" style="width:500px;height:500px;background:gray;margin-left: 20px;">
-</div>
-  
-  <script>
+<div id="googleMap" style="width:400px;height:400px;"></div>
+
+<script>
 function myMap() {
-    var mapOptions = {
-        center: new google.maps.LatLng(51.5, -0.12),
-        zoom: 10,
-        mapTypeId: google.maps.MapTypeId.HYBRID
-    }
-var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+var mapProp= {
+    center:new google.maps.LatLng(51.508742,-0.120850),
+    zoom:5,
+};
+var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
 }
-    </script>
-    
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA3qlnQaEccXQbYLH6qZA2gs8-qn3Cmdlk&callback=myMap"
-    async defer></script>
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBu-916DdpKAjTmJNIgngS6HL_kDIKU0aU&callback=myMap"></script>
 
 <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d8325.635114224313!2d-155.7915477!3d58.5549838!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xc19a758be71259a1!2sBrooks+Falls!5e0!3m2!1sen!2sus!4v1533421654439" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
 
@@ -108,7 +119,12 @@ var map = new google.maps.Map(document.getElementById("map"), mapOptions);
 To use this code on your website, get a free API key from Google.
 Read more at: https://www.w3schools.com/graphics/google_maps_basic.asp
 -->
-
+<div>
+<button onclick="getLocation()">
+  Get Location
+</button>
+</div>
+<p id="demo"></p>
 <div class="text-center">
 <h2 class="animated bounce">under construction</h2>
 <a style="padding-bottom: 5%" href="../index.html" >Check back later.</a>
