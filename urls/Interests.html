@@ -48,20 +48,6 @@
 <link rel="stylesheet" type="text/css" href="../bootstrap-3.3.7-dist/css/bootstrap.min.css">
 <title>Interests/Other Projects</title>
 
-<script>
-var x = document.getElementById("demo");
-function getLocation() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition);
-    } else {
-        x.innerHTML = "Geolocation is not supported by this browser.";
-    }
-}
-function showPosition(position) {
-    x.innerHTML = "Latitude: " + position.coords.latitude + 
-    "<br>Longitude: " + position.coords.longitude; 
-}
-</script>
 </head>
 
 <body class="body">
@@ -125,8 +111,25 @@ Read more at: https://www.w3schools.com/graphics/google_maps_basic.asp
 <button onclick="getLocation()">
   Get Location
 </button>
-</div>
 <p id="demo"></p>
+
+<script>
+var x = document.getElementById("demo");
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+        x.innerHTML = "Geolocation is not supported by this browser.";
+    }
+}
+function showPosition(position) {
+    x.innerHTML = "Latitude: " + position.coords.latitude + 
+    "<br>Longitude: " + position.coords.longitude; 
+}
+</script>
+</div>
+
+
 <div class="text-center">
 <h2 class="animated bounce">under construction</h2>
 <a style="padding-bottom: 5%" href="../index.html" >Check back later.</a>
