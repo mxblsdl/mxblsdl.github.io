@@ -1,177 +1,283 @@
- <!DOCTYPE html>
- <html>
+<!DOCTYPE html>
+<html>
+<header>
+	<title>Work and Education</title>
+<!-- Loading Materialize at end of script for optimized loading -->
+<script type="text/javascript" src="../materialize/js/materialize.min.js"></script>
 
- <head>
-    <style type="text/css">
-    h1{
-        font-size: 36px;
-        font-weight: bold;
-        font-family:monospace, serif;
-    }
-      .column{
-        float: left;
-        }
-      .left{  
-        width: 70%;
-        padding-left: 16px;
-      }
-      .break{
-        font-size: 28px;
-        font-weight: bold;
-        font-family:monospace, serif;
-      }
-      .header{
-        box-shadow: inset 0 0 5px black;
-        font-weight: bold;
-      }
-      em{
-        font-weight: bold;
-      }
-      rt{
-        font-size: 18px;
-        font-weight: bold;
-        padding-right: 16px;
-        width: 30%
-      }
-      p{
-        font-family: "Times New Roman", Times, serif;
-        font-size: 20px;
-      }
-      .body{background-color: #ebe6e0;
-      }
-      .resume{
-        padding-left: 5%;
-        padding-right: 5%;
-        padding-bottom: 10%;
-              }
-      .container{
-        display: flex;
-        justify-content: space-between;
-        padding-top: 10px;
-        padding-bottom: 10px;
-      }
-    </style>
-    <meta charset="utf-8"> 
-    <link rel="stylesheet" type="text/css" href="../Styling/animate.css">
-    <link rel="stylesheet" type="text/css" href="../bootstrap-3.3.7-dist/css/bootstrap-theme.css">
-    <link rel="stylesheet" type="text/css" href="../bootstrap-3.3.7-dist/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" type="text/css" href="../bootstrap-3.3.7-dist/css/bootstrap.min.css">
-	 <title>Resume</title>
-  </head>
+<!-- Load Materialize and font awesome -->
+ <!--Import Google Icon Font-->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+<link type="text/css" rel="stylesheet" href="../materialize/css/materialize.min.css"  media="screen,projection"/>
+<!-- Load mxblsdl styles -->
+ <link rel="stylesheet" type="text/css" href="../css/mxblsdl.css">
 
+ <!-- jquery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+</header>
 
-  <body>
-
-<div class="body">
-
-   <span class="container">
-    <!-- The target "_blank" tag opens a new page when a link is selected-->
-    <button><a href="../index.html">Main</a></button>
-    <button><strong>Resume</strong></button>
-    <button><a href="Thesis.html" title="Graduate Thesis as presented to committee"> Thesis</a></button>
-    <button><a href="Interests.html" title="An all purpose dumping ground for things that are intersting to me on the internet"> Other Projects/Links</a></button>
-  </span>
-
-<div class="container-fluid">
-<div class="resume">
-    <div class="row"> 
-        <h1  class="column left">Max Blasdel</h1>
-        <p class="column right"> <br>
-          <a href="mailto:maxblasdel@gmail.com?Subject=Resume%20Reply" target="_top">maxblasdel@gmail.com</a> 
-          </p>
-      </div>
-  <div class="well well-sm text-center break">
-   <h1>Summary</h1>
-  </div>
- <font size="4">
- 	<em>Current graduate student in the Natural Resources department of Humboldt State University. Interested in energy policy, GIS applications for natural resource management, and data visualizaiton. Seeking full-time and ideally long-term employment where I can continue to use data analysis skills and GIS applications to convey information. </em>
-   </font>
-  <div class="well well-sm text-center break">
-    <h1> Education</h1>
-  </div>
-    <div class="row header">
-     <p class= "column left ">Masters of Science in <br>Environmental and Natural Resources</p>
-     <rt class="column">August 2017 - Spring 2019</rt>
-  </div>
-<p><em>Humboldt State University, Arcata, CA</em><br>&emsp;Focus on utilization of forest residues for biomass energy<br>&emsp;<a href="http://www.schatzlab.org/news/2017/10/california-biopower-impact-project-creating-a-life-cycle-assessment-for-bioenergy-systems/" target="_blank">Thesis work built on The California Biomass Impact Project</a></p>
-    <div class="row header">
-      <p class="column left"><a href="https://www.pdx.edu/geography/GIS" target="_blank">Graduate GIS Certificate</a></p>
-      <rt class="column">September 2014 - December 2015</rt>
+<main>
+<div class="container grey lighten-1">
+<ul id="dropdown1" class="dropdown-content">
+    <li><a class="black-text" href="about.html">About</a></li>
+    <li class="active"><a class="black-text" href="#">Resume</a></li>
+    <li><a class="black-text" href="#">Project</a></li>
+</ul>
+  <nav>
+    <div class="nav-wrapper blue-grey darken-1" id="top-page">
+      <a href="../index.html" class="brand-logo left grey-text lighten-5-text"><i class="material-icons right">map</i>&nbsp;mxblsdl</a>
+      <ul class="right hide-on-med-and-down"">
+        <li><a class=" tooltipped grey-text lighten-5-text" data-position="bottom" data-tooltip="About Me" href="#"><i class="material-icons">contacts</i></a></li>
+        <li class="active"><a class="tooltipped grey-text lighten-5-text" data-position="bottom" data-tooltip="Resume and Work" href="#"><i class="material-icons">work</i></a></li>
+        <li><a class="tooltipped grey-text lighten-5-text" data-position="bottom" data-tooltip="Projects" href="#"><i class="material-icons">build</i></a></li>
+      </ul>
+      <ul class="right hide-on-large-only">
+        <li><a href="#!" class="dropdown-trigger" data-target="dropdown1"><i class="material-icons black-text">view_headline</i></a></li>
+    </ul>
     </div>
-<p><em>Portland State University, Portland OR</em><br>&emsp; Focus on ArcGIS suite, GPS technology, remote sensing analysis and cartography</p>
-    <div class="row header">
-      <p class="column left">Bachelor of Science in Natural Resources</p>
-      <rt class="column">September 2011 - June 2014</rt>
-    </div>
-<p><em>Oregon State University, Corvallis, OR</em><br>&emsp;Option in Recreation Resource Management<br>&emsp;2014 Outstanding Student of the Year Award</p>
-    
-  <div class="well well-sm text-center break">
-    <h1>Professional Experience</h1>
-  </div>
-    <div class="row header">
-      <p class="column left"><a href="http://www.schatzlab.org/" target="_blank"> Schatz Energy Research Center - Arcata, CA</a></p>
-      <rt class="column">August 2017 - Present</rt>
-    </div>
-    <p><em>Graduate Research Assistant</em><br>&emsp;Worked as part of a research team developing a biomass modeling tool<br>&emsp;Developed literature review and methods for California Energy Commission report<br>&emsp;Managed geospatial data using ArcMap and R Studio</p>
-    <div class="row header">
-      <p class="column left">Humboldt State University - Arcata, CA</p>
-      <rt class="column"> August 2017 - Present</rt>
-    </div>
-   <p><em><a href="http://pine.humboldt.edu/reg/catalog/documents/sections/Courses/esm.pdf" title="PDF of courses" target="_blank">Teaching Assistant for ESM 230</a></em><br>&emsp;Lead instruction of undergraduate students for field and classrooom based labs<br>&emsp;Oversaw Excel based labs and explained concepts fo basic computer science<br>&emsp;Responsible for grading and feedback on assignments</p>
-   <div class="row header">
-     <p class="column left">North Clackamas Parks and Recreation - Milwaukie, OR</p>
-     <rt class="column"> February 2017 - July 2017</rt>
-   </div>
-   <p><em>Seasonal Natural Resources Worker</em><br>&emsp;Performed restoration work on natural areas<br>&emsp;Helped to organize and run volunteer events<br>&emsp;Updated and maintained a GIS of invasive species locations</p>
-   <div class="row header">
-     <p class="column left"><a href="https://www.fs.usda.gov/main/giffordpinchot/home" target="_blank"> United States Forest Service - Vancouver, WA</a></p>
-     <rt class="column">May 2016 - Jan 2017</rt>
-   </div>
-   <p><em>Visitor Services Assistant</em><br>&emsp;Educated visitors about the Gifford Pinchot National Forest and surrounding natural areas<br>&emsp;Acted as the frontline between the public and forest service employees<br>&emsp;Administered passes and permits for forest recreation opportunities</p>
-   <div class="row header">
-     <p class="column left">Freelance/Self-Employed - Portland, OR</p>
-     <rt class="column">September 2014 - June 2017</rt>
-   </div>
-   <p><em>Handyman & Landscaping</em><br>&emsp;Worked autonomously to build and maintain clientele relationships<br>&emsp;Performed a variety of tasks including mounting objects, electrical work, and home repairs<br>&emsp;High level of scheduling and communication between myself and clients</p>
-  <div class="row header">
-    <p class="column left">Portland Parks and Recreation - Portland, OR</p>
-    <rt class="column">June 2014 - September 2014</rt>
-  </div>
-  <p><em>Seasonal Maintenance Worker</em><br>&emsp;Maintaining pristine park conditions at a variety of locations<br>&emsp;Regularly landscaping with power tools and hand tools; ensuring consistent quality of work<br>&emsp;Navigating city and park with the use of a city owned vehicle</p>
-  <div class="row header">
-    <p class=" column left">Oregon State Univeristy Aquaculture Lab - Corvallis, OR</p>
-    <rt class="column">September 2013 - June 2014</rt>
-  </div>
-  <p><em>Aquaculture Aid</em><br>&emsp;Worked directly under fisheries professor on multiple research projects, gaining experience in data collection<br>&emsp;Digitized photos of Chinook salmon to gather data for statistical analysis and organized data in Excel spreadsheets</p>
-  <div class="row header">
-    <p class="column left">Student Conservation Association - Sequoia National Park, CA</p>
-    <rt class="column">Summer 2013</rt>
-  </div>
-  <p><em>Transportation Study Coordinator</em><br>&emsp;Gathered data through surveys for a travel and transit suitability study<br>&emsp;Utilized various hardware to collect different types of data<br>&emsp;Maintained organization of datasets while working remotely<br>&emsp;Worked and lived in the field as part of a small team requiring a high level of self-management</p>  
-  <div class="well well-sm text-center break">
-    <h1>Volunteer Work</h1>
-  </div>
-  <div class="row header">
-    <p class="column left"><a href="https://www.portlandoregon.gov/parks/38294?" target="_blank">Portland Parks and Rec, Urban Forestry</a></p>
-    <rt class="column">Spring 2016</rt>
-  </div>
-  <p><em>Data Entry</em><br>&emsp;Worked in ArcMap digitizing shapes and populating attribute fields for GIS Database<br>&emsp;Used data sheets and aerial imagery for reference in placing point features</p>
-  <div class="well well-sm text-center break">
-    <h1>References</h1>
-  </div>
-  <div class="row header">
-    <p class="column left">Available upon request</p>
-    <rt class="column">&emsp;</rt>
-  </div>
+  </nav>
 
-  </div>
+<!-- <div class="section row">
+	<div class="col s4">
+		<p></p>
+	</div>
+</div>
+ -->
+<!-- Buttons for opening the collapsibles -->
+<div class="row section">
+	<div class="col s2">
+		<button id="open-work" class="btn floating waves-effect waves-light"><a href="#work-drop" data-position="top" data-tooltip="Work" class="tooltipped white-text"><i class="material-icons">work</i></a></button>
+	</div>
+	<div class="col s2">
+		<button id="open-edu" class="btn floating waves-effect waves-light"><a href="#edu-drop" data-position="top" data-tooltip="Education" class="tooltipped white-text"><i class="material-icons">school</i></a></button>
+	</div>
+	<div class="col s2">
+		<button id="open-sof" class="btn floating waves-effect waves-light"><a href="#sof-drop" data-position="top" data-tooltip="Software Skills" class="tooltipped white-text"><i class="material-icons">computer</i></a></button>
+	</div>
+	<div class="col s2">
+		<button id="open-vol" class="btn floating waves-effect waves-light"><a href="#vol-drop" data-position="top" data-tooltip="Volunteer" class="tooltipped white-text"><i class="material-icons">explore</i></a></button>
+	</div>
+	<div class="col s2">
+		<button id="open-ref" class="btn floating waves-effect waves-light"><a href="#ref-drop" data-position="top" data-tooltip="References" class="tooltipped white-text"><i class="material-icons">contact_mail</i></a></button>
+	</div>
+</div>
+
+<!-- Collapsibles -->
+<div class="row">
+	<ul class="collapsible popout">
+		<li>
+			<div id="work-drop" class="collapsible-header blue-grey darken-1">Work Experience</div>
+			<div class="collapsible-body">
+				<div class="row">
+					<div class="col s8">
+						<h5>Graduate Research Assistant</h5>
+						<div><u>Schatz Energy Research Center</u></div>
+						<div>Research and development in support of the <a class="black-text" href="http://schatzcenter.org/2017/10/california-biopower-impact-project-creating-a-life-cycle-assessment-for-bioenergy-systems/" target="_blank">California Biomass Impact Project</a></div>
+						<div>Work focused on modeling decompostion of coarse woody materials</div>
+						<div>Managed large raster and tabular databases using ArcMap and R Studio to organize, extract, and visualize dataset inputs for the modeling process. </div>
+						<div>Developed website and web tool interface to display project results</div>
+					</div>
+					<div class="col s4">
+						<h6>Aug 2017 - Present</h6>
+						<a class="btn-flat" href="http://schatzcenter.org"><i class="material-icons" target="_blank">link</i></a>
+					</div>
+				</div>
+					<div class="divider"></div>
+				<div class="row">
+					<div class="col s8">
+						<h5>Teaching Assistant</h5>
+						<div>Humboldt State University</div>	
+					</div>
+					<div class="col s4">
+						<h6>Aug 2017 - Present</h6>
+						<a class="btn-flat" href="http://schatzcenter.org"><i class="material-icons" target="_blank">link</i></a>
+					</div>
+				</div>
+					<div class="divider"></div>
+				<div class="row">
+					<div class="col s8">
+						<h5>GIS/Data Analyst</h5>
+						<div>Contract</div>	
+						<div>Analyze data and model scenarios for emissions in India</div>
+					</div>
+					<div class="col s4">
+						<h6>Sept 2018 - Present</h6>
+					</div>
+				</div>
+					
+			</div>
+		</li>
+		<li>
+			<div id="edu-drop" class="collapsible-header blue-grey darken-1">Education</div>
+			<div class="collapsible-body">
+					<h5>Humboldt State University</h5>
+					<div>Master's of Science in Environmental Natural Resource Sciences</div>
+						<div class="divider"></div>
+					<h5>Portland State University</h5>
+					<div>Graduate Certificate Program in GIS</div>
+						<div class="divider"></div>
+					<h5>Oregon State University</h5>
+					<div>Bachelor's of Science in Natural Resources Management</div>
+			</div>
+		</li>
+		<li>
+			<div id="sof-drop" class="collapsible-header blue-grey darken-1">Software Skills</div>
+			<div class="collapsible-body">
+					<h5>Programming</h5>
+					<div></div>
+				<div class="divider"></div>
+			</div>
+		</li>
+		<li>
+			<div id="vol-drop" class="collapsible-header blue-grey darken-1">Volunteer</div>
+			<div class="collapsible-body">
+					<h5>City of Portland Urban Forestry</h5>
+					<div>GIS Data Entry</div>
+				<div class="divider"></div>
+			</div>
+		</li>
+		<li>
+			<div id="ref-drop" class="collapsible-header blue-grey darken-1">References</div>
+			<div class="collapsible-body">
+					<h5><i>Available upon request</i></h5>
+				<div class="divider"></div>
+			</div>
+		</li>
+	</ul>
+</div>
+
+<!-- Scaled in -->
+ <!--  <a id="scale-demo" href="#!" class="btn-floating btn-large scale-transition">
+    <i class="material-icons">add</i>
+  </a>
+
+  Scaled out
+  <a id="scale-demo" href="#!" class="btn-floating btn-large scale-transition scale-out">
+    <i class="material-icons">add</i>
+  </a> -->
+
+<!-- Floating action button to return to top of page -->
+<div class="fixed-action-btn" id="floater">
+	<a href="#top-page" class="btn-floating btn-medium">
+		<i class="material-icons">publish</i>
+	</a>
+</div>
+
+</main>
+
+<footer class="page-footer blue-grey darken-1">
+	<div class="footer-copyright">
+		<div class="container">
+			Made By Me
+			<div class="right">
+				<a href="http://www.linkedin.com/in/max-blasdel" class="grey-text lighten-5-text"><i class="material-icons right">face</i></a>
+			</div>
+		</div>
+	</div>
+</footer>
+
+<script type="text/javascript">
+
+//<!-- ******************* All intis  *********** -->
+// Dropdown trigger initialize
+document.addEventListener('DOMContentLoaded', function() {
+  var elems = document.querySelectorAll('.dropdown-trigger');
+  var instances = M.Dropdown.init(elems,{
+    belowOrigin: true,
+    hover: true,
+    alignment: 'right',
+    coverTrigger: false
+  });
+});
+
+// tooltips
+document.addEventListener('DOMContentLoaded', function() {
+  var elems = document.querySelectorAll('.tooltipped');
+  var instances = M.Tooltip.init(elems);
+  });
   
-  </div>
-  <a href="../Blasdel_Resume.pdf" download >
-    <font size="3" color="blue"><em>Download PDF version</em></font>
-    </a>
-  </div>
-  </div>
-</body>
+  // Initiate the collapsibles
+ document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelector('.collapsible');
+    var instances = M.Collapsible.init(elems);
+  });
+// init the action button
+document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.fixed-action-btn');
+    var instances = M.FloatingActionButton.init(elems);
+  });
+// *************************************************************
 
- </html>
+// #############################################################
+// Function to add event listeners to btns and open collapsibles
+// #############################################################
+// find all buttons
+var btns = document.querySelectorAll('.btn');
+
+// for each button add event listener
+btns.forEach(function(elem){
+	elem.addEventListener('mousedown', function(){
+// find all collapsible elements
+	const elems = document.querySelector('.collapsible');
+	var val = [];
+// based on id of the btn, get a value that corresponds to each <li> element
+	var val = elem.id == 'open-work' ? 0 :
+			 elem.id == 'open-edu' ? 1 :
+			 elem.id == 'open-sof' ? 2 : 
+			 elem.id == 'open-vol' ? 3 : 
+			 elem.id == 'open-ref' ? 4 : NULL;
+
+// open the element if it is not open
+		const instance = M.Collapsible.init(elems);
+		instance.open(val);
+	})
+});
+
+// var btns = document.querySelectorAll('.btn');
+
+// for (var i = 0; i < btns.length; i++) {
+// 	btns[i].addEventListener('mousedown', function(){
+// 	const elems = document.querySelector('.collapsible');
+// 	const actives = document.querySelectorAll('ul.collapsible li');
+// 	if (actives[i].className != "active"){
+// 		const instance = M.Collapsible.init(elems);
+// 		instance.open(i);
+// 	}		
+// 	})
+// }
+
+
+// 	.addEventListener('mousedown', function(){
+// 	const elems = document.querySelector('.collapsible');
+// 	const actives = document.querySelectorAll('ul.collapsible li');
+
+// 	if (actives[2].className != "active"){
+// 		const instance = M.Collapsible.init(elems);
+// 		instance.open(2);
+// 	} 
+// })
+
+
+// Function for smooth scolling based on # anchor tags
+	let anchorlinks = document.querySelectorAll('a[href^="#"]')
+ 
+	for (let item of anchorlinks) { // relitere 
+	    item.addEventListener('click', (e)=> {
+	        let hashval = item.getAttribute('href')
+	        let target = document.querySelector(hashval)
+	        target.scrollIntoView({
+	            behavior: 'smooth',
+	            block: 'start'
+	        })
+	        history.pushState(null, null, null)
+	        e.preventDefault()
+    	})
+	}
+
+
+
+</script>
+
+
+</html>

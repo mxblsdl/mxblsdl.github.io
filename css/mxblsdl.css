@@ -1,0 +1,16 @@
+/*github site styles*/
+ body{
+    background-color: #e0e0e0;
+  }
+   body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+  main {
+    flex: 1 0 auto;
+  }
+  a{
+    text-decoration: none;
+    text-decoration-color: black;
+  }

@@ -1,81 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <style type="text/css">
-      h3{
-        justify-content: right;
-        padding-left: 44%;
-      } 
-      .container{
-        display: flex;
-        justify-content: space-between;
-        padding-top: 10px;
-      }
-      footer{
-        transform: rotate(180deg) scaleX(-1);
-        bottom: 5px;
-        top: 5px;
-      }
-      img.center
-      {
-        display: block;
-        margin-right: auto;
-        margin-left: auto;
-        margin-top: 10px;
-      }
-      .body
-      {
-        background-color: #D3D3D3;
-      }
-      .content{
-        border-style: inset;
-        margin-top: 10px;
-      }
-    </style>
-    <meta charset="utf-8"> 
-    <link rel="stylesheet" type="text/css" href="Styling/animate.css">
-    <link rel="stylesheet" type="text/css" href="bootstrap-3.3.7-dist/css/bootstrap-theme.css">
-    <link rel="stylesheet" type="text/css" href="bootstrap-3.3.7-dist/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" type="text/css" href="bootstrap-3.3.7-dist/css/bootstrap.min.css">
-	 <title>Max Blasdel dot com</title>
-  </head>
+  <head>	 
+<!-- Loading Materialize at end of script for optimized loading -->
+<script type="text/javascript" src="materialize/js/materialize.min.js"></script>
 
- <span class="container">
-    <!-- The target "_blank" tag opens a new page when a link is selected-->
-    <button><strong>Main</strong></button>
-    <button><a href="https://mxblsdl.github.io/urls/Resume.html" title="My Resume"> Resume</a></button>
-    <button><a href="urls/Thesis.html" title="Graduate Thesis as presented to committee"> Thesis</a></button>
-    <button><a href="urls/Interests.html" title="An all purpose dumping ground for things that are intersting to me on the internet"> Other Projects/Links</a></button>
-  </span>
+<!-- Load Materialize and font awesome -->
+ <!--Import Google Icon Font-->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+<link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css"  media="screen,projection"/>
+<!-- Load mxblsdl styles -->
+ <link rel="stylesheet" type="text/css" href="css/mxblsdl.css">
 
-<body class="body">
+<title>Max Blasdel dot com</title>
+</head>
 
-<div class="container-fluid">
-  <img src="images/Flag.png" width="80%" height="80%" class="center">
-  <div class="text-center">
-    Flag of Geography
+<body>
+<div class="container grey lighten-1">
+<ul id="dropdown1" class="dropdown-content">
+    <li><a class="black-text" href="about.html">About</a></li>
+    <li><a class="black-text" href="urls/resume.html">Resume</a></li>
+    <li><a class="black-text" href="#">Project</a></li>
+</ul>
+  <nav>
+    <div class="nav-wrapper blue-grey darken-1">
+      <a href="index.html" class="brand-logo left grey-text lighten-5-text"><i class="material-icons right">map</i>&nbsp;Max Blasdel</a>
+      <ul class="right hide-on-med-and-down"">
+        <li><a class=" tooltipped grey-text lighten-5-text" data-position="bottom" data-tooltip="About Me" href="#"><i class="material-icons">contacts</i></a></li>
+        <li><a class="tooltipped grey-text lighten-5-text" data-position="bottom" data-tooltip="Resume and Work" href="urls/resume.html"><i class="material-icons">work</i></a></li>
+        <li><a class="tooltipped grey-text lighten-5-text" data-position="bottom" data-tooltip="Projects" href="#"><i class="material-icons">build</i></a></li>
+      </ul>
+      <ul class="right hide-on-large-only">
+        <li><a href="#!" class="dropdown-trigger" data-target="dropdown1"><i class="material-icons black-text">view_headline</i></a></li>
+    </ul>
+    </div>
+  </nav>
+<!-- <div class="divider"></div> -->
+  
+<div class="col s6">
+  <div class="section center">
+    <h5>Data Analysis and Web Mapping</h5>
   </div>
-<div class="content">
-  <h3 class="animated rollIn text-primary">
-  maxblasdel.com
-  </h3>
-	   <p class="text-center">
-      <font size="4">On this site I will be posting projects I have worked on both professionally and as a hobby.<br>Feel free to <a href="mailto:?subject=Website%20Inquiry">share this site</a>
-     </font>
-     </p>
-     </div>
-<!-- The below code only works on the absolute locations of the pixels and needs a fixed size image. I could redo this in google earth and save the file smaller if I want this feature. It seems like there is a work around using jQuery but I don;t want to get into that right now.
-<nav>
-  <img src="../images/Shasta_Map.jpg" width="100%" height="auto" alt="Site Map" usemap="#Shasta_Map">
-    <map name="Shasta_Map">
-       <area target="_blank" alt="Link to Resume" title="Link to Resume" href="Resume.html" coords="2091,285,253" shape="circle">
-    </map>
-</nav>
--->
- 
+</div>
+<div class="divider"></div>
+<div class="row">
+  <div class="section center">
+    <p>Projects done professionaly and in free time showcasing data analysis and web visualizations</p>
+  </div>
+</div>
+
+  <div class="row">
+    <div class="col s4 hoverable">
+      <div class="card blue-grey darken-1">
+        <div class="card-content white-text">
+          <span class="card-title center"><i class="material-icons">keyboard_arrow_left</i> R <i class="material-icons">keyboard_arrow_right</i></span>
+          <p>R programming for data preparation and automation</p>
+        </div>
+        <div class="card-action center">
+          <a href="#"><i class="material-icons">link</i></a>
+        </div>
+      </div>
+    </div>
+    <div class="col s4 hoverable">
+      <div class="card blue-grey darken-1">
+        <div class="card-content white-text">
+          <span class="card-title center"><i class="material-icons">keyboard_arrow_left</i> Javascript <i class="material-icons">keyboard_arrow_right</i></span>
+          <p>Responsive web applications built with basic Javascript</p>
+        </div>
+        <div class="card-action center">
+          <a href="#"><i class="material-icons">link</i></a>
+        </div>
+      </div>
+    </div>
+    <div class="col s4 hoverable">
+      <div class="card blue-grey darken-1">
+        <div class="card-content white-text">
+          <span class="card-title center"><i class="material-icons">keyboard_arrow_left</i> Leaflet <i class="material-icons">keyboard_arrow_right</i></span>
+          <p>Dynamic maps made with the open source JS library leaflet</p>
+        </div>
+        <div class="card-action center">
+          <a href="#"><i class="material-icons">link</i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>        
+
+<footer class="page-footer blue-grey darken-1">
+  <div class="footer-copyright">
+    <div class="container">
+      Made By Me
+      <div class="right">
+        <a href="http://www.linkedin.com/in/max-blasdel" class="grey-text lighten-5-text"><i class="material-icons right">face</i></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded', function() {
+  var elems = document.querySelectorAll('.dropdown-trigger');
+  var instances = M.Dropdown.init(elems,{
+    belowOrigin: true,
+    hover: true,
+    alignment: 'right',
+    coverTrigger: false
+  });
+});
+// tooltips
+document.addEventListener('DOMContentLoaded', function() {
+  var elems = document.querySelectorAll('.tooltipped');
+  var instances = M.Tooltip.init(elems);
+  });
+</script>
 
 </body>
-        
-<footer id="footer">
-</footer>
 </html>
