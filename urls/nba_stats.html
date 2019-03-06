@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Chart Js fun</title>
+<!-- A little styling for the button inputs -->
+<style type="text/css">
+/*	.yAxis, .xAxis, .color{
+		display: inline-block;
+		padding: 20px 10px 0 10px;
+		font-family: sans-serif; 
+		justify-content: center;
+	}
+	#yAxis, #xAxis{
+		font-size: 18px;
+		background-color: rgba(255,128,118,.5);
+	}*/
+</style>	
+
+<!-- materialize -->
+<link rel="stylesheet" type="text/css" href="../materialize/css/materialize.css">
+<script type="text/javascript" src="../materialize/js/materialize.js"></script>
+
+	<!-- Load the Chart js. library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+<script src="../js/stats.js"></script>
+<script type="text/javascript">
+// <!--  Set up the  global variables that will be used-->
+var TheScatterChart = null;
+var names= [];
+// var storage = [];
+var height = [];
+var weight = [];
+var yearsInNBA = [];
+
+// For the labels
+for (var i =0; i<nbaStats.length; i++) {
+	names.push(nbaStats[i][0]);
+}
+// Initially creates the variables that can be used in the chart
+// This could be pushed into the chart function to reduce the overall number of global variables, but for this project I think its fine.
+for (var i=0;i<nbaStats.length;i++){
+height.push(nbaStats[i][1]);
+weight.push(nbaStats[i][2]);
+yearsInNBA.push(nbaStats[i][5]);
+}
+// Gets the data ready for the chart
+function ChooseVariables(){
+	storage = [];
+	xValue = [];
+	yValue = [];
+	xAxis = document.getElementById("xAxis");
+	if (xAxis.value == 'weight'){
+		xValue = weight
+	}
+	if (xAxis.value == 'height'){
+		xValue = height
+	}
+	if (xAxis.value == 'years'){
+		xValue = yearsInNBA
+	}
+yAxis = document.getElementById("yAxis");
+	if (yAxis.value == 'weight'){
+		yValue = weight
+	}
+	if (yAxis.value == 'height'){
+		yValue = height
+	}
+	if (yAxis.value == 'years'){
+		yValue = yearsInNBA
+	}
+for (var i=0;i<nbaStats.length;i++){
+x = xValue[i]
+y = yValue[i]	
+var json = {x:x, y:y};
+storage.push(json);
+}
+DisplayChart(); // Call the chart function after getting all of the data ready 
+}
+// Display the  scatter plto chart
+function DisplayChart(){
+var Color="rgba(255,156,168,.9)";
+	var TheScatterChartData={
+		type: 'scatter',
+		data: {
+			labels : names,
+			datasets : [{
+				data : storage,
+				borderColor : Color,
+				showLine: false
+            },
+                ],
+		},
+		options:{
+			title: {
+				display:true,
+				text: 'NBA Statistics Comparison',
+				fontStyle: 'bold'
+			},
+			tooltips: {
+			   callbacks: {
+			      label: function(tooltipItem, datasets) {
+			         var label = datasets.labels[tooltipItem.index];
+			        return label 
+			      }
+			   }
+			},
+			scales: 
+			{
+				xAxes:[{
+					scaleLabel:{ 
+					display:true,
+				},
+				ticks:{
+					stepSize: 2,
+				}}],
+				yAxes:[{ 
+					scaleLabel:{
+					display:true,
+				}}
+			]}
+		}}
+	Chart.defaults.global.defaultFontSize= 16;
+	Chart.defaults.global.legend.display = false;
+	var TheChartCanvas=document.getElementById("TheChart");
+	var TheContext=TheChartCanvas.getContext("2d");
+	if (TheScatterChart!=null) TheScatterChart.destroy();
+	TheScatterChart=new Chart(TheContext,TheScatterChartData);
+
+	axisLabel = document.getElementById("yAxis")
+	if (axisLabel.value == 'weight'){
+		label = 'Weight (lbs)'
+		TheScatterChart.options.scales.yAxes[0].ticks.stepSize = 15;
+	}
+	if (axisLabel.value == 'height'){
+		label = 'Height (in)'
+		TheScatterChart.options.scales.yAxes[0].ticks.stepSize = 2;
+	}
+	if (axisLabel.value == 'years'){
+		label = 'Years in the NBA'
+		TheScatterChart.options.scales.yAxes[0].ticks.stepSize = 1;
+	}
+	TheScatterChart.options.scales.yAxes[0].scaleLabel.labelString = label;
+	
+	TheScatterChart.update();
+
+	axisLabel = document.getElementById("xAxis")
+	if (axisLabel.value == 'weight'){
+		label = 'Weight (lbs)'
+		TheScatterChart.options.scales.xAxes[0].ticks.stepSize = 15;
+	}
+	if (axisLabel.value == 'height'){
+		label = 'Height (in)'
+		TheScatterChart.options.scales.xAxes[0].ticks.stepSize = 2;
+	}
+	if (axisLabel.value == 'years'){
+		label = 'Years in the NBA'
+		TheScatterChart.options.scales.xAxes[0].ticks.stepSize = 1;
+	}
+	TheScatterChart.options.scales.xAxes[0].scaleLabel.labelString = label;
+	TheScatterChart.update();
+}
+// Function to change the background color, very responsive on Macs
+function ChangeColor(){
+var color = document.getElementById("chartColor");
+var colorVal = color.value;
+var ctx = document.getElementById("TheChart"); 
+ctx.style.backgroundColor = colorVal;
+}
+// Function to change the font color, useful for some of the backgrounds
+function FontColor(){
+	var color = document.getElementById("fontColor").value;
+Chart.defaults.global.defaultFontColor = color;
+TheScatterChart.update();
+}
+</script>
+
+</head>
+<body onload="ChooseVariables()">
+
+<div>
+	<canvas id="TheChart"></canvas>
+</div>
+
+<div class="row">
+	<div class="col s2">
+		<div class="input-field">
+			<select id="xAxis" onchange="ChooseVariables()">
+				<option value="height">Height</option>
+				<option value="weight">Weight</option>
+				<option value="years">Years in NBA</option>
+			</select>
+			<label>X-Axis</label>
+		</div>
+	</div>
+	<div class="col s2">
+		<div class="input-field">
+			<select id="yAxis" onchange="ChooseVariables()">
+				<option value="weight">Weight</option>
+				<option value="height">Height</option>
+				<option value="years">Years in NBA</option>
+			</select>	
+			<label>Y-Axis</label>
+		</div>
+</div>
+<!-- <div class="row">
+	<div>
+		Background Color <input type="color" id="chartColor" value="#ff0080" onchange="ChangeColor()">
+	</div>
+	<div>
+		Font Color <input type="color" id="fontColor" value="#000000" onchange="FontColor()">
+	</div>
+</div> -->
+
+</body>
+
+<script type="text/javascript">
+// Init the selects
+  document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('select');
+    var instances = M.FormSelect.init(elems);
+  });
+  </script>
+</html>
