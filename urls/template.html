@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>	 
+<!-- Loading Materialize at end of script for optimized loading -->
+<script type="text/javascript" src="../materialize/js/materialize.min.js"></script>
+
+<!-- Load Materialize and font awesome -->
+ <!--Import Google Icon Font-->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+<link type="text/css" rel="stylesheet" href="../materialize/css/materialize.css"  media="screen,projection"/>
+<!-- Load mxblsdl styles -->
+ <link rel="stylesheet" type="text/css" href="../css/mxblsdl.css">
+<style type="text/css">
+	.block{
+		height: 700px;
+		width: 100%;
+	}
+	#one{
+		background-color: #e8eaf6;
+	}
+	#two{
+		background-color: #ce93d8;
+	}
+	#three{
+		background-color: 
+	}
+	#four{
+		background-color: #D81B60;
+	}
+	#five{
+		background-color: 
+	}
+	.bottomMenu {
+		position: fixed;
+		bottom: 0;
+		width: 100%;
+		height: 60px;
+	}	
+</style>
+
+</head>
+<body>
+
+<!-- setting first block to be scaled in, otherwise requires scroll action to appear -->
+<div class="row block valign-wrapper" id="one">
+	<div class="col s12 scale-transition scale-in" id="one-sub">
+		<div class="col s4 valign right">
+			<h5>Content</h5>
+			<div>More content</div>
+		</div>
+	</div>
+</div>
+
+<div class="row block valign-wrapper" id="two">
+	<div class="col s12 scale-transition scale-out con" id="two-sub">
+		<div class="col s4 valign">
+			<h5>Content</h5>
+			<div>More content</div>
+		</div>
+	</div>
+</div>
+
+<div class="row block valign-wrapper" id="three">
+	<div class="col s12 scale-transition scale-out con" id="three-sub">
+		<div class="col s4 valign right">
+			<h5>Content</h5>
+			<div>More content</div>
+		</div>
+	</div>
+</div>
+<div class="row block valign-wrapper" id="four">
+	<div class="col s12 scale-transition scale-out con" id="four-sub">
+		<div class="col s4 valign">
+			<h5>Content</h5>
+			<div>More content</div>
+		</div>
+	</div>
+</div>
+
+<div class="scale-transition scale-out bottomMenu" id="foot">
+<footer class="page-footer blue-grey darken-1">
+	<div class="footer-copyright">
+		<div class="container">
+			Made By Me
+			<div class="right">
+				<a href="http://www.linkedin.com/in/max-blasdel" class="grey-text lighten-5-text"><i class="material-icons right">face</i></a>
+			</div>
+		</div>
+	</div>
+</footer>
+</div>
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded', function() {
+  var elems = document.querySelectorAll('.dropdown-trigger');
+  var instances = M.Dropdown.init(elems,{
+    belowOrigin: true,
+    hover: true,
+    alignment: 'right',
+    coverTrigger: false
+  });
+});
+// tooltips
+document.addEventListener('DOMContentLoaded', function() {
+  var elems = document.querySelectorAll('.tooltipped');
+  var instances = M.Tooltip.init(elems);
+  });
+
+
+// Function to scale footer in and out
+myID = document.getElementById("foot");
+var myScrollFunc = function() {
+  var y = window.scrollY;
+// Set percentage of total document height
+  var x = document.body.clientHeight * .7;
+
+  if (y >= x) {
+  	myID.className = "scale-transition scale-in bottomMenu"
+  } else {
+  	myID.className = "scale-transition scale-out bottomMenu"
+  }
+};
+
+window.addEventListener("scroll", myScrollFunc);
+
+// Function to tranisiton elements into view
+// for each element with the class con
+con = document.querySelectorAll('.con');
+con.forEach(function(elem){
+	window.addEventListener('scroll', function(){
+		var rect = elem.getBoundingClientRect();
+		var elemTop = rect.top;
+		var elemBottom = rect.bottom;
+		var isVisible = (elemTop >= 0) && (elemBottom <= window.innerHeight);
+    if (isVisible == true) {elem.className = "col s12 scale-transition-slow scale-in"}
+	})
+});
+
+
+
+ 
+</script>
+
+</body>
+</html>

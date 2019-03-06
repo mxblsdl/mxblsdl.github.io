@@ -4716,6 +4716,17 @@ small {
   transition: transform 0.3s cubic-bezier(0.53, 0.01, 0.36, 1.63) !important;
   transition: transform 0.3s cubic-bezier(0.53, 0.01, 0.36, 1.63), -webkit-transform 0.3s cubic-bezier(0.53, 0.01, 0.36, 1.63) !important;
 }
+.scale-transition-slow {
+  -webkit-transition: -webkit-transform 1s cubic-bezier(0.53, 0.01, 0.36, 1.63) !important;
+  transition: -webkit-transform 1s cubic-bezier(0.53, 0.01, 0.36, 1.63) !important;
+  transition: transform 1s cubic-bezier(0.53, 0.01, 0.36, 1.63) !important;
+  transition: transform 1s cubic-bezier(0.53, 0.01, 0.36, 1.63), 
+  -webkit-transform 1s cubic-bezier(0.53, 0.01, 0.36, 1.63) !important;
+}
+.scale-transition-slow.scale-in {
+  -webkit-transform: scale(1);
+          transform: scale(1);
+}
 
 .scale-transition.scale-out {
   -webkit-transform: scale(0);
