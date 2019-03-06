@@ -4,16 +4,10 @@
 	<title>Chart Js fun</title>
 <!-- A little styling for the button inputs -->
 <style type="text/css">
-/*	.yAxis, .xAxis, .color{
-		display: inline-block;
-		padding: 20px 10px 0 10px;
-		font-family: sans-serif; 
-		justify-content: center;
-	}
-	#yAxis, #xAxis{
-		font-size: 18px;
-		background-color: rgba(255,128,118,.5);
-	}*/
+#chart{
+	height: 50%;
+	width: 100%;
+}
 </style>	
 
 <!-- materialize -->
@@ -177,12 +171,14 @@ TheScatterChart.update();
 </head>
 <body onload="ChooseVariables()">
 
-<div>
-	<canvas id="TheChart"></canvas>
+<div class="row">
+	<div class="col s10">
+		<canvas id="TheChart"></canvas>
+	</div>
 </div>
 
 <div class="row">
-	<div class="col s2">
+	<div class="col s2 offset-s2">
 		<div class="input-field">
 			<select id="xAxis" onchange="ChooseVariables()">
 				<option value="height">Height</option>
@@ -192,7 +188,7 @@ TheScatterChart.update();
 			<label>X-Axis</label>
 		</div>
 	</div>
-	<div class="col s2">
+	<div class="col s2 offset-s2">
 		<div class="input-field">
 			<select id="yAxis" onchange="ChooseVariables()">
 				<option value="weight">Weight</option>
@@ -201,6 +197,7 @@ TheScatterChart.update();
 			</select>	
 			<label>Y-Axis</label>
 		</div>
+	</div>
 </div>
 <!-- <div class="row">
 	<div>
