@@ -9,6 +9,11 @@
 	width: 100%;
 }
 </style>	
+<!-- color picker -->
+<!-- jquery dependecy -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript" src="../js/colorpicker/js/bootstrap-colorpicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="../js/colorpicker/css/bootstrap-colorpicker.min.css">
 
 <!-- materialize -->
 <link rel="stylesheet" type="text/css" href="../materialize/css/materialize.css">
@@ -155,16 +160,16 @@ var Color="rgba(255,156,168,.9)";
 }
 // Function to change the background color, very responsive on Macs
 function ChangeColor(){
-var color = document.getElementById("chartColor");
-var colorVal = color.value;
-var ctx = document.getElementById("TheChart"); 
-ctx.style.backgroundColor = colorVal;
+	var color = document.getElementById("backColor");
+	var colorVal = color.style.backgroundColor;
+	var ctx = document.getElementById("TheChart"); 
+	ctx.style.backgroundColor = colorVal;
 }
 // Function to change the font color, useful for some of the backgrounds
 function FontColor(){
-	var color = document.getElementById("fontColor").value;
-Chart.defaults.global.defaultFontColor = color;
-TheScatterChart.update();
+	var color = document.getElementById("frontColor").style.backgroundColor;
+	Chart.defaults.global.defaultFontColor = color;
+	TheScatterChart.update();
 }
 </script>
 
@@ -178,7 +183,7 @@ TheScatterChart.update();
 </div>
 
 <div class="row">
-	<div class="col s2 offset-s2">
+	<div class="col s2 offset-s1">
 		<div class="input-field">
 			<select id="xAxis" onchange="ChooseVariables()">
 				<option value="height">Height</option>
@@ -188,7 +193,7 @@ TheScatterChart.update();
 			<label>X-Axis</label>
 		</div>
 	</div>
-	<div class="col s2 offset-s2">
+	<div class="col s2">
 		<div class="input-field">
 			<select id="yAxis" onchange="ChooseVariables()">
 				<option value="weight">Weight</option>
@@ -198,23 +203,50 @@ TheScatterChart.update();
 			<label>Y-Axis</label>
 		</div>
 	</div>
+	<div class="col s2 offset-s1">
+		Background Color
+		<div id="chartColor" class="file-field">
+		  <div class="btn" id="backColor"></div>
+		  <div class="file-path-wrapper">
+		    <input type="text">
+		  </div>
+		</div>
+	</div>
+	<div class="col s2">
+		Numbers and Lines Color
+		<div id="fontColor" class="file-field">
+		  <div class="btn" id="frontColor"></div>
+		  <div class="file-path-wrapper">
+		    <input type="text">
+		  </div>
+		</div>
+	</div>
 </div>
-<!-- <div class="row">
-	<div>
-		Background Color <input type="color" id="chartColor" value="#ff0080" onchange="ChangeColor()">
-	</div>
-	<div>
-		Font Color <input type="color" id="fontColor" value="#000000" onchange="FontColor()">
-	</div>
-</div> -->
-
 </body>
 
 <script type="text/javascript">
+
 // Init the selects
   document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('select');
     var instances = M.FormSelect.init(elems);
+  });
+// For the two color pickers
+    $(function() {
+    $('#chartColor').colorpicker({
+      component: '.btn',
+      color: "rgb(255,255,255)"
+      // changeColor is called when the colorpicker is used
+    }).on('changeColor.colorpicker', function() {
+    	(ChangeColor())}
+    );
+  });
+    $(function() {
+    $('#fontColor').colorpicker({
+      component: '.btn'
+    }).on('changeColor.colorpicker', function() {
+    	(FontColor())}
+    );
   });
   </script>
 </html>
