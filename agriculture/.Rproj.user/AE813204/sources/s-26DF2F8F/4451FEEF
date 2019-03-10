@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1546730005642.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3125774380",
+    "id" : "4451FEEF",
+    "lastKnownWriteTime" : 1546731157,
+    "last_content_update" : 1546731157734,
+    "path" : "~/Desktop/Webpage/max-gis.com/leaflet/projects/agriculture/agricultureData.Rmd",
+    "project_path" : "agricultureData.Rmd",
+    "properties" : {
+        "cursorPosition" : "10,19",
+        "docOutlineVisible" : "0",
+        "last_setup_crc32" : "26DF2F8Fbb338d19",
+        "scrollLine" : "0",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

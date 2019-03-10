@@ -1,0 +1,62 @@
+---
+title: "Read points and extract values"
+output: html_document
+---
+This script reads in the climate rasters and the FCID raster and extracts data based on species point locations. Requires 
+the point data as csv for size constraints. Outputs new csvs with FCID, meanT, fuelM for each species. 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r setup}
+require(foreign)
+require(raster)
+require(sf)
+require(rgdal)
+require(dplyr)
+require(data.table)
+```
+
+Originally when I did this I reprojected the FCID layer with default bilinear interpolation. This caused a problem since the FCID are categorical. Now the climate metrics are reprojected to albers equal area, the NRSIG projection.
+```{r}
+# I'll try puling in the original data and extracting from that
+rm100<-raster("E:/Drive_sync/CBI_Unshared_Work/CARBCAT Development/Data/UW Modeled Biomass Resource/Treatment Tiffs/Remove100Percent.tif")
+
+fuelM<-read.dbf("../data/fm100.dbf")
+fuelM<-fuelM[,c(2:3,1)] # data needs to be in x, y, z, format
+fuelM.raster <- rasterFromXYZ(fuelM, crs = " +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0")
+fuelM.raster<-projectRaster(from =fuelM.raster, crs=crs(rm100))
+rm(fuelM)
+
+meanT<-read.dbf("../data/Tmean_df.dbf")
+meanT.raster<-rasterFromXYZ(meanT, crs = " +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0")
+meanT.raster<-projectRaster(from = meanT.raster, crs = crs(rm100))
+rm(meanT)
+```
+
+Full loop for all data
+```{r}
+csvs<-dir("../../../../../dbf2csv", pattern = "*\\.csv$", full.names = T)
+names<-dir("../../../../../dbf2csv", pattern = "*\\.csv$", full.names = F)
+names<-tools::file_path_sans_ext(names)
+
+for (i in 1:length(csvs)) {
+t<-fread(csvs[i])
+coordinates(t)<-~x+y
+# Needs FCID raster
+crs(t)<-" +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0"
+t<-spTransform(t, CRSobj = "+proj=aea +lat_1=34 +lat_2=40.5 +lat_0=0 +lon_0=-120 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs +ellps=GRS80 +towgs84=0,0,0 ")
+
+t$fuelm<-raster::extract(fuelM.raster, t)
+t$meanT<-raster::extract(meanT.raster, t)
+t$FCID<-raster::extract(rm100, t)
+# distinct() helps cut the amount of data down
+data.table(t@data) %>%
+distinct() %>%
+fwrite(file = paste("../Species_output/csv/",names[i],".csv", sep = ""))
+rm(t)
+}
+```
+

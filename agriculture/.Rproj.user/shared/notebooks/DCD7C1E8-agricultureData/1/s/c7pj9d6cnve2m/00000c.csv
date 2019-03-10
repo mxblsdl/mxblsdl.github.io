@@ -1,0 +1,5 @@
+"0","ag<-st_transform(ag, 4326)"
+"0","# convert back to polygon object"
+"0","ag<-sf::as_Spatial(ag)"
+"0","# Convert to correct geojson format"
+"0","ag<-geojson_json(ag)"

@@ -1,0 +1,444 @@
+---
+title: "Execute Climate Model"
+author: "Max Blasdel"
+date: "October 19, 2018"
+output: html_document
+---
+
+For calculating the effect of climate on the decay rates of California species
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r message=FALSE, warning=FALSE}
+require(foreign)
+require(raster)
+require(sf)
+require(rgdal)
+require(data.table)
+require(magrittr)
+require(tidyverse)
+```
+
+
+This will be for reading in the species data with the climate variables attached and running the numbers through the climate modifier equations. 
+I will then join the climate modifier values with the decay database and calculate new, modified decay rates.
+Finally create a raster with climate modifier values.
+
+First, read in the decay database and the species data csvs.*change decay database*
+```{r}
+decay_db<-fread("../../../ResidualTreeLists/csv/full_database_decay.csv") %>%
+  select(Species, FCID2018) %>%
+  rename(FCID = FCID2018)
+
+## With the newer NRSIG Residual tree list values
+species_values<-dir("E:/NRSIG_method/output", pattern = "*\\.csv$", full.names = T)
+species_names<-dir("E:/NRSIG_method/output", pattern = "*\\.csv$", full.names = F)
+species_names<-sub("^([^.]*).*", "\\1",species_names)
+```
+
+This should result in equal numbers as the decay_db.
+Creates a dataframe with the mean temperature and moisture values by species for each occurence in the FCID numbers.
+```{r}
+# df<-data.frame() # I could do this as a list and then run do.call.
+df<-list()
+for (i in 1:length(species_names)) {
+  species<-fread(species_values[[i]])# %>% # read in each csv and drop coordinates for brevity
+    #select(-x,-y)
+
+  species<-species %>% # create mean temp and mean fuel values
+    group_by(FCID) %>%
+    mutate(meant = mean(meant)) %>%
+    mutate(fuelm = mean(fuelm))# %>% 
+#distinct()
+  
+  df[[i]]<-decay_db %>% # joins by species to the FCID
+    filter(Species == species_names[i]) %>%
+    left_join(species, by="FCID")
+#  df<-rbind(df,t)
+}
+df<-do.call(rbind, df)
+rm(species_values)
+```
+*1/8* Looking at distribution of climate values
+Finish up histogram creation
+```{r}
+require(ggplot2)
+
+t<-fread(species_values[[2]])
+
+t %<>% distinct() 
+
+t %>% 
+ggplot(aes(x=FCID, y=fuelm, group=FCID))+
+  geom_boxplot(notch = F)+
+    labs(x="FCID", y="Fuel Moisture")
+
+out<-base::summary(t$meant)
+
+stats<-function(object){
+    return(data.table("min" = min(object),
+    "mean" = mean(object),
+    "median" = median(object),
+    "max" = max(object)))
+}
+
+stats(t$fuelm)
+
+fuelmHist<-function(object){
+ qplot(object, 
+        geom="histogram",
+        xlab = "Fuel Moisture",
+        main = paste("Moisture Distribution with mean ", mean(object)),
+        subtitle = "set",
+        bins = 50)
+}
+qplot?
+
+meantHist<- function(object){
+  qplot(pbject,
+        geom = "histogram")
+}
+
+
+h<-fuelmHist(t$fuelm)
+
+```
+
+The numbers don't match exactly becuase there are some NA values within the decay_db file. These are areas with no residues
+
+# Test for missing values
+
+Looking at what the missing values are. Only NA values. I'm pretty sure these are the empty cells. 
+
+```{r}
+t<-anti_join(decay_db, df, by="Species")
+unique(t$Species)
+
+# simple base R way of changing NA values
+decay_db[is.na(decay_db)]<-"None"
+
+# Now I can filter for them
+decay_db %>% 
+  filter(Species == "None")
+```
+
+
+Join these NA values with a residue df and see if these total anything.
+
+```{r}
+# Read in the residues by treatment csv
+residues<-fread("../../../Residues Base/data/Residue_by_treat_update.csv")
+
+# filter just the rm100 for largest chance of resiudes amount
+residues %<>% 
+  filter(Treatment == "RM100")
+
+# Returns some values, which is not good
+left_join(t, residues, by=c("FCID"="FCID2018"))# %>% 
+  summarise_at(.vars = 4:12, .funs=sum)
+
+# Explore these FCID values which appear to have residues but no species??
+FCID_to_invest<-left_join(t, residues, by=c("FCID"="FCID2018")) %>% 
+  filter(Branch_tonsAcre > 0) %>% 
+  select(FCID)
+```
+
+Explore the FCIDs of interest
+```{r}
+FCID_to_invest[1,]
+decay_db %>% 
+  filter(FCID %in% FCID_to_invest[,]) %>% 
+  arrange(FCID)
+# So these are FCID numbers where there is an NA value alongside Species values, confusing
+
+# Each FCID that has a None value also is also represented by a species
+# I think I can ignore the NA rows since they will have values from the speices that is associated with it. 
+df %>% 
+  filter(FCID %in% FCID_to_invest[,])
+```
+
+*maybe remove this chunk*
+Bind together the missing values
+```{r}
+t %<>% 
+  mutate(fuelm = 1) %>% 
+  mutate(meant = 1)
+df<-rbind(df, t)
+```
+
+# develop climate modifier
+*1/8 with all values, no grouping by FCID*
+```{r}
+mean_climate_v2 <- t %>% 
+  na.omit() %>% 
+  summarise(mt = mean(meant), mf = mean(fuelm))
+
+q10 <- 1.6
+# add in climate equations and climate modifier
+t_out<-t %>% 
+  mutate(dem_moist = demeter_moist(fuelm, mean_climate_v2$mf)) %>% 
+  mutate(dem_temp = demeter_temp(meant, mean_climate_v2$mt, Q10 = q10)) %>% 
+  mutate(climate = dem_moist*dem_temp)
+```
+
+Thinking through how this translates to a raster. 
+I can keep this in a data table by applying the decay values onto each of these outputs. I need the mean k values I used in the FCID linking. 
+
+
+```{r}
+decay<-fread("../../../ResidualTreeLists/decay_FCID.csv") %>% 
+  rename(FCID = FCID2018)
+
+abam<-decay %>% 
+  filter(Species == "ABAM") %>% 
+  select(-FCID, -proportion) %>% 
+  distinct()
+
+
+```
+
+
+```{r}
+# Convert to spatial object if wanted
+t_out_spa<-sf::st_as_sf(t_out, coords = c("x", "y"),
+             crs = 3310)
+
+sf::st_transform(t_out_spa, crs = 4326)
+
+# Fun plotting features
+plot(t_out_spa["meant"])
+plot(t_out_spa["fuelm"])
+```
+
+
+
+Create a new df with mean values for each species
+```{r}
+mean_climate_values<-df %>%
+  group_by(Species) %>%
+  na.omit() %>%
+  summarise(mt= mean(meant), mf=mean(fuelm))
+```
+
+Apply climate equations to each entry
+```{r}
+demeter_temp<-function(temp, idealTemp, Q10){
+  exp((log(Q10)/10)*(temp-idealTemp))
+}
+demeter_moist<-function(m, msat){
+  0.25+0.75*(m/msat)
+}
+```
+
+Apply fuelm function to df
+```{r}
+fuelm_temp<-list()
+for (i in 1:length(species_names)) {
+fuelm_temp[[i]]<-df %>% 
+  filter(Species == species_names[i]) %>% 
+  transmute(Species = Species,
+    FCID = FCID,
+    dem_moist = demeter_moist(fuelm, mean_climate_values %>% 
+                                        filter(Species == species_names[i]) %>% 
+                                        select(mf) %>% 
+                                        as.numeric())) 
+}
+fuelm_list<-do.call(rbind, fuelm_temp)
+
+fuelm_list[is.na(fuelm_list)]<-1 # replace NA values with 1 or no effect
+```
+
+Apply meant function to df, more complicated because of the Q10 values
+Construct the loop function for seeing how demeter function changes based on differing Q10.
+
+These are the values that will be multiplied by the decay values. 
+
+I will want to iterate through some of the other Q10 values for sensitivity analysis.
+```{r}
+# This could be cleaner but it works and it is fast
+# Establish some Q10 values to iterate through
+q10_values<-seq(1.6, 2.5, .1)
+# Establish the df to hold the values
+meant_list<-data.frame()
+Qdf<-list()
+temper2<-data.frame()
+
+# Works for 
+for (i in 1:length(species_names)){
+temp<-df %>%
+  filter(Species == species_names[i])
+
+  for (j in 1:length(q10_values)) {
+  temper<-temp %>% 
+    transmute(dem_temp = demeter_temp(meant, mean_climate_values %>% # get mean climate value for given species
+                                  filter(Species == species_names[i]) %>%
+                                  select(mt) %>% # only read mean value
+                                  as.numeric(),
+                                  q10_values[j]))
+    
+colnames(temper)<-paste("Q10",q10_values[j])
+Qdf[[j]]<-temper
+  }
+temper2<-cbind(df %>%
+  filter(Species == species_names[i]) %>% 
+  select(1:2),
+  Qdf %>% as.data.frame())
+meant_list<-rbind(meant_list, temper2)
+}
+rm(Qdf, temp, temper, temper2)
+gc()
+```
+
+Combine into one df
+```{r}
+demeterDF<-cbind(meant_list, fuelm_list$dem_moist)
+```
+
+Add empty columns to the none values then bind with demeterDF output
+```{r}
+# simple base R way of changing NA values
+t[is.na(t)]<-"None"
+
+t[,colnames(demeterDF)[3:13]]<-NA
+
+demeterDF %<>% 
+  rbind(t)
+```
+
+Replace NA values with 1 since that will be the equivalent of no effect
+```{r}
+demeterDF[is.na(demeterDF)]<-1
+```
+
+
+Write out the Q10 analysis
+```{r}
+fwrite(demeterDF, "../data/Q10_analysis.csv")
+```
+
+# Applying climate modifier
+*Should be able to clear global environment here
+
+Look into spread on this data for creating raster with attribute table
+Read in the Q10/climate values
+Choose which Q10 value to use. I believe in the framework I designate 1.6 via some paper.
+```{r}
+demeterDF<-fread("../data/Q10_analysis.csv") %>% 
+  rename(fuelm = 'fuelm_list$dem_moist')
+
+demeterDF %<>% 
+  select(Species, FCID, Q10.1.6, fuelm) # Important to choose a Q10 value here
+```
+
+Add the decay portion
+Next Step is to multiply by decay values.
+Read in the updated decay values. With non-weighted values.
+```{r}
+decay<-fread("../../../ResidualTreeLists/decay_FCID.csv") %>% 
+  rename(FCID = FCID2018)
+
+# Good method for replacing values in a dataframe
+decay<-within(decay, Species[Species == '']<-'None')
+
+# issue wth none values in species column
+decay<-inner_join(decay, demeterDF, by=c("FCID", "Species"))
+```
+
+Multiply the meant and fuelm values together. This is $f(t)*f(m) = C~m$)
+```{r}
+decay %<>% 
+  mutate(climate = fuelm*Q10.1.6)
+```
+
+*Writing out decay with the climate modifier variable in the df, but not applied*
+```{r}
+fwrite(decay, "../../../ResidualTreeLists/decay_FCID_with_climate.csv")
+```
+
+
+Now it is just a matter of mutating new columns with climate modifier applied
+```{r}
+decay_mod<-decay %>% 
+  mutate(CWD = CWD*climate,
+         FWD = FWD*climate,
+         foliage = foliage*climate,
+         piled_CWD = piled_CWD*climate,
+         piled_FWD = piled_FWD*climate,
+         piled_foliage = piled_foliage*climate)
+```
+
+Write out decay mod piece for later use in decay
+```{r}
+fwrite(decay_mod)
+```
+
+
+Testing out the affect of climate on the decay rates, can come back to this.**come back to**
+```{r}
+x<-decay %>%
+  na.omit() %>% 
+  summarise_all(., funs(if(is.numeric(.)) mean(.) else "Total"))
+
+y<-decay_mod %>% 
+  na.omit() %>% 
+  summarise_all(., funs(if(is.numeric(.)) mean(.) else "Total"))
+
+df<-rbind(x,y)
+rownames(df)<-c("no_cliamte", "with_climate")
+
+df %>% 
+  select(-c(climate, FCID, Species, proportion))
+```
+
+
+# Climate raster, issues with exponentials.
+*Going to make an approximation based on mean values, I think only way to visualize in single value raster*
+
+```{r}
+climate_mod<-decay_mod %>% 
+  group_by(FCID) %>% 
+  transmute(pro = sum(proportion*climate)) %>% 
+  distinct() %>% 
+  rename(ID = FCID)
+
+climate_mod %>% fwrite("climate_mod.csv")
+```
+
+Look to create_k_raster.rmd 
+*Ended up being easy to do in ArcMap*
+
+Create the climate mod raster.
+First: read in a raster with FCID numbers
+```{r}
+q10 %<>% 
+  spread(Species, Q10.1.6)
+
+r<-raster("E:\\Drive_sync\\CBI_Unshared_Work\\CARBCAT Development\\Data\\UW Modeled Biomass Resource\\Treatment Tiffs/Remove100Percent.tif")
+
+
+climate_mod$pro %>% as.integer()
+
+r<-ratify(r, count = T)
+r
+levels(r)[[1]]
+levels(r)[[1]]<-climate_mod
+
+r$Remove100Percent@data@attributes
+
+
+```
+
+So the climate is a series of exponentials. Can these be summed and averaged?
+
+Summarizing these values ends up with less entries than the whole dataset. Can I add in the NA rows?
+So this results in an average of the temperature values. This is an approximation since it weights each species equally. I don't know if I can create a single raster from these values, averaging them should be the same problem as before. I could export for individial species. 
+
+```{r}
+Q10.2<-demeterDF %>% 
+#  filter(ID == demeterDF$ID[2]) %>% 
+  group_by(FCID) %>% 
+  summarise_at(.vars = 7, .funs=mean)
+```
+

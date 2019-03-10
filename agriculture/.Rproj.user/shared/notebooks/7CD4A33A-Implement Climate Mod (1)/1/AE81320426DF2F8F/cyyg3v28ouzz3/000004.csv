@@ -1,0 +1,9 @@
+"0","# add in climate equations and climate modifier
+t_out<-t %>% 
+  mutate(dem_moist = demeter_moist(fuelm, mean_climate_v2$mf)) %>% 
+  mutate(dem_temp = demeter_temp(meant, mean_climate_v2$mt, Q10 = q10)) %>% 
+  mutate(climate = dem_moist*dem_temp)
+"
+"2","Error in mutate_impl(.data, dots) : 
+  Evaluation error: object 'q10' not found.
+"
