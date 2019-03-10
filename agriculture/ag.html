@@ -82,12 +82,12 @@ a.foot:hover{
     </nav>
   </div>
     
- <div class="col s1">
+<!--  <div class="col s1">
     <a href="../urls/tool.html" class="btn-floating"><i class="large material-icons">arrow_back</i></a>
     <div>
     Return to main page
 	</div>
-</div>
+</div> -->
 
 <div class="center section">
 	<h2>C-BREC Agricultural Modeling Tool</h2>
@@ -679,7 +679,7 @@ function range(start, end){
     return total + num;
 }
 // Arrow functions are shorthand for functions. This defines the function sum()
-	// sum = (r, a) => r.map((b, i) => a[i] + b);
+	sum = (r, a) => r.map((b, i) => a[i] + b);
 // This may be able to be shortened but it does work
 // Oninput passes value of slider and crop id. Need to add table of id <-> order
 function updateDecay(val, id){
