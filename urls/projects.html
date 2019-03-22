@@ -44,13 +44,13 @@
 <div class="grey lighten-1">
 <ul id="dropdown1" class="dropdown-content">
     <li><a class="black-text" href="about.html">About</a></li>
-    <li class="active"><a class="black-text" href="#">Resume</a></li>
-    <li><a class="black-text" href="#">Project</a></li>
+    <li><a class="black-text" href="#">Resume</a></li>
+    <li class="active"><a class="black-text" href="">Project</a></li>
 </ul>
   <nav>
     <div class="nav-wrapper blue-grey darken-1" id="top-page">
       <a href="../index.html" class="brand-logo left grey-text lighten-5-text"><i class="material-icons right">map</i>&nbsp;mxblsdl</a>
-      <ul class="right hide-on-med-and-down"">
+      <ul class="right hide-on-med-and-down">
         <li><a class=" tooltipped grey-text lighten-5-text" data-position="bottom" data-tooltip="About Me" href="#"><i class="material-icons">contacts</i></a></li>
         <li class="active"><a class="tooltipped grey-text lighten-5-text" data-position="bottom" data-tooltip="Resume and Work" href="#"><i class="material-icons">work</i></a></li>
         <li><a class="tooltipped grey-text lighten-5-text" data-position="bottom" data-tooltip="Projects" href="#"><i class="material-icons">build</i></a></li>
@@ -67,8 +67,14 @@
 <div class="row  block valign-wrapper" id="one">
 	<div class="col s12 scale-transition scale-in con" id="one-sub">
 		<div class="col s4 valign right">
-			<h5>Content</h5>
-			<div>More content</div>
+			<h5>
+				NBA Arenas Map <a href="nba_fission/nba_fission.html"><i class="material-icons">keyboard_arrow_right</i></a>
+			</h5>
+			<div>Made in all JavaScript</div>
+			<div>
+				Check the Code<i class="material-icons">keyboard_arrow_down</i>
+			</div>
+			<div id="git"><a href="#" class="btn"></a></div>
 		</div>
 	</div>
 </div>
@@ -127,6 +133,10 @@ document.addEventListener('DOMContentLoaded', function() {
   var instances = M.Tooltip.init(elems);
   });
 
+// Toast popups
+document.getElementById("git").addEventListener('click', function() {
+	M.toast({html:"Oops! Looks like I don't have the github link up yet."})
+})
 
 // Function to scale footer in and out
 myID = document.getElementById("foot");
