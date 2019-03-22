@@ -1,0 +1,47 @@
+---
+title: "Prepare Ag Data"
+output: html_document
+---
+# For preparing data for the C-BREC Ag tool
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Load required packages
+```{r warning=FALSE}
+require(sf)
+require(tidyverse)
+require(geojsonio)
+```
+Read in data
+```{r}
+ag<-st_read("shapefiles", layer = "countiesWag")
+```
+
+Skip for now
+```{r}
+object.size(ag)
+# Simplify the polygon edges. 
+ag<-st_simplify(ag, dTolerance = 40)
+
+object.size(ag)
+plot(ag)
+```
+
+Transform to WGS
+```{r}
+ag<-st_transform(ag, 4326)
+
+# convert back to polygon object
+ag<-sf::as_Spatial(ag)
+
+# Convert to correct geojson format
+ag<-geojson_json(ag)
+```
+
+```{r}
+write_lines(paste("var agData = ", ag), "ag.geojson")
+```
+
+
+

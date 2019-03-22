@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8">
+
+<head>
+	<title>Agriculture in California</title>
+	<link rel="stylesheet" type="text/css" href="../css/cbrecStyles2.css">
+	<!-- Leaflet Css -->
+    <link rel="stylesheet" href="../js/leaflet.css">
+	<!-- Leaflet package -->
+     <script src="../js/leaflet.js"></script>
+    <!-- Package for basemaps  -->
+    <script src="../js/leaflet-providers.js"></script>
+
+<!-- jquery -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script> -->
+
+<!-- noUSSliders css and js -->
+<link rel="stylesheet" type="text/css" href="../noUiSlider-13.1.0/distribute/nouislider.min.css">
+<script type="text/javascript" src="../noUiSlider-13.1.0/distribute/nouislider.min.js"></script>
+
+<!-- Loading Materialize at end of script for optimized loading -->
+<script type="text/javascript" src="../materialize/js/materialize.min.js"></script>
+
+<!-- Load Materialize and font awesome -->
+ <!--Import Google Icon Font-->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+<link type="text/css" rel="stylesheet" href="../materialize/css/materialize.min.css"  media="screen,projection"/>
+
+    <!-- The geojson object from R with the agricultural resources of California. From the biomass working group work -->
+<script type="text/javascript" src="../data/ag.geojson"></script>
+
+		<!-- Chart js library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+
+<style>
+/*html, body {
+	height: 100%;
+	margin: 0;
+}*/
+#map {
+	width: 50%;
+	height: 600px;
+}
+canvas{
+	height:700px;
+}
+.cbrec-container{
+	margin-left: 5%;
+	margin-right: 5%;
+}
+a.foot:hover{
+	color: white; 
+	transition: .5s;
+}
+.foot{
+	font-size: 11px;
+}
+#barchartAg{
+	margin-top: 150px;
+}
+.range-field{
+	margin: 0;
+}
+#pulseBtn, #sliders, #disclaim{
+	display: none;
+}
+</style>
+</head>
+<body>
+<div class="cbrec-container">
+<div class="navbar-fixed">
+    <nav>
+      <div class="nav-wrapper">
+        <span class="brand-logo center">Development Version</span>
+      </div>
+    </nav>
+  </div>
+    
+<!--  <div class="col s1">
+    <a href="../urls/tool.html" class="btn-floating"><i class="large material-icons">arrow_back</i></a>
+    <div>
+    Return to main page
+	</div>
+</div> -->
+
+<div class="center section">
+	<h2>C-BREC Agricultural Modeling Tool</h2>
+	<div class="container">
+		<div class="progress">
+			<div class="determinate" style="width: 50%"></div>
+		</div>
+	</div>
+</div>
+	<ul class="collapsible">
+        <li>
+          <div class="collapsible-header"><i class="material-icons">question_answer</i>Instructions</div>
+          <div class="collapsible-body"><span>Agricultural residue base estimates were derived from earlier work by the California Biomass Collaborative. We focus our analysis on the eight crops that dominate agricultural residue production in California: rice, grapes, almonds, corn, wheat, cotton, and walnuts. Together, these eight crops comprise over 80% of the estimated technically available annual mass of residues in the state. This project does not consider food processing residues as it is assumed the majority of these residues have existing market pathways</span></div>
+        </li>
+        <li>
+          <div class="collapsible-header"><i class="material-icons">map</i>Interactive Map</div>
+          <div class="collapsible-body">Click on a county on the map to display the agricultural resource base. Below displays a line chart showing the modeled decay over 100 years. The decay values can be varied in this development version.</div>
+        </li>
+      </ul>
+<div class="row">
+	<div class="col s6" id='map'></div>
+	<div class="col s6">
+			<canvas id="barchartAg"></canvas>
+			<a id="pulseBtn" href="#linechart" class="btn-floating pulse right"><i class="material-icons">build</i></a>
+	</div>
+</div>
+
+<div class="row" id="disclaim">
+	<div class="col s10 offset-s1">
+		<h6>The graph below shows the decay of ag residues over time. This assumes all residues decay along a negative exponential curve and that they emit only carbon dioxide. Carbon content of the materials is set at 50%. The slider shows the decay rate of the different crops. These are dummy values and more meant to illustrate how a negative exponential effects the persistance of a material over time.</h6>
+	</div>
+</div>
+<div class="row">
+	<div class="col s8 right">
+		<h5 id="countyName"></h5>
+		<canvas id="linechart"></canvas>
+	</div>
+<div class="col s4" id="sliders">
+	<h5>Decay Rates for The Seven Major Crops of California</h5>
+	<div class="divider"></div>
+	<!-- Corn Slider -->
+	<div class="row">
+		<div class="col s8">
+			<form action="#">
+				<p class="range-field">
+					<input class="range-field" type="range" value="0.02" min="0" max=".5" step="0.01" name="cornDecay" id="corn" oninput="updateDecay(this.value, this.id);Corn.value=corn.value">
+				</p>
+			</form>
+		</div>
+		<div class="col s4">
+			<output id="Corn" for="cornDecay"></output>
+			<span>Corn</span>
+		</div>
+	</div>
+	<!-- Rice slider -->
+	<div class="row">
+		<div class="col s8">
+			<form action="#">
+				<p class="range-field">
+					<input type="range" value="0.03" min="0" max=".5" step="0.01" name="riceDecay" id="rice" oninput="updateDecay(this.value, this.id);Rice.value=rice.value">
+				</p>
+			</form>
+		</div>
+		<div class="col s4">
+			<output id="Rice" for="riceDecay"></output>
+			<span>Rice</span>
+		</div>
+	</div>
+	<!-- Wheat slider -->
+	<div class="row">
+		<div class="col s8">
+			<form action="#">
+				<p class="range-field">
+					<input type="range" value="0.04" min="0" max=".5" step="0.01" name="wheatDecay" id="wheat" oninput="updateDecay(this.value, this.id);Wheat.value=wheat.value">
+				</p>
+			</form>
+		</div>
+		<div class="col s4">
+			<output id="Wheat" for="wheatDecay"></output>
+			<span>Wheat</span>
+		</div>
+	</div>
+	<!-- almond Slider -->
+	<div class="row">
+		<div class="col s8">
+			<form action="#">
+				<p class="range-field">
+					<input type="range" value="0.02" min="0" max=".5" step="0.01" name="almondDecay" id="almond" oninput="updateDecay(this.value, this.id);Almond.value=almond.value">
+				</p>
+			</form>
+		</div>
+		<div class="col s4">
+			<output id="Almond" for="almondDecay"></output>
+			<span>Almond</span>
+		</div>
+	</div>
+	<!-- grape Slider -->
+	<div class="row">
+		<div class="col s8">
+			<form action="#">
+				<p class="range-field">
+					<input type="range" value="0.08" min="0" max=".5" step="0.01" name="grapeDecay" id="grape" oninput="updateDecay(this.value, this.id);Grape.value=grape.value">
+				</p>
+			</form>
+		</div>
+		<div class="col s4">
+			<output id="Grape" for="grapeDecay"></output>
+			<span>Grape</span>
+		</div>
+	</div>
+	<!-- walnut Slider -->
+	<div class="row">
+		<div class="col s8">
+			<form action="#">
+				<p class="range-field">
+					<input type="range" value="0.04" min="0" max=".5" step="0.01" name="walnutDecay" id="walnut" oninput="updateDecay(this.value, this.id);Walnut.value=walnut.value">
+				</p>
+			</form>
+		</div>
+		<div class="col s4">
+			<output id="Walnut" for="walnutDecay"></output>
+			<span>Walnut</span>
+		</div>
+	</div>
+	<!-- cotton Slider -->
+	<div class="row">
+			<div class="col s8">
+				<form action="#">
+					<p class="range-field">
+						<input type="range" value="0.05" min="0" max=".5" step="0.01" name="cottonDecay" id="cotton" oninput="updateDecay(this.value, this.id);Cotton.value=cotton.value">
+					</p>
+				</form>
+			</div>
+			<div class="col s4">
+				<output id="Cotton" for="cottonDecay"></output>
+				<span>Cotton</span>
+			</div>
+	</div>
+
+</div>
+</div>
+<!-- Scripts need to go below the div for loading order -->
+<script type="text/javascript">
+var agValues = [];
+var decayRates = [];
+var agData;
+var TheBarChart = null;
+var TheLineChart = null;
+
+function loadDecay(){
+	decayRates = [];
+for (i = 0; i < 7; i ++){
+	if (i == 0) {crop = "corn"};
+	if (i == 1) {crop = "rice"};
+	if (i == 2) {crop = "wheat"};
+	if (i == 3) {crop = "almond"};
+	if (i == 4) {crop = "grape"};
+	if (i == 5) {crop = "walnut"};
+	if (i == 6) {crop = "cotton"};
+	val = document.getElementById(crop).value;
+	val = parseFloat(-val);
+	decayRates.push(val);
+	}
+}
+// The main map that everythings is added to 
+var map = L.map('map',{
+	// drawControl:true,
+	fullscreenControl: true,//Adds the full screen control
+ 	fullscreenControlOptions: {
+    position: 'topleft'
+  },
+	minZoom: 6,
+	maxZoom:15,
+	maxBounds:[
+//Southwest corner
+[31.8, -129],
+//Northeast corner
+[44,-113]
+	]
+}).setView([37, -120], 6);
+
+
+// Add a scale to the map
+L.control.scale().addTo(map);
+
+// Adds the base map with the designated tile name
+// This sets a default basemap while the layer controls allow this to be changed
+L.tileLayer.provider('OpenStreetMap.HOT').addTo(map);
+
+// Display multiple basemap options
+// First create two variables that comprise the basemaps
+var osmHOT = L.tileLayer.provider('OpenStreetMap.HOT'),
+	mapnik = L.tileLayer.provider('OpenStreetMap.Mapnik');
+	topo = L.tileLayer.provider('OpenTopoMap');
+
+// Then put these into an object
+var baseMaps = {
+	"Open Street Map":osmHOT,
+	"OSM 2":mapnik,
+	"Topo Map":topo
+};
+
+// Adding the layer, no quotes needed, just the name of the var
+// This var was created in R from a shapefile
+var agData = L.geoJson(agData,{
+	style: {
+		fillColor: '#8DBFCF',
+		color: '#3D9BCF'
+	},
+	onEachFeature: onEachFeature //Defined below for when layers are clicked on
+}
+).addTo(map).on('click', onClick);
+
+// Function to control the popup box content.
+// feature.properties.!Name of property!
+function onEachFeature(feature, layer) {
+    var popupContent = "<h6>" + feature.properties.County + "</h6>";
+    // does this feature have a property named popupContent?
+    if (feature.properties && feature.properties.popupContent) {
+        popupContent += feature.properties.popupContent;
+    }
+    layer.bindPopup(popupContent),
+    // Add the event listeners to the layers on mouseover and mouse out
+    layer.on({
+    	mouseover: highlightFeature,
+    	mouseout: resetHighlight
+    });
+}
+ 
+ // Creating a data set of values based on user clicks
+ function onClick(e){
+ 	document.getElementById("countyName").innerHTML = e.layer.feature.properties.County;
+ 	// Show sliders of decay rates
+ 	document.getElementById("sliders").style.display = "block";
+ 	// Show pulse button
+ 	document.getElementById("pulseBtn").style.display = "block";
+ 	// show disclaimer
+ 	document.getElementById("disclaim").style.display = "block";
+ 	// Get decay rates
+ 	loadDecay();
+ 	// Calculate how much ag crops in clicked county
+    	agValues = [];
+		agValues.push(e.layer.feature.properties.corn);
+		agValues.push(e.layer.feature.properties.rice);
+		agValues.push(e.layer.feature.properties.wheat);
+		agValues.push(e.layer.feature.properties.almond);
+		agValues.push(e.layer.feature.properties.grapes);
+		agValues.push(e.layer.feature.properties.walnut);
+		agValues.push(e.layer.feature.properties.cotton);
+	    county = e.layer.feature.properties.County;
+    DisplayChart(agValues, county);
+    lineChart(agValues);
+    showDecay(decayRates);
+}
+// "corn": 10, "rice": 0, "wheat": 0, "almond": 0, "grapes": 390, "walnut": 0, "cotton": 0 
+// Set the style on mouseover
+function highlightFeature(e) {
+    var layer = e.target;
+    layer.setStyle({
+        weight: 2,
+        // color: '#666',
+        // dashArray: '',
+        fillOpacity: 0.7
+    });
+}
+// reset the style on mouseout
+// Requires a global variable already defined
+function resetHighlight(e) {
+    agData.resetStyle(e.target);
+}
+// **************************************************************************************************
+// ********************* Adding some chart js code WILL BE MOVED TO SEPERATE JS FILE	*************
+function DisplayChart(Buckets, county){
+if (Buckets.reduce(getSum) == 0){
+	if (TheBarChart != null){
+	TheBarChart.destroy(); // destroy the chart 
+	TheBarChart = null; // reset the chart to null
+	}
+	M.toast({html: "No Data For Selected County"})
+	// document.getElementById("noData").innerHTML = "<div class='valign-wrapper'><div class='valign'><h5 class='center-align'>No Data for Selected County</h5></div></div>";
+}
+else{
+var Color="rgba(66, 134, 244,.8)";
+	var TheBarChartData={
+		type: 'bar',
+		data: {
+			labels : ["Corn", "Rice", "Wheat", "Almond", "Grapes", "Walnut", "Cotton"],
+			datasets : [{
+				data : Buckets,
+				borderColor : Color,
+				backgroundColor: [
+                'rgba(230, 235, 26, 0.5)', // Corn
+				'rgba(75, 221, 74, 0.5)', // Rice
+				'rgba(245, 222, 179, 0.5)', // Wheat
+				'rgba(217, 201, 184, 0.5)', // Almond
+				'rgba(159, 124, 221, 0.5)', // Grape
+				'rgba(92, 82, 72, 0.5)', // Walnut
+				'rgba(199, 198, 200, 0.5)'], // Cotton
+            },
+                ],
+		},
+		options:{
+			tooltips:{
+				callbacks:{
+					label: function(tooltipItem, data) {
+					    var value = data.datasets[0].data[tooltipItem.index];// This fixes the issue with lots of decimal places on really small values.
+						value = value.toString();
+						value = value.split(/(?=(?:...)*$)/);
+						value = value.join(',');
+						return value;
+					}
+				}
+			},
+		    title:{
+		        display:true,
+		        text:'Current Estimate of Resources for ' + county
+		    },
+			scales:{
+				xAxes:[{
+					scaleLabel:{
+						display:true,
+						labelString:'Crop Type'
+					}
+				}],
+				yAxes:[{
+					scaleLabel:{
+						display:true,
+						labelString:'Amount of Residues (BDT)'
+					},
+				ticks:{
+					beginAtZero:true,
+					 userCallback: function(value, index, values) {
+					    value = Math.round(value);// This fixes the issue with lots of decimal places on really small values.
+						value = value.toString();
+						value = value.split(/(?=(?:...)*$)/);
+						value = value.join(',');
+						return value;
+    			}
+				}}]
+			}
+			}
+		}
+	Chart.defaults.global.legend.display = false;
+	var TheChartCanvas=document.getElementById("barchartAg");
+	var TheContext=TheChartCanvas.getContext("2d");
+	if (TheBarChart!=null) TheBarChart.destroy(); // update has issues with multiple charts on top of each other.
+	TheBarChart=new Chart(TheContext,TheBarChartData);
+	}
+}
+function lineChart(Buckets){
+	// These will be changed with a slider widget.
+	if (Buckets.reduce(getSum) == 0){
+		if (TheLineChart != null){
+		TheLineChart.destroy(); // destroy the chart 
+		TheLineChart = null; // reset the chart to null
+		}
+	}
+		if (Buckets.reduce(getSum)>0){
+	// Variables that will be used again	
+		var Labels= range(2020,2120);
+		var years= range(0,100);
+	// Create one array of all crops for time frame
+	var decomp = [];
+		for (i = 0; i < Buckets.length; i++){
+	decay = years.map(function(element){
+			return (Buckets[i]*Math.exp(decayRates[i]*element))});
+			decomp.push(decay)};
+
+// ******* Emissions calculations *******//
+// Variable for the chart creation.
+	var AllAg=Buckets.reduce(getSum)
+// Define variables used in emissions calculations
+	carbonContent = 0.5;
+	carbonToCarbonDioxide = 44/12;
+
+// I want to sum the crops for every year. This is a sum of a matrix horizontally
+// Arrow functions are shorthand for functions. This defines the function sum()
+	var sum = (r, a) => r.map((b, i) => a[i] + b);
+
+// Create array of sum of decomp arrays on each step
+	var annualAg = decomp.reduce(sum);
+
+// Perform math function on arrays for each year or length of array
+// Assumes carbon content of 0.5 and mass balance of 44/12 for carbon to CO2
+    var Emissions = annualAg.map(function(element) { 
+    return ((AllAg - element)*carbonContent*carbonToCarbonDioxide).toFixed(2); 
+});
+    for (var i = 0; i < 6; i++) {
+    	temp = decomp[i];
+    	x = 0;
+    	while(x < temp.length){
+    		temp[x] = temp[x].toFixed(2);
+    		x++
+    	}
+    	decomp[i].push(temp);
+    };
+    // var Emissions = Math.round(Emissions);
+// Load line chart
+	var TheLineChartData={
+		type: 'line',
+		data: {
+			labels : Labels,
+			datasets : [{
+				fill: false,
+				yAxisID:'A',
+				label: 'Corn',
+				data : decomp[0],
+				pointRadius:0,
+                backgroundColor: "rgba(230, 235, 26, 0.2)",
+			    borderColor: "rgba(230, 235, 26, 1)",
+			    pointBackgroundColor: "rgba(230, 235, 26, 1)",
+			    pointBorderColor: "#fff",
+			    pointHoverBackgroundColor: "rgba(230, 235, 26, 0.8)",
+			    pointHoverBorderColor: "rgba(230, 235, 26, 1)",
+                },
+                {
+                data:decomp[1],
+                pointRadius:0,
+                fill:false,
+                label: 'Rice',
+                backgroundColor: "rgba(75, 221, 74, 0.2)",
+			    borderColor: "rgba(75, 221, 74, 1)",
+			    pointBackgroundColor: "rgba(75, 221, 74, 1)",
+			    pointBorderColor: "#fff",
+			    pointHoverBackgroundColor: "rgba(75, 221, 74, 0.8)",
+			    pointHoverBorderColor: "rgba(75, 221, 74, 1)",
+                },
+                {
+                data:decomp[2],
+                pointRadius:0,
+                fill:false,
+                label: 'Wheat',
+                backgroundColor: "rgba(245, 222, 179, 0.2)",
+			    borderColor: "rgba(245, 222, 179, 1)",
+			    pointBackgroundColor: "rgba(245, 222, 179, 1)",
+			    pointBorderColor: "#fff",
+			    pointHoverBackgroundColor: "rgba(245, 222, 179, 0.8)",
+			    pointHoverBorderColor: "rgba(245, 222, 179, 1)",
+                },
+                {
+                data:decomp[3],
+                pointRadius:0,
+                fill:false,
+                label: 'Almond',
+                backgroundColor: "rgba(217, 201, 184, 0.2)",
+			    borderColor: "rgba(217, 201, 184, 1)",
+			    pointBackgroundColor: "rgba(217, 201, 184, 1)",
+			    pointBorderColor: "#fff",
+			    pointHoverBackgroundColor: "rgba(217, 201, 184, 0.8)",
+			    pointHoverBorderColor: "rgba(217, 201, 184, 1)",
+                },
+                {
+                data:decomp[4],
+                pointRadius:0,
+                fill:false,
+                label: 'Grape',
+                backgroundColor: "rgba(159, 124, 221, 0.2)",
+			    borderColor: "rgba(159, 124, 221, 1)",
+			    pointBackgroundColor: "rgba(159, 124, 221, 1)",
+			    pointBorderColor: "#fff",
+			    pointHoverBackgroundColor: "rgba(159, 124, 221, 0.8)",
+			    pointHoverBorderColor: "rgba(159, 124, 221, 1)",
+                },
+                {
+                data:decomp[5],
+                pointRadius:0,
+                fill:false,
+                label: 'Walnut',
+                backgroundColor: "rgba(92, 82, 72, 0.2)",
+			    borderColor: "rgba(92, 82, 72, 1)",
+			    pointBackgroundColor: "rgba(92, 82, 72, 1)",
+			    pointBorderColor: "#fff",
+			    pointHoverBackgroundColor: "rgba(92, 82, 72, 0.8)",
+			    pointHoverBorderColor: "rgba(92, 82, 72, 1)",
+                },
+                {
+                data:decomp[6],
+                pointRadius:0,
+                fill:false,
+                label: 'Cotton',
+                backgroundColor: "rgba(199, 198, 200, 0.2)",
+			    borderColor: "rgba(199, 198, 200, 1)",
+			    pointBackgroundColor: "rgba(199, 198, 200, 1)",
+			    pointBorderColor: "#fff",
+			    pointHoverBackgroundColor: "rgba(199, 198, 200, 0.8)",
+			    pointHoverBorderColor: "rgba(199, 198, 200, 1)",
+                },{           
+//  The Second dataset for emissions data
+                yAxisID:'B',
+                label:'Carbon Dioxide',
+                data:Emissions,
+                fill:false,
+                backgroundColor: "rgba(40, 40, 40, .6)"
+
+                }],
+		},
+		options:{
+			// tooltips: {
+			// 	callbacks:{
+			// 		label: function(tooltipItem, data) {
+			// 			var value = data.datasets[0].data[tooltipItem.index];
+			// 			value = Math.round(value);
+			// 			return value;
+			// 		}
+			// 	}
+			// },
+			responsive:true,
+			maintainAspectRatio: true,
+		    title:{
+		        display:true,
+		        text:'Decay over 100 Years'
+		    },
+			legend:{
+				position:'bottom'
+			},
+			scales:{
+				xAxes:[{
+					ticks:{
+						beginAtZero:true,
+						autoSkip:true,
+						maxTicksLimit:11
+					},
+					scaleLabel:{
+						display:true,
+						labelString:'Years Since 2020'
+					}
+				}],
+				yAxes:[{
+				    id:'A',
+				    position:'left',
+					scaleLabel:{
+						display:true,
+						labelString:'Amount of Residues (BDT)'
+					},
+					// Function to add commas into x-axis labels
+				ticks:{
+					beginAtZero:true,
+					 userCallback: function(value, index, values) {
+					    value = Math.round(value);// This fixes the issue with lots of decimal places on really small values.
+						value = value.toString();
+						value = value.split(/(?=(?:...)*$)/);
+						value = value.join(',');
+						return value;
+    			}
+				}},
+				{
+				id:'B',
+				position:'right',
+				scaleLabel:{
+				    display:'true',
+				    labelString:'Lifetime CO2 Emissions'
+				},
+				ticks:{
+				    beginAtZero:true,
+				    userCallback: 
+				    function(value, index, values) {
+				        value = Math.round(value);// This fixes the issue with lots of decimal places on really small values.
+						value = value.toString();
+						value = value.split(/(?=(?:...)*$)/);
+						value = value.join(',');
+						return value;
+				    }
+				}}
+				]
+			}
+			}
+		}
+	Chart.defaults.global.defaultFontSize=14;	
+	Chart.defaults.global.legend.labels.usePointStyle=true;	
+	Chart.defaults.global.legend.display = true;
+	var TheChartCanvas=document.getElementById("linechart");
+	var TheContext=TheChartCanvas.getContext("2d");
+	if (TheLineChart!=null) TheLineChart.destroy();
+	TheLineChart=new Chart(TheContext,TheLineChartData);
+	// alert(TheLineChartData.data.datasets[2].data); //gets at the data for the chart
+	}
+}	
+
+// Taking a stab at writing a range function
+function range(start, end){
+	ans= [];
+	for (i = start; i <= end ; i++){
+		ans.push(i);//push sequence to new array. Don't name it range as that writes over this function
+	}
+	return(ans);
+}
+// Sum function for if then test
+ function getSum(total, num) {
+    return total + num;
+}
+// Arrow functions are shorthand for functions. This defines the function sum()
+	sum = (r, a) => r.map((b, i) => a[i] + b);
+// This may be able to be shortened but it does work
+// Oninput passes value of slider and crop id. Need to add table of id <-> order
+function updateDecay(val, id){
+	var years= range(0,100);
+	// Get decay values
+	loadDecay();
+// Figure which decay value is being changed
+	if (id == "corn"){crop = 0}
+	if (id == "rice"){crop = 1}
+	if (id == "wheat"){crop = 2}
+	if (id == "almond"){crop = 3}
+	if (id == "grape"){crop = 4}
+	if (id == "walnut"){crop = 5}
+	if (id == "cotton"){crop = 6}
+
+// rerun all values
+	decomp = [];
+		for (i = 0; i < agValues.length; i++){
+	decay = years.map(function(element){
+			return agValues[i]*Math.exp(decayRates[i]*element)});
+			decomp.push(decay)
+			}
+// Calculate a new decay amounts for selected input
+	newDecay = years.map(function(element){
+			return agValues[crop]*Math.exp(-val*element)}); //change decayRates[2] to val
+// update total values for emissions calculation
+	decomp[crop] = newDecay;
+
+// I want to sum the crops for every year. This is a sum of a matrix horizontally
+	AllAg=agValues.reduce(getSum);
+// Define variables used in emissions calculations
+	carbonContent = 0.5;
+	carbonToCarbonDioxide = 44/12;
+// Create array of sum of decomp arrays on each step
+	annualAg = decomp.reduce(sum);
+// Perform math function on arrays for each year or length of array
+// Assumes carbon content of 0.5 and mass balance of 44/12 for carbon to CO2
+    Emissions = annualAg.map(function(element) { 
+    return ((AllAg - element)*carbonContent*carbonToCarbonDioxide); 
+});
+    var emi = TheLineChart.data.datasets[7];
+    emi.data = Emissions;
+	var data = TheLineChart.data.datasets[crop];
+	data.data = newDecay;
+	TheLineChart.update();
+}
+
+//Show sldier values on first click of county
+function showDecay(val){
+	document.getElementById("Corn").innerHTML = -val[0];
+	document.getElementById("Rice").innerHTML = -val[1];
+	document.getElementById("Wheat").innerHTML = -val[2];
+	document.getElementById("Almond").innerHTML = -val[3];
+	document.getElementById("Grape").innerHTML = -val[4];
+	document.getElementById("Walnut").innerHTML = -val[5];
+	document.getElementById("Cotton").innerHTML = -val[6];
+}
+window.onload = function() {
+        var elems  = document.querySelectorAll("input[type=range]");
+        M.Range.init(elems);
+};
+
+// Collapsible
+var elem = document.querySelector('.collapsible');
+var instance = M.Collapsible.init(elem, {
+  accordion: true
+});
+
+// Function for smooth scolling based on # anchor tags
+let anchorlinks = document.querySelectorAll('a[href^="#"]')
+ 
+for (let item of anchorlinks) { // relitere 
+    item.addEventListener('click', (e)=> {
+        let hashval = item.getAttribute('href')
+        let target = document.querySelector(hashval)
+        target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        })
+        history.pushState(null, null, null)
+        e.preventDefault()
+    })
+}
+</script>
+
+</body>
+</html>

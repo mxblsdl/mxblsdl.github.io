@@ -1,0 +1,6 @@
+"0","demeter_temp<-function(temp, idealTemp, Q10){"
+"0","  exp((log(Q10)/10)*(temp-idealTemp))"
+"0","}"
+"0","demeter_moist<-function(m, msat){"
+"0","  0.25+0.75*(m/msat)"
+"0","}"

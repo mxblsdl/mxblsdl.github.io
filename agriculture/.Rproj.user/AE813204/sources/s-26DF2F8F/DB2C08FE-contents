@@ -1,0 +1,61 @@
+---
+title: "Wilderness Areas"
+output: html_document
+author: "Max Blasdel"
+---
+# Prepare data for wilderness leaflet map
+This is a simply way to take any shapefile, select the data of interest, and export it into a geojson format that can be read and displayed using the JavaScript library Leaflet.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(warning = F)
+# knitr::opts_chunk$set(eval = F)
+```
+
+```{r message=FALSE, warning=FALSE}
+require(sf) # for initial data manipulation
+require(tidyverse)
+require(geojsonio) # for use on spatial objects
+```
+
+Load wilderness files and remove unneeded data columns.
+```{r}
+wilderness<-read_sf("Wilderness_Areas", layer= "Wilderness_Areas_10.30.18") %>% 
+  select(-c(OBJECTID_1, URL, Comment, dateLastMo, WID, NAME_ABBRE, joinerID, CenterX, CenterY, Shape_Leng, Shape_Area, 
+            ImagePath, xmin, ymin, xmax, ymax))
+```
+
+Inspect the results
+```{r}
+head(wilderness)
+```
+
+Filter the data to include just Oregon and simplify the polygons. Some polygons are overly detailed and this leads to large file sizes and longer loading times. 
+```{r}
+# Select only Oregon areas
+or_wilderness<-wilderness %>% 
+  filter(STATE == 'OR')
+# Simplify the polygon edges. 
+or_wilderness<-st_simplify(or_wilderness, dTolerance = 2)
+```
+
+The data needs to be projected to geographic lat/long coordinates. This is required to use the data with different basemaps which are all in WGS 84. 
+```{r}
+# Project to WGS 84
+or_wilderness<-st_transform(or_wilderness, 4326) # 4326 is the EPSG code for WGS 84
+```
+
+The object needs to be converted to 'spatial' before it can be converted to a geojson. I use the sf package which I find much easier for manipulating spatial objects since it is compatible with dplyr functions. 
+```{r}
+# convert back to polygon object
+or_wilderness<-sf::as_Spatial(or_wilderness)
+
+# Convert to correct geojson format
+or_wilderness<-geojson_json(or_wilderness)
+```
+
+Write out the results. I have added a 'var' name so this geojson file can be read in JavaScript with the variable 'or_wilderness'. This eliminates the need to edit the object in a text editor program to further prepare the data.
+```{r eval=F}
+# This method writes with the var name so no need for further processing
+write_lines(paste("var or_wilderness = ",or_wilderness ), "wilderness/or_wilderness.geojson")
+```
