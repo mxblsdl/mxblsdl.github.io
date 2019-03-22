@@ -1,0 +1,48 @@
+
+```{r message=FALSE}
+library(rvest)
+library(dplyr)
+library(jsonlite)
+library(geojsonio)
+```
+
+```{r}
+arenas <- read_html("https://en.wikipedia.org/wiki/List_of_National_Basketball_Association_arenas")
+
+arenas <- html_node(arenas, "table")
+
+arenas <- html_table(arenas, header = T)
+
+arenas
+```
+
+```{r}
+arenas <- arenas %>% 
+  select(-c('Ref(s)', Image))
+```
+
+Write to disk.
+Open in Excel and add in locations of arenas
+```{r}
+#write.csv(arenas, "../data/arenas.csv")
+arenas <- read.csv("../data/arenas.csv", stringsAsFactors = F) %>% 
+  select(-X) %>% 
+  rename(Team = Team.s.)
+
+coordinates(arenas) <- ~lon+lat
+
+arenas_geojson <- geojsonio::geojson_json(arenas)
+```
+
+write to geojson
+```{r}
+writeLines(paste("var arenas_geo =", arenas_geojson), "../data/arena_geo.js")
+```
+
+Write to json
+```{r}
+arena_js <- toJSON(arenas, pretty = T) 
+arena_js
+writeLines(paste("var arenas = ", arena_js), "../data/arena.js")
+```
+
