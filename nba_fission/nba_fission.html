@@ -25,25 +25,31 @@
 <script type="text/javascript" src="data/arena_geo.js"></script>
 
 <style type="text/css">
+	body{
+		background-image: url("images/NBA court.jpg");
+	}
 	#map{
-		height: 550px;
-		width: 650px;
+		height: 500px;
+		width:auto;
 		justify-content: center;
 	}
 	#left{
-		width: 25%;
+		width: 22%;
 	}
 	#right{
-		width: 25%;
+		width: 22%;
 	}
 	#middle{
-		width: 50%;
+		width: 56%;
 	}
 	#title{
 		font-size: 80px;
 		font-family: impact;
 		font-weight: bolder;
 		background-image: 
+	}
+	.block{
+		display: block;
 	}
 </style>
 
@@ -69,6 +75,7 @@ document.getElementById("mainTable").appendChild(row);
 // TDs
 var data = document.createElement("TD");
 data.setAttribute("id", "left");
+// data.className = "left";
 document.getElementById("mainRow").appendChild(data);
 
 var data = document.createElement("TD");
@@ -113,16 +120,18 @@ for (var i = 0; i < 30; i++) {
 	
 	btn.innerHTML += "<i class='material-icons right'>keyboard_arrow_right</i>";
 	btn.appendChild(t);
-	btn.className = "waves-effect waves-light btn-small west right red";
+	btn.className = "waves-effect waves-light btn-small west red block right";
 	document.getElementById("left").appendChild(btn);
 	}
 	else{
 	btn.innerHTML += "<i class='material-icons left'>keyboard_arrow_left</i>";
 	btn.appendChild(t);
-	btn.className = "waves-effect waves-light btn-small east blue";
-	document.getElementById("right").appendChild(btn);	
+	btn.className = "waves-effect waves-light btn-small east blue block";
+	document.getElementById("right").appendChild(btn);
 	}
 }
+
+// Leaflet map
 var map = L.map('map',{
     // scrollWheelZoom:false,
     // zoomControl: false,
