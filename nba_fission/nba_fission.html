@@ -34,7 +34,7 @@
 		justify-content: center;
 	}
 	#left{
-		width: 22%;
+		/*width: 22%;*/
 	}
 	#right{
 		width: 22%;
@@ -48,8 +48,8 @@
 		font-weight: bolder;
 		background-image: 
 	}
-	.block{
-		display: block;
+	button{
+		width: 250px;
 	}
 </style>
 
@@ -75,7 +75,7 @@ document.getElementById("mainTable").appendChild(row);
 // TDs
 var data = document.createElement("TD");
 data.setAttribute("id", "left");
-// data.className = "left";
+// data.className = "right";
 document.getElementById("mainRow").appendChild(data);
 
 var data = document.createElement("TD");
@@ -120,13 +120,13 @@ for (var i = 0; i < 30; i++) {
 	
 	btn.innerHTML += "<i class='material-icons right'>keyboard_arrow_right</i>";
 	btn.appendChild(t);
-	btn.className = "waves-effect waves-light btn-small west red block right";
+	btn.className = "waves-effect waves-light btn-small west red right";
 	document.getElementById("left").appendChild(btn);
 	}
 	else{
 	btn.innerHTML += "<i class='material-icons left'>keyboard_arrow_left</i>";
 	btn.appendChild(t);
-	btn.className = "waves-effect waves-light btn-small east blue block";
+	btn.className = "waves-effect waves-light btn-small east blue left";
 	document.getElementById("right").appendChild(btn);
 	}
 }
