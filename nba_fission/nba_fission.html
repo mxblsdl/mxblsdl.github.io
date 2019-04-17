@@ -106,6 +106,16 @@ btn.className = "center btn"
 btn.innerHTML = "All Ball"
 document.getElementById("icon-change").appendChild(btn);
 
+// link to R code
+var btn = document.createElement("a");
+btn.setAttribute("id", "r-code");
+btn.className = "btn waves-light blue"
+btn.innerHTML = "Data Preparation with R"
+document.body.appendChild(btn);
+
+// add link
+document.getElementById("r-code").addEventListener('click', () => window.location = "R_code.html")
+
 var westernTeams = ['Dallas Mavericks', 'San Antonio Spurs', 'Oklahoma City Thunder', 'Memphis Grizzlies', 'Sacramento Kings', 'Portland Trail Blazers', 'Golden State Warriors', 'Denver Nuggets', 'New Orleans Pelicans', 'Los Angeles Clippers', 'Los Angeles Lakers', 'Phoenix Suns', 'Minnesota Timberwolves', 'Houston Rockets', 'Utah Jazz'];
 
 for (var i = 0; i < 30; i++) {
