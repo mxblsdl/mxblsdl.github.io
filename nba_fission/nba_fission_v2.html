@@ -25,28 +25,25 @@
 <script type="text/javascript" src="data/arena_geo.js"></script>
 
 <style type="text/css">
-	body{
-		background-image: url("images/NBA court.jpg");
-	}
 	#map{
-		height: 470px;
-		width:auto;
+		height: 550px;
+		width: 650px;
 		justify-content: center;
 	}
+	#left{
+		width: 25%;
+	}
 	#right{
-		width: 22%;
+		width: 25%;
 	}
 	#middle{
-		width: 56%;
+		width: 50%;
 	}
 	#title{
 		font-size: 80px;
 		font-family: impact;
 		font-weight: bolder;
 		background-image: 
-	}
-	button{
-		width: 250px;
 	}
 </style>
 
@@ -62,30 +59,34 @@ title.innerHTML = "NBA Arenas";
 title.className = "center"
 document.body.appendChild(title);
 
-var table = document.createElement("TABLE");
-table.setAttribute("id", "mainTable");
-document.body.appendChild(table);
+// var table = document.createElement("TABLE");
+// table.setAttribute("id", "mainTable");
+// document.body.appendChild(table);
 
-var row = document.createElement("TR");
+var row = document.createElement("DIV");
 row.setAttribute("id", "mainRow");
-document.getElementById("mainTable").appendChild(row);
+row.className = "row"
+document.body.appendChild(row);
 // TDs
-var data = document.createElement("TD");
+var data = document.createElement("DIV");
 data.setAttribute("id", "left");
-// data.className = "right";
+data.className = "col s2"
 document.getElementById("mainRow").appendChild(data);
 
-var data = document.createElement("TD");
-data.setAttribute("id", "middle");
+var data = document.createElement("DIV");
+data.setAttribute("id", "map");
+data.className = "col s8"
 document.getElementById("mainRow").appendChild(data);
 
-var data = document.createElement("TD");
+var data = document.createElement("DIV");
 data.setAttribute("id", "right");
+data.className = "col s2"
 document.getElementById("mainRow").appendChild(data);
+
 // Div for map
-var div = document.createElement("DIV");
-div.setAttribute("id", "map");
-document.getElementById("middle").appendChild(div);
+// var div = document.createElement("DIV");
+// div.setAttribute("id", "map");
+// document.getElementById("middle").appendChild(div);
 
 var div = document.createElement("DIV");
 div.setAttribute("id", "icon-change");
@@ -111,24 +112,26 @@ var westernTeams = ['Dallas Mavericks', 'San Antonio Spurs', 'Oklahoma City Thun
 for (var i = 0; i < 30; i++) {
 	var t = document.createTextNode(arenas_geo.features[i].properties.Team);
 	var btn = document.createElement("BUTTON");
+	var brk = document.createElement("br");
 	btn.setAttribute("id", i);
+	btn.className = "block";
 	// Check for western vs eastern conference team
 	if (westernTeams.indexOf(t.data) != -1 ){
 	
 	btn.innerHTML += "<i class='material-icons right'>keyboard_arrow_right</i>";
 	btn.appendChild(t);
-	btn.className = "waves-effect waves-light btn-small west red right";
+	btn.className += "waves-effect waves-light btn-small west right red";
 	document.getElementById("left").appendChild(btn);
+	document.getElementById("left").appendChild(brk);
 	}
 	else{
 	btn.innerHTML += "<i class='material-icons left'>keyboard_arrow_left</i>";
 	btn.appendChild(t);
-	btn.className = "waves-effect waves-light btn-small east blue left";
-	document.getElementById("right").appendChild(btn);
+	btn.className += "waves-effect waves-light btn-small east blue";
+	document.getElementById("right").appendChild(btn);	
+	document.getElementById("right").appendChild(brk);
 	}
 }
-
-// Leaflet map
 var map = L.map('map',{
     // scrollWheelZoom:false,
     // zoomControl: false,
