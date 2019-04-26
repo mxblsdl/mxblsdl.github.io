@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>	 
+
 <!-- Loading Materialize at end of script for optimized loading -->
 <script type="text/javascript" src="../materialize/js/materialize.min.js"></script>
 
@@ -11,6 +12,10 @@
 <link type="text/css" rel="stylesheet" href="../materialize/css/materialize.css"  media="screen,projection"/>
 <!-- Load mxblsdl styles -->
  <link rel="stylesheet" type="text/css" href="../css/mxblsdl.css">
+
+ <!-- d3 -->
+ <script type="text/javascript" src="../nba_fission/js/d3.min.js"></script>
+
 <style type="text/css">
 	.block{
 		height: 700px;
@@ -18,18 +23,19 @@
 	}
 	#one{
 		background-color: #e8eaf6;
+		background-image: url('../nba_fission/images/NBA court.jpg');
 	}
 	#two{
 		background-color: #ce93d8;
 	}
 	#three{
-		background-color: 
+		/*background-color: */
 	}
 	#four{
 		background-color: #D81B60;
 	}
 	#five{
-		background-color: 
+		/*background-color: */
 	}
 	.bottomMenu {
 		position: fixed;
@@ -39,6 +45,10 @@
 	}	
 </style>
 
+<script type="text/javascript">
+window.history.pushState({"html":'<html></html>',"pageTitle":'this is my title'},"", 'http://mxblsdel.github.io');
+	
+</script>
 </head>
 <!-- Header -->
 <body>
@@ -53,8 +63,8 @@
       <a href="../index.html" class="brand-logo left grey-text lighten-5-text"><i class="material-icons right">map</i>&nbsp;mxblsdl</a>
       <ul class="right hide-on-med-and-down">
         <li><a class=" tooltipped grey-text lighten-5-text" data-position="bottom" data-tooltip="About Me" href="#"><i class="material-icons">contacts</i></a></li>
-        <li class="active"><a class="tooltipped grey-text lighten-5-text" data-position="bottom" data-tooltip="Resume and Work" href="#"><i class="material-icons">work</i></a></li>
-        <li><a class="tooltipped grey-text lighten-5-text" data-position="bottom" data-tooltip="Projects" href="#"><i class="material-icons">build</i></a></li>
+        <li><a class="tooltipped grey-text lighten-5-text" data-position="bottom" data-tooltip="Resume and Work" href="#"><i class="material-icons">work</i></a></li>
+        <li class="active"><a class="tooltipped grey-text lighten-5-text" data-position="bottom" data-tooltip="Projects" href="#"><i class="material-icons">build</i></a></li>
       </ul>
       <ul class="right hide-on-large-only">
         <li><a href="#!" class="dropdown-trigger" data-target="dropdown1"><i class="material-icons black-text">view_headline</i></a></li>
@@ -64,9 +74,17 @@
 <!-- END -->
 
 <!-- Content Blocks -->
+<div class="row header">
+	<div class="col s12 center">
+		<h4>Projects</h4>
+		<span>Both personal and professionally</span>
+	</div>
+</div>
+
+<!-- NBA map -->
 <div class="row  block valign-wrapper" id="one">
-	<div class="col s12 scale-transition scale-in con" id="one-sub">
-		<div class="col s4 valign right">
+	<div class="col s12 scale-transition scale-out con" id="one-sub">
+		<div class="col offset-s6 valign">
 			<h5>
 				NBA Arenas Map <a href="../nba_fission/nba_fission.html" class="btn-floating"><i class=" material-icons">keyboard_arrow_right</i></a>
 			</h5>
@@ -76,13 +94,17 @@
 				<a href="#" id="git" class="btn-floating"><i class="material-icons">keyboard_arrow_down</i></a>
 			</div>
 		</div>
+		<div class="col s4 right">
+			<img src="../nba_fission/images/basketball.png" style="height: 350px;">
+		</div>
 	</div>
 </div>
 
+<!-- Agriculture of CA map -->
 <div class="row  block valign-wrapper" id="two">
 	<div class="col s12 scale-transition scale-out con" id="two-sub">
 		<div class="col s4 valign">
-			<h5>Content</h5>
+			<h5>Agriculture of California <a href="ag.html" class="btn-floating"><i class="material-icons">keyboard_arrow_left</i></a></h5>
 			<div>More content</div>
 		</div>
 	</div>
@@ -118,6 +140,10 @@
 </footer>
 </div>
 <script type="text/javascript">
+d3.select("#one-sub")
+		.style("backgroundImage", "url(../nba_fission/images/NBA court.jpg)");
+
+
 document.addEventListener('DOMContentLoaded', function() {
   var elems = document.querySelectorAll('.dropdown-trigger');
   var instances = M.Dropdown.init(elems,{
@@ -139,14 +165,13 @@ document.getElementById("git").addEventListener('click', function() {
 })
 
 // Function to scale footer in and out
-myID = document.getElementById("foot");
-var myScrollFunc = function() {
+const myScrollFunc = () => {
   var y = window.scrollY;
 // Set percentage of total document height
   var x = document.body.clientHeight * .7;
-
+	myID = document.getElementById("foot");
   if (y >= x) {
-  	myID.className = "scale-transition scale-in bottomMenu"
+  	myID.className = "scale-transition-slow scale-in bottomMenu"
   } else {
   	myID.className = "scale-transition scale-out bottomMenu"
   }
