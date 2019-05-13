@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Rip City Radio</title>
+	<!-- Leaflet Css -->
+    <link rel="stylesheet" href="../js/leaflet.css">
+	<!-- Leaflet package -->
+     <script src="../js/leaflet.js"></script>
+    <!-- Package for basemaps  -->
+    <script src="../js/leaflet-providers.js"></script>
+
+<script type="text/javascript" src="../data/or_radio.geojson"></script>
+
+<!-- Loading Materialize at end of script for optimized loading -->
+<script type="text/javascript" src="../materialize/js/materialize.min.js"></script>
+
+<!-- Load Materialize and font awesome -->
+ <!--Import Google Icon Font-->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+<link type="text/css" rel="stylesheet" href="../materialize/css/materialize.css"  media="screen,projection"/>
+
+<style>
+@import url(https://fonts.googleapis.com/css?family=Candal);
+html, body {
+	height: 100%;
+	margin: 0;
+	/*background-image: linear-gradient(grey, black);*/
+}
+#map {
+	width: 1200px;
+	height: 700px;
+}
+.rip-city{
+  padding-left: 50px;
+  position: relative;
+  font-family: 'Candal', sans-serif;
+  font-size: 100px;
+  font-style: italic;
+  color: #fff;
+  text-shadow:-5px 5px 0px #000000, -10px 10px 0px #ed2121;
+  margin: 0;
+  -webkit-text-stroke: 2px black;
+}
+.sub-head{
+	font-size: 40px;
+}
+.leaflet-popup-content-wrapper{
+	background-image: url("../images/ripcity.png");
+	text-shadow: 1px 1px 0 white, -1px -1px 0 white;
+	padding-left: 5px;
+	wi
+}
+
+</style>
+</head>
+<body class="grey">
+
+<div class="container">
+	<div class="row">
+		<div class="col s12">
+			<div class="rip-city center">BLAZERS NATION</div>
+			<h2 class="rip-city sub-head center">Rip City Radio Coverage</h2>
+		</div>
+	</div>
+	<div class="row">
+		<div id='map'></div>
+	</div>
+	<!-- Cards describing process of making map -->
+	<div class="row">
+		<div class="col s8 offset-s2">
+			<div class="card blue-grey">
+				<div class="card-content white-text">
+					<span class="card-title">Radio Coverage Map</span>
+					<p>Recreating a Carto map showing Portland Trailblazers radio coverage</p>
+				</div>
+				<div class="card-action">
+					<a>Link to Official Map</a>
+					<a target="_blank" href="https://www.nba.com/blazers/radio-broadcasting-map"><i class="material-icons">link</i></a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- next step -->
+	<div class="row">
+		<div class="col s8 offset-s2">
+			<div class="card blue-grey">
+				<div class="card-content white-text">
+					<span class="card-title">Get Data</span>
+					<p>Carto makes their data available in GeoJSON format<br>
+					The first step was downloading the data which has the locations of each radio station that broadcasts</p>
+				</div>
+				<div class="card-action">
+					<a>Data Source or API</a>
+					<a target="_blank" href="https://trailblazers.carto.com/tables/affiliates/public"><i class="material-icons">link</i></a>
+				</div>
+			</div>
+		</div>
+	</div>
+<!-- next step -->
+	<div class="row">
+		<div class="col s8 offset-s2">
+			<div class="card blue-grey">
+				<div class="card-image">
+					<img src="../images/stepOne.png">
+					<span class="card-title">Initial Plot</span>
+				</div>
+				<div class="card-content white-text">
+					<p>The basemap for the Carto map is recognizable as the Stamen Toner Map. Plotting the GeoJSON on top gives a start to the map</p>
+				</div>
+				<div class="card-action">
+					<a>Stamen Maps</a>
+					<a target="_blank" href="http://maps.stamen.com/#toner"><i class="material-icons">link</i></a>
+				</div>
+			</div>
+		</div>
+	</div>
+<!-- Next step -->
+<!-- next step -->
+	<div class="row">
+		<div class="col s8 offset-s2">
+			<div class="card blue-grey">
+				<div class="card-image">
+					<img src="../images/stepTwo.png">
+					<span class="card-title">Second Plot</span>
+				</div>
+				<div class="card-content white-text">
+					<p>Convert the points of the radio stations to circles and then vary their radius to get the desired coverage. Carto did not have any attribute to show radius so this was a lot of iterations to get the desired outcome.</p>
+				</div>
+				<div class="card-action">
+					<a>Finished Map</a>
+					<a href="#map"><i class="material-icons">keyboard_arrow_up</i></a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+<!-- TODO decide on universal back button -->
+	<div class="left section">
+		<a href="projects.html" class="btn-floating red waves-light"><i class="material-icons">arrow_back</i></a>
+	</div>
+<!-- Scripts need to go below the div for loading order -->
+<script type="text/javascript">
+// The main map that everythings is added to 
+var map = L.map('map',{
+	minZoom: 6,
+	maxZoom:10,
+	scrollWheelZoom:false // Changes if wheel can zoom or not
+}).setView([44.5, -122], 7);
+
+// Adds the base map with the designated tile name
+// This sets a default basemap while the layer controls allow this to be changed
+L.tileLayer.provider('Stamen.Toner').addTo(map);
+
+// Add the geojson and convert to circles
+L.geoJson(or_radio,{
+	pointToLayer: function (feature, latlng){
+		return new L.circle(latlng,
+		{radius: getRadius(feature.properties.name), // apply options for coloring
+			fillColor: "#CC0001",
+			color: "#CC0001",
+			weight: 2,
+			opacity: 1,
+			fillOpacity: 0.7
+			})},
+	onEachFeature: onEachFeature,
+}).addTo(map);
+
+// This is one method where each radius is set individually. 
+// The circle markers change size depending on the zoom level, which I don't want.
+function getRadius(name){
+	switch (name){
+		case 'KLOO': return 40000; // Corvallis / Albany
+		case 'KBKR': return 24000; // Baker City
+		case 'KBND': return 25000; // Bend
+		case 'KURY': return 7000; // Brookings
+		case 'KHSN': return 30000; // Coos Bay
+		// case 'KORE': return 5000;
+		// case 'KHKO': return 5000;
+		case 'KRJW': return 30000; // Lakeview
+		case 'KLBM': return 24000; // La Grande
+		case 'KPOJ': return 60000; // Portland
+		case 'KBCH': return 24000; // Lincoln City
+		case 'KLOG': return 24000; // Longview
+		case 'KEZX': return 24000; // Medford
+		case 'KNPT': return 24000; // Newport
+		case 'KTIX': return 24000; // Pendelton
+		case 'KRCO': return 20000; // Prineville
+		case 'KSKR': return 20000; // Roseburg
+		case 'KODL': return 30000; // The Dalles
+		case 'KTIL': return 24000; // Pacific City
+		case 'KWDP': return 7000; // Waldport
+		case 'KJDY': return 20000; // John Day
+		case 'KLZS': return 20000; // South Corvallis
+		// default: return 10000; //Used to determine which call signs were missing
+	}
+}
+
+// Function to control the popup box content.
+// feature.properties.!Name of property!
+function onEachFeature(feature, layer) {
+    if (feature.properties.name == "KPOJ"){
+    var popupContent = "<h6>" +feature.properties.name+ " RIP CITY!</h6>";
+}
+	else{var popupContent = "<h6>" +feature.properties.name+ "</h6>";}
+    // does this feature have a property named popupContent?
+    if (feature.properties && feature.properties.popupContent) {
+        popupContent += feature.properties.popupContent;
+    }
+    layer.bindPopup(popupContent);
+}
+
+// Function for smooth scolling based on # anchor tags
+let anchorlinks = document.querySelectorAll('a[href^="#"]')
+ 
+for (let item of anchorlinks) { // relitere 
+    item.addEventListener('click', (e)=> {
+        let hashval = item.getAttribute('href')
+        let target = document.querySelector(hashval)
+        target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        })
+        history.pushState(null, null, null)
+        e.preventDefault()
+    })
+}
+// Adding a label for custom point markers
+// var marker = new L.marker([45.5 , -120], {opacity:0});
+// marker.bindTooltip("Oregon Wilderness", {permanent:true, className: "label", offset:[100,0]});
+// marker.addTo(map);
+
+</script>
+
+</body>
+</html>

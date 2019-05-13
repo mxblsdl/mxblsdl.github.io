@@ -66,27 +66,16 @@ a.foot:hover{
 #pulseBtn, #sliders, #disclaim{
 	display: none;
 }
+#decay-tools-wrapper{
+	display: none;
+}
 </style>
 </head>
 <body>
 <div class="cbrec-container">
-<div class="navbar-fixed">
-    <nav>
-      <div class="nav-wrapper">
-        <span class="brand-logo center">Development Version</span>
-      </div>
-    </nav>
-  </div>
-    
-<!--  <div class="col s1">
-    <a href="../urls/tool.html" class="btn-floating"><i class="large material-icons">arrow_back</i></a>
-    <div>
-    Return to main page
-	</div>
-</div> -->
 
 <div class="center section">
-	<h2>C-BREC Agricultural Modeling Tool</h2>
+	<h2>Agricultural Modeling Tool</h2>
 	<div class="container">
 		<div class="progress">
 			<div class="determinate" style="width: 50%"></div>
@@ -95,12 +84,12 @@ a.foot:hover{
 </div>
 	<ul class="collapsible">
         <li>
-          <div class="collapsible-header"><i class="material-icons">question_answer</i>Instructions</div>
-          <div class="collapsible-body"><span>Agricultural residue base estimates were derived from earlier work by the California Biomass Collaborative. We focus our analysis on the eight crops that dominate agricultural residue production in California: rice, grapes, almonds, corn, wheat, cotton, and walnuts. Together, these eight crops comprise over 80% of the estimated technically available annual mass of residues in the state. This project does not consider food processing residues as it is assumed the majority of these residues have existing market pathways</span></div>
+          <div class="collapsible-header"><i class="material-icons">question_answer</i>Background</div>
+          <div class="collapsible-body"><span>Agricultural residue base estimates were derived from work by the California Biomass Collaborative. We focus on the eight crops that dominate agricultural residue production in California: rice, grapes, almonds, corn, wheat, cotton, and walnuts. Together, these eight crops comprise over 80% of the estimated technically available annual mass of residues in the state.</span></div>
         </li>
         <li>
           <div class="collapsible-header"><i class="material-icons">map</i>Interactive Map</div>
-          <div class="collapsible-body">Click on a county on the map to display the agricultural resource base. Below displays a line chart showing the modeled decay over 100 years. The decay values can be varied in this development version.</div>
+          <div class="collapsible-body">Click on a county on the map to display the agricultural resource base. Below displays a line chart showing the modeled decay over 100 years. The decay values can be varied in this version.</div>
         </li>
       </ul>
 <div class="row">
@@ -111,6 +100,8 @@ a.foot:hover{
 	</div>
 </div>
 
+<div id="decay-tools-wrapper">
+	
 <div class="row" id="disclaim">
 	<div class="col s10 offset-s1">
 		<h6>The graph below shows the decay of ag residues over time. This assumes all residues decay along a negative exponential curve and that they emit only carbon dioxide. Carbon content of the materials is set at 50%. The slider shows the decay rate of the different crops. These are dummy values and more meant to illustrate how a negative exponential effects the persistance of a material over time.</h6>
@@ -222,18 +213,36 @@ a.foot:hover{
 				<span>Cotton</span>
 			</div>
 	</div>
+</div>
 
 </div>
+
 </div>
+	<div class="left section">
+		<a href="projects.html" class="btn-floating red waves-light"><i class="material-icons">arrow_back</i></a>
+	</div>
+</div>
+
 <!-- Scripts need to go below the div for loading order -->
 <script type="text/javascript">
-var agValues = [];
-var decayRates = [];
-var agData;
+//<!-- Helper Functions -->
+ // Arrow functions are shorthand for functions. This defines the function sum()
+const sum = (r, a) => r.map((b, i) => a[i] + b);
+// Range Function
+const range = (start, end) => {
+	ans= [];
+	for (i = start; i <= end ; i++){
+		ans.push(i);//push sequence to new array. Don't name it range as that writes over this function
+	}
+	return(ans);
+}
+// Sum function for if then test
+const getSum = (total, num) => total + num;
+
 var TheBarChart = null;
 var TheLineChart = null;
 
-function loadDecay(){
+const loadDecay = () => {
 	decayRates = [];
 for (i = 0; i < 7; i ++){
 	if (i == 0) {crop = "corn"};
@@ -312,7 +321,6 @@ function onEachFeature(feature, layer) {
     	mouseout: resetHighlight
     });
 }
- 
  // Creating a data set of values based on user clicks
  function onClick(e){
  	document.getElementById("countyName").innerHTML = e.layer.feature.properties.County;
@@ -322,6 +330,7 @@ function onEachFeature(feature, layer) {
  	document.getElementById("pulseBtn").style.display = "block";
  	// show disclaimer
  	document.getElementById("disclaim").style.display = "block";
+ 	document.getElementById("decay-tools-wrapper").style.display = "block";
  	// Get decay rates
  	loadDecay();
  	// Calculate how much ag crops in clicked county
@@ -357,82 +366,82 @@ function resetHighlight(e) {
 // **************************************************************************************************
 // ********************* Adding some chart js code WILL BE MOVED TO SEPERATE JS FILE	*************
 function DisplayChart(Buckets, county){
-if (Buckets.reduce(getSum) == 0){
-	if (TheBarChart != null){
-	TheBarChart.destroy(); // destroy the chart 
-	TheBarChart = null; // reset the chart to null
-	}
-	M.toast({html: "No Data For Selected County"})
-	// document.getElementById("noData").innerHTML = "<div class='valign-wrapper'><div class='valign'><h5 class='center-align'>No Data for Selected County</h5></div></div>";
-}
-else{
-var Color="rgba(66, 134, 244,.8)";
-	var TheBarChartData={
-		type: 'bar',
-		data: {
-			labels : ["Corn", "Rice", "Wheat", "Almond", "Grapes", "Walnut", "Cotton"],
-			datasets : [{
-				data : Buckets,
-				borderColor : Color,
-				backgroundColor: [
-                'rgba(230, 235, 26, 0.5)', // Corn
-				'rgba(75, 221, 74, 0.5)', // Rice
-				'rgba(245, 222, 179, 0.5)', // Wheat
-				'rgba(217, 201, 184, 0.5)', // Almond
-				'rgba(159, 124, 221, 0.5)', // Grape
-				'rgba(92, 82, 72, 0.5)', // Walnut
-				'rgba(199, 198, 200, 0.5)'], // Cotton
-            },
-                ],
-		},
-		options:{
-			tooltips:{
-				callbacks:{
-					label: function(tooltipItem, data) {
-					    var value = data.datasets[0].data[tooltipItem.index];// This fixes the issue with lots of decimal places on really small values.
-						value = value.toString();
-						value = value.split(/(?=(?:...)*$)/);
-						value = value.join(',');
-						return value;
-					}
-				}
-			},
-		    title:{
-		        display:true,
-		        text:'Current Estimate of Resources for ' + county
-		    },
-			scales:{
-				xAxes:[{
-					scaleLabel:{
-						display:true,
-						labelString:'Crop Type'
-					}
-				}],
-				yAxes:[{
-					scaleLabel:{
-						display:true,
-						labelString:'Amount of Residues (BDT)'
-					},
-				ticks:{
-					beginAtZero:true,
-					 userCallback: function(value, index, values) {
-					    value = Math.round(value);// This fixes the issue with lots of decimal places on really small values.
-						value = value.toString();
-						value = value.split(/(?=(?:...)*$)/);
-						value = value.join(',');
-						return value;
-    			}
-				}}]
-			}
-			}
+	if (Buckets.reduce(getSum) == 0){
+		if (TheBarChart != null){
+		TheBarChart.destroy(); // destroy the chart 
+		TheBarChart = null; // reset the chart to null
 		}
-	Chart.defaults.global.legend.display = false;
-	var TheChartCanvas=document.getElementById("barchartAg");
-	var TheContext=TheChartCanvas.getContext("2d");
-	if (TheBarChart!=null) TheBarChart.destroy(); // update has issues with multiple charts on top of each other.
-	TheBarChart=new Chart(TheContext,TheBarChartData);
+		M.toast({html: "No Data For Selected County"})
+		// document.getElementById("noData").innerHTML = "<div class='valign-wrapper'><div class='valign'><h5 class='center-align'>No Data for Selected County</h5></div></div>";
 	}
+	else{
+	var Color="rgba(66, 134, 244,.8)";
+		var TheBarChartData={
+			type: 'bar',
+			data: {
+				labels : ["Corn", "Rice", "Wheat", "Almond", "Grapes", "Walnut", "Cotton"],
+				datasets : [{
+					data : Buckets,
+					borderColor : Color,
+					backgroundColor: [
+	                'rgba(230, 235, 26, 0.5)', // Corn
+					'rgba(75, 221, 74, 0.5)', // Rice
+					'rgba(245, 222, 179, 0.5)', // Wheat
+					'rgba(217, 201, 184, 0.5)', // Almond
+					'rgba(159, 124, 221, 0.5)', // Grape
+					'rgba(92, 82, 72, 0.5)', // Walnut
+					'rgba(199, 198, 200, 0.5)'], // Cotton
+	            },
+	                ],
+			},
+			options:{
+				tooltips:{
+					callbacks:{
+						label: function(tooltipItem, data) {
+						    var value = data.datasets[0].data[tooltipItem.index];// This fixes the issue with lots of decimal places on really small values.
+							value = value.toString();
+							value = value.split(/(?=(?:...)*$)/);
+							value = value.join(',');
+							return value;
+						}
+					}
+				},
+			    title:{
+			        display:true,
+			        text:'Current Estimate of Resources for ' + county
+			    },
+				scales:{
+					xAxes:[{
+						scaleLabel:{
+							display:true,
+							labelString:'Crop Type'
+						}
+					}],
+					yAxes:[{
+						scaleLabel:{
+							display:true,
+							labelString:'Amount of Residues (BDT)'
+						},
+					ticks:{
+						beginAtZero:true,
+						 userCallback: function(value, index, values) {
+						    value = Math.round(value);// This fixes the issue with lots of decimal places on really small values.
+							value = value.toString();
+							value = value.split(/(?=(?:...)*$)/);
+							value = value.join(',');
+							return value;
+	    			}
+					}}]
+				}
+				}
+			}
+		Chart.defaults.global.legend.display = false;
+		let TheContext=document.getElementById("barchartAg").getContext("2d");
+		if (TheBarChart!=null) TheBarChart.destroy(); // update has issues with multiple charts on top of each other.
+		TheBarChart=new Chart(TheContext,TheBarChartData);
+		}
 }
+
 function lineChart(Buckets){
 	// These will be changed with a slider widget.
 	if (Buckets.reduce(getSum) == 0){
@@ -460,9 +469,6 @@ function lineChart(Buckets){
 	carbonToCarbonDioxide = 44/12;
 
 // I want to sum the crops for every year. This is a sum of a matrix horizontally
-// Arrow functions are shorthand for functions. This defines the function sum()
-	var sum = (r, a) => r.map((b, i) => a[i] + b);
-
 // Create array of sum of decomp arrays on each step
 	var annualAg = decomp.reduce(sum);
 
@@ -581,15 +587,6 @@ function lineChart(Buckets){
                 }],
 		},
 		options:{
-			// tooltips: {
-			// 	callbacks:{
-			// 		label: function(tooltipItem, data) {
-			// 			var value = data.datasets[0].data[tooltipItem.index];
-			// 			value = Math.round(value);
-			// 			return value;
-			// 		}
-			// 	}
-			// },
 			responsive:true,
 			maintainAspectRatio: true,
 		    title:{
@@ -634,7 +631,7 @@ function lineChart(Buckets){
 				position:'right',
 				scaleLabel:{
 				    display:'true',
-				    labelString:'Lifetime CO2 Emissions'
+				    labelString:'Lifetime CO2 Emissions (T)'
 				},
 				ticks:{
 				    beginAtZero:true,
@@ -651,31 +648,17 @@ function lineChart(Buckets){
 			}
 			}
 		}
+	
 	Chart.defaults.global.defaultFontSize=14;	
 	Chart.defaults.global.legend.labels.usePointStyle=true;	
 	Chart.defaults.global.legend.display = true;
-	var TheChartCanvas=document.getElementById("linechart");
-	var TheContext=TheChartCanvas.getContext("2d");
+	
+	let TheContext=document.getElementById("linechart").getContext("2d");
 	if (TheLineChart!=null) TheLineChart.destroy();
 	TheLineChart=new Chart(TheContext,TheLineChartData);
-	// alert(TheLineChartData.data.datasets[2].data); //gets at the data for the chart
 	}
 }	
 
-// Taking a stab at writing a range function
-function range(start, end){
-	ans= [];
-	for (i = start; i <= end ; i++){
-		ans.push(i);//push sequence to new array. Don't name it range as that writes over this function
-	}
-	return(ans);
-}
-// Sum function for if then test
- function getSum(total, num) {
-    return total + num;
-}
-// Arrow functions are shorthand for functions. This defines the function sum()
-	sum = (r, a) => r.map((b, i) => a[i] + b);
 // This may be able to be shortened but it does work
 // Oninput passes value of slider and crop id. Need to add table of id <-> order
 function updateDecay(val, id){
@@ -732,7 +715,8 @@ function showDecay(val){
 	document.getElementById("Grape").innerHTML = -val[4];
 	document.getElementById("Walnut").innerHTML = -val[5];
 	document.getElementById("Cotton").innerHTML = -val[6];
-}
+};
+
 window.onload = function() {
         var elems  = document.querySelectorAll("input[type=range]");
         M.Range.init(elems);

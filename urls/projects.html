@@ -14,28 +14,28 @@
  <link rel="stylesheet" type="text/css" href="../css/mxblsdl.css">
 
  <!-- d3 -->
- <script type="text/javascript" src="../nba_fission/js/d3.min.js"></script>
+<script type="text/javascript" src="../js/d3.min.js"></script>
 
 <style type="text/css">
 	.block{
-		height: 700px;
+		height: 720px;
 		width: 100%;
 	}
 	#one{
-		background-color: #e8eaf6;
 		background-image: url('../nba_fission/images/NBA court.jpg');
+		background-color: #fbb4ae;
 	}
 	#two{
-		background-color: #ce93d8;
+		background-color: #b3cde3;
 	}
 	#three{
-		/*background-color: */
+		background-color: #ccebc5;
 	}
 	#four{
-		background-color: #D81B60;
+		background-color: #decbe4;
 	}
 	#five{
-		/*background-color: */
+		background-color: #ffffcc;
 	}
 	.bottomMenu {
 		position: fixed;
@@ -43,16 +43,28 @@
 		width: 100%;
 		height: 60px;
 	}	
+	#nba-text{
+		padding: 10px;
+		border-radius: 10px;
+	}
+	.profess{
+		height: 720px;
+		opacity: 1;
+	}
+	.personal{
+		height: 0px;
+		opacity: 0;
+	}
+	.clicked{
+		border: 1px black solid;
+	}
 </style>
 
-<script type="text/javascript">
-window.history.pushState({"html":'<html></html>',"pageTitle":'this is my title'},"", 'http://mxblsdel.github.io');
-	
-</script>
 </head>
 <!-- Header -->
 <body>
 <div class="grey lighten-1">
+
 <ul id="dropdown1" class="dropdown-content">
     <li><a class="black-text" href="about.html">About</a></li>
     <li><a class="black-text" href="#">Resume</a></li>
@@ -77,14 +89,22 @@ window.history.pushState({"html":'<html></html>',"pageTitle":'this is my title'}
 <div class="row header">
 	<div class="col s12 center">
 		<h4>Projects</h4>
-		<span>Both personal and professionally</span>
+	<div class="row">
+		<div class="col s4 offset-s2">
+			<!-- need to add a clicked class to buttons -->
+			<div class="btn waves-effect waves-light clicked" id="professional-divs">Professional</div>
+		</div>
+		<div class="col s4">
+			<div class="btn waves-effect waves-light" id="personal-divs">Personal</div>
+		</div>
+	</div>
 	</div>
 </div>
 
 <!-- NBA map -->
-<div class="row  block valign-wrapper" id="one">
+<div class="row block valign-wrapper personal" id="one">
 	<div class="col s12 scale-transition scale-out con" id="one-sub">
-		<div class="col offset-s6 valign">
+		<div class="col offset-s6 valign brown lighten-4" id="nba-text">
 			<h5>
 				NBA Arenas Map <a href="../nba_fission/nba_fission.html" class="btn-floating"><i class=" material-icons">keyboard_arrow_right</i></a>
 			</h5>
@@ -93,40 +113,83 @@ window.history.pushState({"html":'<html></html>',"pageTitle":'this is my title'}
 				Check the Code
 				<a href="#" id="git" class="btn-floating"><i class="material-icons">keyboard_arrow_down</i></a>
 			</div>
-		</div>
 		<div class="col s4 right">
-			<img src="../nba_fission/images/basketball.png" style="height: 350px;">
+			<img src="../nba_fission/images/basketball.png" style="height: 300px;">
+		</div>
 		</div>
 	</div>
 </div>
 
 <!-- Agriculture of CA map -->
-<div class="row  block valign-wrapper" id="two">
+<div class="row  block valign-wrapper profess" id="two">
 	<div class="col s12 scale-transition scale-out con" id="two-sub">
 		<div class="col s4 valign">
 			<h5>Agriculture of California <a href="ag.html" class="btn-floating"><i class="material-icons">keyboard_arrow_left</i></a></h5>
-			<div>More content</div>
+			<div>Interactive map of California Counties and agricultural residues<br>Made with leaflet and Chart.js</div>
 		</div>
 	</div>
 </div>
 
-<div class="row  block valign-wrapper" id="three">
+<!-- NBA stats -->
+<div class="row  block valign-wrapper personal" id="three">
 	<div class="col s12 scale-transition scale-out con" id="three-sub">
 		<div class="col s4 valign right">
-			<h5>Content</h5>
-			<div>More content</div>
-		</div>
-	</div>
-</div>
-<div class="row  block valign-wrapper" id="four">
-	<div class="col s12 scale-transition scale-out con" id="four-sub">
-		<div class="col s4 valign">
-			<h5>Content</h5>
-			<div>More content</div>
+			<h5>NBA Stats Graph
+			<a href="nba_stats.html" class="btn-floating"><i class="material-icons">keyboard_arrow_right</i></a>
+			</h5>
+			<div>Made with Chart.js and some simple web scraping with R</div>
 		</div>
 	</div>
 </div>
 
+<!-- India Emissions -->
+<div class="row block valign-wrapper profess" id="four">
+	<div class="col s12 scale-transition scale-out con" id="four-sub">
+		<div class="col s4 valign right">
+			<h5>India Emissions Mapping</h5>
+			<a class="btn-floating in-progress"><i class="material-icons">keyboard_arrow_right</i></a>
+			<div>Mapview Maps and creating buffers with R</div>
+		</div>
+	</div>
+</div>
+
+<!-- Raster manipulation for thesis climate work -->
+<div class="row block valign-wrapper profess" id="five">
+	<div class="col s12 scale-transition scale-out con" id="five-sub">
+		<div class="col s4 valign">
+			<h5>Raster Manipulation</h5>
+				<a class="btn-floating in-progress"><i class="material-icons">keyboard_arrow_right</i></a>
+			<div>Using R for analysis of Raster data</div>
+		</div>
+	</div>
+</div>
+
+<!-- Raster manipulation for thesis climate work -->
+<div class="row block valign-wrapper profess" id="six">
+	<div class="col s12 scale-transition scale-out con" id="six-sub">
+		<div class="col s4 valign right">
+			<h5>Clipping and projecting Rasters</h5>
+				<a class="btn-floating in-progress"><i class="material-icons">keyboard_arrow_right</i></a>
+			<div>Using R for analysis of Raster data</div>
+		</div>
+	</div>
+</div>
+
+<!-- Rip City Radio -->
+<div class="row block valign-wrapper personal" id="seven">
+	<div class="col s12 scale-transition scale-out con" id="seven-sub">
+		<div class="col s4 valign right">
+			<h5>Stylized State Map</h5>
+				<a href="or_radio.html" class="btn-floating"><i class="material-icons">keyboard_arrow_right</i></a>
+			<div>Recreating a Carto Web Map</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+<!-- footer currently only links to linkedin -->
 <div class="scale-transition scale-out bottomMenu" id="foot">
 <footer class="page-footer blue-grey darken-1">
 	<div class="footer-copyright">
@@ -140,9 +203,28 @@ window.history.pushState({"html":'<html></html>',"pageTitle":'this is my title'}
 </footer>
 </div>
 <script type="text/javascript">
-d3.select("#one-sub")
-		.style("backgroundImage", "url(../nba_fission/images/NBA court.jpg)");
-
+	d3.select("#professional-divs").on('click', () => {
+		d3.selectAll('.profess').transition().duration(2000).style("height", 720 + 'px')
+		.style("opacity", 1);
+		d3.selectAll('.personal').transition().duration(2000).style("height", 0 + 'px')
+		.style("opacity", 0);
+		// toggle class of buttons
+		d3.select("#personal-divs")
+		.classed("clicked", false);
+		d3.select("#professional-divs")
+		.classed("clicked", true);
+	});
+	d3.select("#personal-divs").on('click', () => {
+		d3.selectAll('.personal').transition().duration(2000).style("height", 720 + 'px')
+		.style("opacity", 1);
+		d3.selectAll('.profess').transition().duration(2000).style("height", 0 + 'px')
+		.style("opacity", 0);
+		// toggle class of buttons
+		d3.select("#personal-divs")
+		.classed("clicked", true);
+		d3.select("#professional-divs")
+		.classed("clicked", false);
+	});
 
 document.addEventListener('DOMContentLoaded', function() {
   var elems = document.querySelectorAll('.dropdown-trigger');
@@ -162,15 +244,31 @@ document.addEventListener('DOMContentLoaded', function() {
 // Toast popups
 document.getElementById("git").addEventListener('click', function() {
 	M.toast({html:"Oops! Looks like I don't have the github link up yet."})
-})
+});
+
+d3.selectAll(".in-progress").on('click', () => M.toast({html:"Content Forthcoming"}))
 
 // Function to scale footer in and out
 const myScrollFunc = () => {
-  var y = window.scrollY;
+  let y = window.scrollY;
 // Set percentage of total document height
-  var x = document.body.clientHeight * .7;
-	myID = document.getElementById("foot");
-  if (y >= x) {
+//  May have to change this based on how many divs of content are added
+// This could be played with to make more logical, not a big deal though.
+let btn1 = d3.select("#professional-divs");
+let btn2 = d3.select("#personal-divs");
+
+let t = null;
+if (btn1.classed("clicked")) {
+	 t = d3.selectAll(".profess");
+} else {
+	 t = d3.selectAll(".personal");
+}
+// .nodes() needed on this
+let rect = t.nodes()[t.nodes().length - 1].getBoundingClientRect();
+
+myID = d3.select("#foot").node();
+ // number will depend on window size
+ if (rect.top <= 200){
   	myID.className = "scale-transition-slow scale-in bottomMenu"
   } else {
   	myID.className = "scale-transition scale-out bottomMenu"
@@ -191,8 +289,6 @@ con.forEach(function(elem){
     if (isVisible == true) {elem.className = "col s12 scale-transition-slow scale-in"}
 	})
 });
-
-
 
  
 </script>

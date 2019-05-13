@@ -25,25 +25,28 @@
 <script type="text/javascript" src="data/arena_geo.js"></script>
 
 <style type="text/css">
+	body{
+		background-image: url("images/NBA court.jpg");
+	}
 	#map{
-		height: 550px;
-		width: 650px;
+		height: 470px;
+		width:auto;
 		justify-content: center;
 	}
-	#left{
-		width: 25%;
-	}
 	#right{
-		width: 25%;
+		width: 22%;
 	}
 	#middle{
-		width: 50%;
+		width: 56%;
 	}
 	#title{
 		font-size: 80px;
 		font-family: impact;
 		font-weight: bolder;
 		background-image: 
+	}
+	button{
+		width: 250px;
 	}
 </style>
 
@@ -69,6 +72,7 @@ document.getElementById("mainTable").appendChild(row);
 // TDs
 var data = document.createElement("TD");
 data.setAttribute("id", "left");
+// data.className = "right";
 document.getElementById("mainRow").appendChild(data);
 
 var data = document.createElement("TD");
@@ -102,6 +106,16 @@ btn.className = "center btn"
 btn.innerHTML = "All Ball"
 document.getElementById("icon-change").appendChild(btn);
 
+// link to R code
+var btn = document.createElement("a");
+btn.setAttribute("id", "r-code");
+btn.className = "btn waves-light blue"
+btn.innerHTML = "Data Preparation with R"
+document.body.appendChild(btn);
+
+// add link
+document.getElementById("r-code").addEventListener('click', () => window.location = "R_code.html")
+
 var westernTeams = ['Dallas Mavericks', 'San Antonio Spurs', 'Oklahoma City Thunder', 'Memphis Grizzlies', 'Sacramento Kings', 'Portland Trail Blazers', 'Golden State Warriors', 'Denver Nuggets', 'New Orleans Pelicans', 'Los Angeles Clippers', 'Los Angeles Lakers', 'Phoenix Suns', 'Minnesota Timberwolves', 'Houston Rockets', 'Utah Jazz'];
 
 for (var i = 0; i < 30; i++) {
@@ -113,16 +127,18 @@ for (var i = 0; i < 30; i++) {
 	
 	btn.innerHTML += "<i class='material-icons right'>keyboard_arrow_right</i>";
 	btn.appendChild(t);
-	btn.className = "waves-effect waves-light btn-small west right red";
+	btn.className = "waves-effect waves-light btn-small west red right";
 	document.getElementById("left").appendChild(btn);
 	}
 	else{
 	btn.innerHTML += "<i class='material-icons left'>keyboard_arrow_left</i>";
 	btn.appendChild(t);
-	btn.className = "waves-effect waves-light btn-small east blue";
-	document.getElementById("right").appendChild(btn);	
+	btn.className = "waves-effect waves-light btn-small east blue left";
+	document.getElementById("right").appendChild(btn);
 	}
 }
+
+// Leaflet map
 var map = L.map('map',{
     // scrollWheelZoom:false,
     // zoomControl: false,
