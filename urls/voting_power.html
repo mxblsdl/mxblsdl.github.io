@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Voting Power</title>
+
+<!-- Chart JS-->
+<script type="text/javascript" src="../js/Chart.js/Chart.min.js"></script>
+<script type="text/javascript" src="../js/Chart.js/Chart.bundle.min.js"></script>
+
+<!-- Chart other build -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js"></script>
+
+<!-- Leaflet -->
+<!-- Leaflet Css -->
+<link rel="stylesheet" href="../js/leaflet/leaflet.css">
+<!-- Leaflet package -->
+<script src="../js/leaflet/leaflet.js"></script>
+<!-- Package for basemaps  -->
+<script src="../js/leaflet/leaflet-providers.js"></script>
+
+<!-- Voting Data Stats -->
+<script type="text/javascript" src="../data/voting_update.js"></script>
+<!-- GeoJSON for maps ../data> -->
+<script type="text/javascript" src="../data/states.js"></script>
+<script type="text/javascript" src="../data/alaska.js"></script>
+<script type="text/javascript" src="../data/hawaii.js"></script>
+<script type="text/javascript" src="../data/puertorico.js"></script>
+
+<!-- Add in the font awesome package -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<!-- Styling -->
+<style type="text/css">
+/*Map CSS*/
+#map-wrapper{
+    margin-left: 10%;
+    margin-right: 10%;
+}
+#map{
+    height: 400px;
+    width: 730px;
+    border-style: double;
+}
+#alaska{
+    height: 200px;
+    width: 200px;
+    border-style: double;
+}
+#hawaii{
+    height: 200px;
+    width: 200px;   
+    border-style: double;
+}
+#puertoRico{
+    height: 200px;
+    width: 200px;
+    border-style: double;
+}
+#dc-puerto{
+    display: inline-block;
+    font-family: Verdana, Geneva, sans-serif;
+    background-color: rgba(240,240,240, 1);
+    border-radius: 3px;
+}
+#supplement-maps{
+    display: flex;
+    width: 730px;
+}
+#supplement-maps > div{
+    flex: 1;
+}
+.legend {
+    line-height: 18px;
+    color: #555;
+}
+.legend i {
+    width: 18px;
+    height: 18px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.7;
+}
+/*#########################################*/
+/*Chart CSS*/
+#button-description{
+    font-family: Verdana, Geneva, sans-serif;
+    text-decoration: underline;
+    text-align: center; 
+}
+#control-buttons{
+    display: inline-block;
+    vertical-align: top;
+}
+button{
+    background-color:rgba(66, 184, 221, .9);    
+    border-radius: 5px;
+    padding: 6px;
+    margin: 2px;
+    font-weight: bold;
+    color: #393A3B;
+    border: none;
+    cursor: pointer;
+    color: white;
+}
+#bubble-chart{
+    width: 70%;
+    display: inline-block;
+}
+.button-wrapper{
+    font-family: Verdana, Geneva, sans-serif;
+    text-align: center;   
+    align-items: center;
+}
+/*##################################################*/
+/*Table CSS*/
+table.output{
+    border-collapse: collapse;   
+    width: 50%;
+    font-family: Arial, helvetica, sans-serif;
+    margin-left: 5%;
+    transition: max-height 0.5s ease-out;
+}
+.output td{
+    border: 1px solid #CDCED0;
+    padding: 6px;
+}
+.output tr:nth-child(even){
+    background-color: #f2f2f2;
+}
+.output th{
+    background-color: #0099F9;
+    color: white;
+    padding: 10px 0 10px 0;
+}
+#table-buttons{
+    margin-left: 5%;
+}
+/*######################################################*/
+/*HTML CSS*/
+#intro{
+    font-family: Verdana, Geneva, sans-serif; 
+    margin: 0 5% 0 5%;
+    padding: 5px 0 5px 0;   
+    justify-content: center;
+}
+</style>
+</head>
+
+<!-- HTML Body -->
+<body>
+<div id="intro">
+    While the idea that every vote is equal is a central tenement to the United States sense of democracy, it is clearly not true for US voting systems. The US operates as a representative democracy with voting power given to groups rather than to individuals. The most prominent groups are the 50 recognized US states, which in turn have their own levels of government.
+</div>
+<div id="intro">
+    The House of Representatives is distributed based on the population of States which is re-evaluated every census. This affects the number of Electoral votes a State receives to cast in Presidential Elections. Each state is given an electoral vote for each Senator(always 2) plus the number of House Representatives, which they cast for the candidate of choice based on the majority vote in that state.
+</div>
+<div id="intro">
+     This means that representative votes are not equal among states and subject to change on a decadal basis. States with very low populations will always recieve at least 3 electoral votes giving them greater proportional power based on population.  
+</div>
+<div id="intro">
+    The graph below shows the US States, plus Puerto Rico and D.C., with their size by different representation metrics. The size of the circle corresponds to the population per electoral votes. Small circles represent states with less people per electoral vote. These are all states that would have less electoral votes if they were distributed soley on population. 
+</div>
+<div id="chart-items">
+<div id="bubble-chart">
+    <canvas id="chart"></canvas>
+</div>
+<div id="control-buttons">
+    <div id="button-description">
+        Resize the bubbles<br>based on different metrics
+    </div>
+    <div class="button-wrapper">
+        <div>People per House Vote</div>
+        <button class="" type="reset" onclick="changeHouseSeat()"><i class="fa fa-play"></i></button>
+    </div>
+
+    <div class="button-wrapper">
+        <div>% of Total Population</div>
+        <button class="" onclick="changePopulation()"><i class="fa fa-play"></i></button>
+    </div>
+
+    <div class="button-wrapper">
+        <div>Proportional Electoral Votes</div>
+        <button class="" onclick="changeElectoral()"><i class="fa fa-play"></i></button>
+    </div>
+
+    <div class="button-wrapper">
+        <div>True Electoral Votes</div>
+        <button class="btn" onclick="changeBackElectoral()"><i class="fa fa-play"></i></button>
+    </div>
+    
+    <div class="button-wrapper">
+        <div>Population per Electoral Vote</div>
+        <button class="btn" onclick="popElectoral()"><i class="fa fa-undo"></i></button>
+    </div>
+</div>
+</div>
+
+<div id="intro">
+   A notable stand out is <span id="dc-puerto" onmouseover = 'changeNonState()' onmouseout="backNonState()">Puerto Rico</span> which recieves 1 House Representative, but that representative has no voting power. Peurto Rico also receives 0 electoral votes even though its population is greater than 21 other States and D.C., which recieves 3 electoral votes.
+</div>
+<div id="table-buttons">
+    <button onclick="populationTable()">create table</button>
+    <button onclick="destroyTable()">hide table</button>    
+</div>
+
+<div id="table"></div>
+<div id="intro">
+    Electoral and House votes are distributed based on census results, but a lot can change within ten years. The below map shows how populations have changed by state since the last census. Again, a notable stand out is Peurto Rico, which saw its population drop by the highest percentage by far. 
+</div>
+
+<div id="map-wrapper">
+    <!-- Leaflet maps -->
+    <div id="map"></div>
+
+    <!-- ak, hi, and pr along the bottom of the main map -->
+    <div id="supplement-maps">
+    <div id="alaska"></div>
+    <div id="hawaii"></div>
+    <div id="puertoRico"></div>
+    </div>
+</div>
+
+<div id="intro">
+    Puerto Rico went through a horrible natural disaster between 2010 and 2018, which effected its population. It also has no representation in its federal government since it is not a state and therefore there is just less incentive for the federal government to provide resources for it as a territory. 
+</div>
+<div>
+    Data for this project came from Wikipedia and was <a target="_blank" href="scripts/electoral.strength.html">collected and prepared in R</a>
+</div>
+</body>
+
+<!-- JS -->
+<script type="text/javascript">
+
+function destroyTable(){
+    var element = document.getElementById("table");
+    fade(element);
+}
+
+function fade(element) {
+    var op = 1;  // initial opacity
+    var timer = setInterval(function () {
+        if (op <= 0.1){
+            clearInterval(timer);
+            element.style.display = 'none';
+        }
+        element.style.opacity = op;
+        element.style.filter = 'alpha(opacity=' + op * 100 + ")";
+        op -= op * 0.1;
+    }, 50);
+}
+// Add in leaflet map stuff
+// The main map that everythings is added to 
+var map = L.map('map',{
+    scrollWheelZoom:false,
+    zoomControl: false,
+    minZoom: 4,
+    maxZoom: 4
+}).setView([38, -96], 4);
+
+// This var was created in R from a shapefile
+states = L.geoJson(states,{
+    style:style,
+    onEachFeature: onEachFeature
+}).addTo(map);
+
+// Create variable for tiles
+L.tileLayer.provider('Esri.WorldShadedRelief').addTo(map);
+
+// Individual State Maps. Make sure to pay attention to variable names.
+// Alaska
+var alaska = L.map('alaska',{
+    attributionControl: false,
+    scrollWheelZoom: false,
+    zoomControl: false,
+    minZoom: 2, 
+    maxZoom: 2
+}).setView([64, -154], 2)
+L.geoJson(ak,{
+    style:style,
+    onEachFeature: onEachFeature
+}).addTo(alaska);
+L.tileLayer.provider('Esri.WorldShadedRelief').addTo(alaska);
+
+// Hawaii
+var hawaii = L.map('hawaii',{
+    attributionControl: false,
+    scrollWheelZoom: false,
+    zoomControl: false,
+    minZoom: 5.5, 
+    maxZoom: 5.5
+}).setView([20, -158], 5.5)
+L.geoJson(hi,{
+    style:style,
+    onEachFeature: onEachFeature
+}).addTo(hawaii);
+L.tileLayer.provider('Esri.WorldShadedRelief').addTo(hawaii);
+
+// Puerto Rico
+var puertoRico = L.map('puertoRico',{
+    attributionControl: false,
+    scrollWheelZoom: false,
+    zoomControl: false,
+    minZoom: 7, 
+    maxZoom: 7
+}).setView([18, -66.2], 7)
+L.geoJson(pr,{
+    style:style,
+    onEachFeature: onEachFeature
+}).addTo(puertoRico);
+L.tileLayer.provider('Esri.WorldShadedRelief').addTo(puertoRico);
+
+// Add the scale bars in 
+L.control.scale().addTo(map);
+L.control.scale().addTo(alaska);
+L.control.scale().addTo(hawaii);
+L.control.scale().addTo(puertoRico);
+
+// Function to change the styleing of the features.
+// Works for all features on the map
+function style(feature){
+    return{
+        fillColor: getColor(feature.properties.percentChange),
+        weight: 1,
+        opacity: 1,
+        color: 'white',
+        fillOpacity: .7
+    };
+};
+function getColor(e){
+    return e >= 13 ? '#038203' :
+            e >= 10 ? '#30B006' :
+           e >=  5 ? '#95C040' :
+           e >= 0 ? '#DFDF5F' :
+           e >= -3 ? '#ED9819' :
+                    '#DD5E33';
+}
+
+// feature.properties.!Name of property!
+function onEachFeature(feature, layer) {
+    var popupContent = "<h3>"+ feature.properties.name +"<br>Pop. Change 2010-2018: "+ feature.properties.percentChange+"%</h3>";
+    // does this feature have a property named popupContent?
+    if (feature.properties && feature.properties.popupContent) {
+        popupContent += feature.properties.popupContent;
+    }
+    layer.bindPopup(popupContent);
+    // Add the event listeners to the layers on mouseover and mouse out
+}
+
+// Add a legend to the map to show population change
+var legend = L.control({position:'bottomright'});
+legend.onAdd = function (map){
+    var div = L.DomUtil.create('div', 'info legend');
+    labels = ['% Change Pop.'],
+    categories = [13, 10, 5, 0, -3, -15];
+    legend = ['> 13', '10 to 13', '5 to 10', '0 to 5', '-3 to 0', '< -3'];
+    for (var i =0; i<categories.length; i++){
+        div.innerHTML += labels.push('<i class="legend" style=background:' + getColor(categories[i] + 1) + ';></i>' + legend[i] );
+        }
+        div.innerHTML = labels.join('<br>');
+        return div;
+    };
+legend.addTo(map);
+
+//////////////////////////////// Chart JS ///////////////////////////////////
+// Functions associated with chart
+conditional = false;
+
+var labels = []
+for (i = 0; i < voting.length; i++){
+labels.push(voting[i].name)
+}
+
+function range(start, end) {
+    var ans = [];
+    for (let i = start; i <= end; i++) {
+        ans.push(i);
+    }
+    return ans;
+}
+
+out = range(0,100).map(function(element){
+            return 100*Math.exp(-.03*element)
+        });
+
+var years = range(1,100);
+
+// Stylistic line chart minimal
+// Removed for now from display
+function styleChart() {
+var lineChart = new Chart(document.getElementById("line-chart"),{
+    type: 'line',
+    data:{
+        labels:years,
+        datasets:[{
+            data: out,
+            backgroundColor: "rgba(127,201,127,0.2)",
+            borderColor: '#E8C3B9',
+            fill:true}]},
+      options:{
+            tooltips:{
+                enabled:false
+            },
+            title:{
+                display: true,
+                text: "How Much Your Vote Counts in Elections"
+            },
+            legend: {
+                display: false
+            },
+            scales:{
+                yAxes:[{
+                    ticks:{
+                        display:false
+                        },
+                        scaleLabel:{
+                            display:true,
+                            labelString: "Effect of a Single Vote"
+                        },
+                        gridLines:{
+                            display:false
+                        }}],
+                xAxes:[{
+                    ticks:{
+                        display:false,
+                    },
+                    gridLines:{
+                            display:false
+
+                    }}]}}})};
+
+// data needs to be in x, y, r format with r being radius
+var BubbleChart = new Chart(document.getElementById("chart"),{
+	  type: 'bubble',
+    labels: labels,
+    data: {
+    	datasets:
+    	(function (voting) {
+    		var out = [];
+    		for (i = 0; i < voting.length; i++){
+    			out.push({
+    				// label: voting[i].state,
+    				label: [labels[i]],
+    				// label:['test'],
+					data:[{
+						x: voting[i].pop2018,
+						z: voting[i].electoralVotes,
+                        w: voting[i].proportionalElectoral,
+						y: voting[i].percentChange,
+						r: voting[i].popPerElectoralVote/30000
+    				}],
+    				backgroundColor:randomColor()
+    			});
+    		}
+    	return out;
+    	})(voting)
+    },
+    options: {
+    	title:{
+    		display: true,
+    		text: "Voting Power in Each State"
+    	},
+    	tooltips: {
+        	callbacks: {
+          		label: function(tooltipItems, data) {  
+            		var stateName= data.datasets[tooltipItems.datasetIndex].label;
+            		if (conditional == false){
+                    var electoralVotes = ', Electoral Votes: ' + data.datasets[tooltipItems.datasetIndex].data[0].z;
+                    } else if (conditional == true){
+                    var electoralVotes = ', Electoral Votes: ' + data.datasets[tooltipItems.datasetIndex].data[0].w;
+                    }
+            		return(stateName + electoralVotes);
+        }}},
+    	legend:{
+    		display:false
+    	},
+    	scales:{
+    		yAxes:[{
+    			ticks:{
+    				callback: function(label, index, labels){
+    					label = label.toString();
+    					label = label + "%";
+    					return label;
+    					}
+    				},
+    			scaleLabel:{
+	    			display: true,
+	    			labelString: 'Percent Population Change'
+    		}
+    		}],
+    		xAxes:[{
+    			ticks:{
+    				minRotation: 45,
+					beginAtZero:true,
+					 userCallback: function(value, index, values) {
+					    value = Math.round(value);// This fixes the issue with lots of decimal places on really small values.
+						value = value.toString();
+						value = value.split(/(?=(?:...)*$)/);
+						value = value.join(',');
+						return value;
+    			}
+    		},
+    		scaleLabel:{
+    			display:true,
+    			labelString: 'Population of State or Territory'
+    		}
+    	}]
+    	}
+    }
+});
+// Set global chart options
+	Chart.defaults.global.defaultFontSize=14;	
+	Chart.defaults.global.legend.labels.usePointStyle=true;	
+	Chart.defaults.global.legend.display = false;
+
+// Function to toggle size of bubbles
+function changeHouseSeat(){
+    for (i=0; i < voting.length; i++){
+    BubbleChart.config.data.datasets[i].data[0].r = voting[i].popPerHouseSeat/30000;    
+    }
+    BubbleChart.update();
+}
+// Change bubbles based on percent of total population
+function changePopulation(){
+ for (i=0; i < voting.length; i++){
+    BubbleChart.config.data.datasets[i].data[0].r = voting[i].perTotalPopulation*10;    
+    }
+    BubbleChart.update();
+    conditional = false;
+}
+function backNonState(){
+    // BubbleChart.config.data.datasets[8].backgroundColor = randomColor();
+    BubbleChart.config.data.datasets[39].backgroundColor = randomColor();
+    BubbleChart.update();
+}
+//works, change individial points
+function changeNonState(){
+	// BubbleChart.config.data.datasets[8].backgroundColor = 'red';
+	BubbleChart.config.data.datasets[39].backgroundColor = 'red';
+	BubbleChart.update();
+}
+// Change the bubbles to reflect proportional electoral bubbles
+function changeElectoral(){
+  for (i=0; i < voting.length; i++){
+    BubbleChart.config.data.datasets[i].data[0].r = voting[i].proportionalElectoral;    
+    }
+    // Conditional to change tooltip
+    conditional = true;
+    BubbleChart.update();       
+}
+// Change the electoral vote back to reality
+function changeBackElectoral(){
+ for (i=0; i < voting.length; i++){
+    BubbleChart.config.data.datasets[i].data[0].r = voting[i].electoralVotes;    
+    }
+    conditional = false;
+    BubbleChart.update();   
+}
+// Show the original pop per electoral vote
+function popElectoral(){
+ for (i=0; i < voting.length; i++){
+    BubbleChart.config.data.datasets[i].data[0].r = voting[i].popPerElectoralVote/30000;    
+    }
+    conditional = false;
+    BubbleChart.update();   
+}
+
+// Function to produce random colors
+function randomColor() {
+    var x = Math.floor(Math.random() * 256);
+    var y = Math.floor(Math.random() * 256);
+    var z = Math.floor(Math.random() * 256);
+    var bgColor = "rgba(" + x + "," + y + "," + z + ",.6)";
+return(bgColor);
+}
+///////////// Table function
+// Create a table of State Populations
+function populationTable(){
+    var pop  = []; // calculated as the difference between project and reference below
+    for (var i = 0; i < voting.length; i++) {
+        pop.push([voting[i].name, voting[i].pop2018, voting[i].electoralVotes, voting[i].proportionalElectoral]);
+    }
+    // Sort by second array of population
+ pop.sort(function(a,b){
+    return b[1] - a[1];
+ });
+    // Put everything into one variable
+    var rows = [{
+        title: "Population of US States with Puerto Rico",
+        column: ["State","Population 2018", "Electoral Votes"],
+        population: pop
+    }];
+    // 
+     tableBody(rows, pop);
+}
+function tableBody(rows, pop){
+    // Creates the table. Iterate through each row
+        var html = "<table class='output'>";
+        html += "<tr><th colspan ="+rows[0].column.length+">"+rows[0].title+"</th></tr>"; //
+        html+="<tr>";//put the tr on the outside of the loop
+        for (var i = 0; i < rows[0].column.length; i++) {
+            html+="<td>"+rows[0].column[i]+"</td>";
+        }
+        for (var i = 0; i < pop.length; i++) {
+            if (rows[0].population[i][1] < 3200000){// add conditional to only show states with PR and less populations
+                html+="<tr>";
+                html+="<td>"+rows[0].population[i][0]+"</td>";
+                html+="<td>"+rows[0].population[i][1]+"</td>";
+                html+="<td>"+rows[0].population[i][2]+"</td>";
+                html+="</tr>";
+            }
+        }
+        html+="</table>";
+        document.getElementById('table').innerHTML = html;
+        document.getElementById('table').style.opacity = 1;
+}
+</script>
+</html>
