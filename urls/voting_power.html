@@ -26,8 +26,19 @@
 <script type="text/javascript" src="../data/hawaii.js"></script>
 <script type="text/javascript" src="../data/puertorico.js"></script>
 
-<!-- Add in the font awesome package -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<!-- Loading Materialize at end of script for optimized loading -->
+<script type="text/javascript" src="../materialize/js/materialize.min.js"></script>
+
+<!-- Load Materialize and font awesome -->
+<!--Import Google Icon Font-->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+<link type="text/css" rel="stylesheet" href="../materialize/css/materialize.css"  media="screen,projection"/>
+<!-- Load mxblsdl styles -->
+ <link rel="stylesheet" type="text/css" href="../css/mxblsdl.css">
+
+ <!-- d3 -->
+<script type="text/javascript" src="../js/d3.min.js"></script>
 
 <!-- Styling -->
 <style type="text/css">
@@ -82,7 +93,7 @@
 }
 /*#########################################*/
 /*Chart CSS*/
-#button-description{
+/*#button-description{
     font-family: Verdana, Geneva, sans-serif;
     text-decoration: underline;
     text-align: center; 
@@ -90,8 +101,8 @@
 #control-buttons{
     display: inline-block;
     vertical-align: top;
-}
-button{
+}*/
+/*button{
     background-color:rgba(66, 184, 221, .9);    
     border-radius: 5px;
     padding: 6px;
@@ -101,7 +112,7 @@ button{
     border: none;
     cursor: pointer;
     color: white;
-}
+}*/
 #bubble-chart{
     width: 70%;
     display: inline-block;
@@ -118,7 +129,7 @@ table.output{
     width: 50%;
     font-family: Arial, helvetica, sans-serif;
     margin-left: 5%;
-    transition: max-height 0.5s ease-out;
+    /*transition: max-height 0.5s ease-out;*/
 }
 .output td{
     border: 1px solid #CDCED0;
@@ -137,75 +148,95 @@ table.output{
 }
 /*######################################################*/
 /*HTML CSS*/
-#intro{
-    font-family: Verdana, Geneva, sans-serif; 
-    margin: 0 5% 0 5%;
-    padding: 5px 0 5px 0;   
-    justify-content: center;
+.row{
+   padding: 0;
 }
 </style>
 </head>
 
 <!-- HTML Body -->
+<header class="row center indigo lighten-5">
+    <h3>Voting Power Across the US</h3>
+</header>
+
 <body>
-<div id="intro">
-    While the idea that every vote is equal is a central tenement to the United States sense of democracy, it is clearly not true for US voting systems. The US operates as a representative democracy with voting power given to groups rather than to individuals. The most prominent groups are the 50 recognized US states, which in turn have their own levels of government.
-</div>
-<div id="intro">
-    The House of Representatives is distributed based on the population of States which is re-evaluated every census. This affects the number of Electoral votes a State receives to cast in Presidential Elections. Each state is given an electoral vote for each Senator(always 2) plus the number of House Representatives, which they cast for the candidate of choice based on the majority vote in that state.
-</div>
-<div id="intro">
-     This means that representative votes are not equal among states and subject to change on a decadal basis. States with very low populations will always recieve at least 3 electoral votes giving them greater proportional power based on population.  
-</div>
-<div id="intro">
-    The graph below shows the US States, plus Puerto Rico and D.C., with their size by different representation metrics. The size of the circle corresponds to the population per electoral votes. Small circles represent states with less people per electoral vote. These are all states that would have less electoral votes if they were distributed soley on population. 
-</div>
-<div id="chart-items">
-<div id="bubble-chart">
-    <canvas id="chart"></canvas>
-</div>
-<div id="control-buttons">
-    <div id="button-description">
-        Resize the bubbles<br>based on different metrics
-    </div>
-    <div class="button-wrapper">
-        <div>People per House Vote</div>
-        <button class="" type="reset" onclick="changeHouseSeat()"><i class="fa fa-play"></i></button>
-    </div>
 
-    <div class="button-wrapper">
-        <div>% of Total Population</div>
-        <button class="" onclick="changePopulation()"><i class="fa fa-play"></i></button>
+<div class="container">
+<div class="row">
+    <div class="col s12">
+        While the idea that every vote is equal is a central tenement to the United States sense of democracy, it is clearly not true for US voting systems. The US operates as a representative democracy with voting power given to groups rather than to individuals. The most prominent groups are the 50 recognized US states, which in turn have their own levels of government.
     </div>
-
-    <div class="button-wrapper">
-        <div>Proportional Electoral Votes</div>
-        <button class="" onclick="changeElectoral()"><i class="fa fa-play"></i></button>
+</div>
+<div class="row section">
+    <div class="col s12">
+        The House of Representatives is distributed based on the population of States which is re-evaluated every census. This affects the number of Electoral votes a State receives to cast in Presidential Elections. Each state is given an electoral vote for each Senator(always 2) plus the number of House Representatives, which they cast for the candidate of choice based on the majority vote in that state.  
     </div>
-
-    <div class="button-wrapper">
-        <div>True Electoral Votes</div>
-        <button class="btn" onclick="changeBackElectoral()"><i class="fa fa-play"></i></button>
+</div>
+<div class="row section">
+    <div class="col s12">
+        This means that representative votes are not equal among states and subject to change on a decadal basis. States with very low populations will always recieve at least 3 electoral votes giving them greater proportional power based on population.   
     </div>
+</div>
+<div class="row section">
+    <div class="col s12">
+        The graph below shows the US States, plus Puerto Rico and D.C., with their size by different representation metrics. The size of the circle corresponds to the population per electoral votes. Small circles represent states with less people per electoral vote. These are all states that would have less electoral votes if they were distributed soley on population.     
+    </div>
+</div>
     
-    <div class="button-wrapper">
+</div>
+
+<!-- Chart and buttons -->
+<div class="row">
+    <div class="col s7">
+        <canvas id="chart"></canvas>
+    </div>
+    <div class="center col s5">
+        <h6>
+            Change Bubble Sizes Based On:
+        </h6>
+        
+        <div>People per House Vote</div>
+        <div class="btn chart" onclick="changeHouseSeat(this)"><i class="material-icons">panorama_fish_eye</i></div>
+
+        <div>% of Total Population</div>
+        <div class="btn chart" onclick="changePopulation(this)"><i class="material-icons">panorama_fish_eye</i></div>
+
+        <div>Proportional Electoral Votes</div>
+        <div class="btn chart" onclick="changeElectoral(this)"><i class="material-icons">panorama_fish_eye</i></div>
+
+        <div>Actual Electoral Votes</div>
+        <div class="btn chart" onclick="changeBackElectoral(this)"><i class="material-icons">panorama_fish_eye</i></div>
+        
         <div>Population per Electoral Vote</div>
-        <button class="btn" onclick="popElectoral()"><i class="fa fa-undo"></i></button>
+        <div class="btn chart" onclick="popElectoral(this)"><i class="material-icons">check</i></div>
     </div>
 </div>
+<!-- end chart -->
+<div class="container">
+    
+<div class="row">
+    <div class="col s12">
+        A notable stand out is 
+       <span id="dc-puerto" onmouseover = 'changeNonState()' onmouseout="backNonState()">Puerto Rico</span> 
+       which recieves 1 House Representative, but that representative has no voting power. Peurto Rico also receives 0 electoral votes even though its population is greater than 21 other States and D.C., which recieves 3 electoral votes.     
+    </div>
 </div>
 
-<div id="intro">
-   A notable stand out is <span id="dc-puerto" onmouseover = 'changeNonState()' onmouseout="backNonState()">Puerto Rico</span> which recieves 1 House Representative, but that representative has no voting power. Peurto Rico also receives 0 electoral votes even though its population is greater than 21 other States and D.C., which recieves 3 electoral votes.
+<div class="row">
+    <div class="col s6" id="table-buttons">
+        <div class="btn" onclick="populationTable()">create table</div>
+        <div class="btn" onclick="destroyTable()">hide table</div>    
+    </div>
 </div>
-<div id="table-buttons">
-    <button onclick="populationTable()">create table</button>
-    <button onclick="destroyTable()">hide table</button>    
+<!-- append table to empty node -->
+<div id="node"></div>
+
+<div class="row">
+    <div class="col s12">
+        Electoral and House votes are distributed based on census results, but a lot can change within ten years. The below map shows how populations have changed by state since the last census. Again, a notable stand out is Peurto Rico, which saw its population drop by the highest percentage by far. 
+    </div>
 </div>
 
-<div id="table"></div>
-<div id="intro">
-    Electoral and House votes are distributed based on census results, but a lot can change within ten years. The below map shows how populations have changed by state since the last census. Again, a notable stand out is Peurto Rico, which saw its population drop by the highest percentage by far. 
 </div>
 
 <div id="map-wrapper">
@@ -220,34 +251,25 @@ table.output{
     </div>
 </div>
 
-<div id="intro">
-    Puerto Rico went through a horrible natural disaster between 2010 and 2018, which effected its population. It also has no representation in its federal government since it is not a state and therefore there is just less incentive for the federal government to provide resources for it as a territory. 
+<div class="container">
+<div class="row">
+    <div class="col s12">
+        Puerto Rico went through a horrible natural disaster between 2010 and 2018, which effected its population. It also has no representation in its federal government since it is not a state and therefore there is just less incentive for the federal government to provide resources for it as a territory. 
+    </div>
 </div>
-<div>
-    Data for this project came from Wikipedia and was <a target="_blank" href="scripts/electoral.strength.html">collected and prepared in R</a>
+<div class="row">
+    <div class="col s12">
+        Data for this project came from Wikipedia and was <a target="_blank" href="electoral.strength.html">collected and prepared in R</a>
+    </div>
 </div>
+</div>    
+
+
 </body>
 
 <!-- JS -->
 <script type="text/javascript">
 
-function destroyTable(){
-    var element = document.getElementById("table");
-    fade(element);
-}
-
-function fade(element) {
-    var op = 1;  // initial opacity
-    var timer = setInterval(function () {
-        if (op <= 0.1){
-            clearInterval(timer);
-            element.style.display = 'none';
-        }
-        element.style.opacity = op;
-        element.style.filter = 'alpha(opacity=' + op * 100 + ")";
-        op -= op * 0.1;
-    }, 50);
-}
 // Add in leaflet map stuff
 // The main map that everythings is added to 
 var map = L.map('map',{
@@ -337,7 +359,7 @@ function getColor(e){
 
 // feature.properties.!Name of property!
 function onEachFeature(feature, layer) {
-    var popupContent = "<h3>"+ feature.properties.name +"<br>Pop. Change 2010-2018: "+ feature.properties.percentChange+"%</h3>";
+    var popupContent = "<span>"+ feature.properties.name +"<br>Pop. Change 2010-2018: "+ feature.properties.percentChange+"%</span>";
     // does this feature have a property named popupContent?
     if (feature.properties && feature.properties.popupContent) {
         popupContent += feature.properties.popupContent;
@@ -362,6 +384,15 @@ legend.onAdd = function (map){
 legend.addTo(map);
 
 //////////////////////////////// Chart JS ///////////////////////////////////
+// Function to produce random colors
+const randomColor = () => {
+    var x = Math.floor(Math.random() * 256);
+    var y = Math.floor(Math.random() * 256);
+    var z = Math.floor(Math.random() * 256);
+    var bgColor = "rgba(" + x + "," + y + "," + z + ",.6)";
+return(bgColor);
+};
+
 // Functions associated with chart
 conditional = false;
 
@@ -512,69 +543,86 @@ var BubbleChart = new Chart(document.getElementById("chart"),{
 	Chart.defaults.global.legend.labels.usePointStyle=true;	
 	Chart.defaults.global.legend.display = false;
 
+//###############################################################
+//  Change Chart Properties 
+//###############################################################
+
 // Function to toggle size of bubbles
-function changeHouseSeat(){
+const changeHouseSeat = (_e) => {
     for (i=0; i < voting.length; i++){
     BubbleChart.config.data.datasets[i].data[0].r = voting[i].popPerHouseSeat/30000;    
     }
     BubbleChart.update();
-}
+    iconChange(_e);
+};
 // Change bubbles based on percent of total population
-function changePopulation(){
+const changePopulation = (_e) => {
  for (i=0; i < voting.length; i++){
     BubbleChart.config.data.datasets[i].data[0].r = voting[i].perTotalPopulation*10;    
     }
     BubbleChart.update();
+    //this updates the tooltip based on function in chart config
+    //TODO add other data I want for tooltip into orig dataset and add functionality in chart js code
     conditional = false;
-}
-function backNonState(){
-    // BubbleChart.config.data.datasets[8].backgroundColor = randomColor();
-    BubbleChart.config.data.datasets[39].backgroundColor = randomColor();
-    BubbleChart.update();
-}
-//works, change individial points
-function changeNonState(){
-	// BubbleChart.config.data.datasets[8].backgroundColor = 'red';
-	BubbleChart.config.data.datasets[39].backgroundColor = 'red';
-	BubbleChart.update();
-}
+    iconChange(_e);
+};
 // Change the bubbles to reflect proportional electoral bubbles
-function changeElectoral(){
+const changeElectoral = (_e) => {
   for (i=0; i < voting.length; i++){
     BubbleChart.config.data.datasets[i].data[0].r = voting[i].proportionalElectoral;    
     }
     // Conditional to change tooltip
     conditional = true;
     BubbleChart.update();       
-}
+    iconChange(_e);
+};
 // Change the electoral vote back to reality
-function changeBackElectoral(){
+const changeBackElectoral = (_e) => {
  for (i=0; i < voting.length; i++){
     BubbleChart.config.data.datasets[i].data[0].r = voting[i].electoralVotes;    
     }
     conditional = false;
     BubbleChart.update();   
-}
+    iconChange(_e);
+};
 // Show the original pop per electoral vote
-function popElectoral(){
+const popElectoral = (_e) => {
  for (i=0; i < voting.length; i++){
-    BubbleChart.config.data.datasets[i].data[0].r = voting[i].popPerElectoralVote/30000;    
+    BubbleChart.config.data.datasets[i].data[0].r = voting[i].popPerElectoralVote/30000;   
     }
     conditional = false;
     BubbleChart.update();   
-}
+    iconChange(_e);
+};
+// Change chart icons
+const iconChange = (_e) => {
+    let btns = document.querySelectorAll(".chart")
+    btns.forEach(el => el.lastChild.innerHTML = "panorama_fish_eye");
+    _e.lastChild.innerHTML = "check";
+};
 
-// Function to produce random colors
-function randomColor() {
-    var x = Math.floor(Math.random() * 256);
-    var y = Math.floor(Math.random() * 256);
-    var z = Math.floor(Math.random() * 256);
-    var bgColor = "rgba(" + x + "," + y + "," + z + ",.6)";
-return(bgColor);
-}
+// Change Puerto Rico color and change back
+const backNonState = () => {
+    // DC commented out
+    // BubbleChart.config.data.datasets[8].backgroundColor = randomColor();
+    BubbleChart.config.data.datasets[39].backgroundColor = randomColor();
+    BubbleChart.update();
+};
+//works, change individial points
+const changeNonState = () => {
+    // DC commented out
+    // BubbleChart.config.data.datasets[8].backgroundColor = 'red';
+    BubbleChart.config.data.datasets[39].backgroundColor = 'red';
+    BubbleChart.update();
+};
+
+
 ///////////// Table function
 // Create a table of State Populations
-function populationTable(){
+function populationTable () {
+    // check that the table does not already exist
+    if (document.getElementById("table") === null) {
+
     var pop  = []; // calculated as the difference between project and reference below
     for (var i = 0; i < voting.length; i++) {
         pop.push([voting[i].name, voting[i].pop2018, voting[i].electoralVotes, voting[i].proportionalElectoral]);
@@ -591,8 +639,11 @@ function populationTable(){
     }];
     // 
      tableBody(rows, pop);
-}
-function tableBody(rows, pop){
+    }
+};
+
+// Function to create the table of population by state
+const tableBody = (rows, pop) => {
     // Creates the table. Iterate through each row
         var html = "<table class='output'>";
         html += "<tr><th colspan ="+rows[0].column.length+">"+rows[0].title+"</th></tr>"; //
@@ -610,8 +661,36 @@ function tableBody(rows, pop){
             }
         }
         html+="</table>";
-        document.getElementById('table').innerHTML = html;
-        document.getElementById('table').style.opacity = 1;
-}
+        
+        let div = document.createElement("div");
+        div.setAttribute("id", "table")
+        // add id to div and then remove div in destroy function
+        div.innerHTML = html; 
+        document.getElementById('node').appendChild(div);
+        let tbl = document.getElementById('table');
+        // tbl.innerHTML = html;
+
+        // get height of fill element
+        let ht = tbl.offsetHeight;
+
+        // d3.select("#table").style({'opacity': 0, 'height': 0 + "px"});
+        d3.select("#table")
+        .style("opacity", 0)
+        .style("height", 0 + "px");
+        // d3.select(".output").style("height", 0 + "px");
+        d3.select("#table").transition().duration(3000)
+        .style('height', ht + 'px')
+        .style('opacity', 1);
+
+
+
+};
+
+// deletes table of population numbers
+const destroyTable = () => {
+  d3.select("#table").transition().duration(2000).style('opacity', 0)
+        .style('height', 0 + 'px').on("end",() => d3.select("#table").remove());  
+};
+
 </script>
 </html>
