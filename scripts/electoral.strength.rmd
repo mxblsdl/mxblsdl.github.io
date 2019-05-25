@@ -63,7 +63,7 @@ colnames(table)<- c("name", "pop2018", "pop2010", "percentChange", "popPerElecto
 Read in a csv with electoral vote totals for each state. This could also be done rvest and a different wiki page, but I knew I had this data from a past project.
 ```{r}
 #read in document that has electoral votes to add to dataset
-votingPower <- read.csv("../data/voting power/Electoral Info.csv", stringsAsFactors = F) %>% select(state, Electoral.Votes)
+votingPower <- read.csv("../data/Electoral Info.csv", stringsAsFactors = F) %>% select(state, Electoral.Votes)
 
 votingPower %<>% 
   rename(electoralVotes = Electoral.Votes)
@@ -96,6 +96,12 @@ table %<>%
 
 # Rounding errors introduce some loss in the proportional votes total
 table$proportionalElectoral %>% sum()
+```
+
+write out whole table for later checking
+```{r}
+table
+write.csv(table, "../data/electoral_votes_updated.csv")
 ```
 
 
