@@ -394,7 +394,7 @@ return(bgColor);
 };
 
 // Functions associated with chart
-conditional = false;
+toolTip = 1;
 
 var labels = []
 for (i = 0; i < voting.length; i++){
@@ -494,13 +494,16 @@ var BubbleChart = new Chart(document.getElementById("chart"),{
         	callbacks: {
           		label: function(tooltipItems, data) {  
             		var stateName= data.datasets[tooltipItems.datasetIndex].label;
-            		if (conditional == false){
+            		if (toolTip === 1){
                     var electoralVotes = ', Electoral Votes: ' + data.datasets[tooltipItems.datasetIndex].data[0].z;
-                    } else if (conditional == true){
+                    } else if (toolTip === 2){
                     var electoralVotes = ', Electoral Votes: ' + data.datasets[tooltipItems.datasetIndex].data[0].w;
+                    } else if (toolTip === 3) {
+                    var electoralVotes = ", Pop. per Electoral Vote " + data.datasets[tooltipItems.datasetIndex].data[0].r*30000;
                     }
             		return(stateName + electoralVotes);
-        }}},
+        }
+    }},
     	legend:{
     		display:false
     	},
@@ -563,7 +566,6 @@ const changePopulation = (_e) => {
     BubbleChart.update();
     //this updates the tooltip based on function in chart config
     //TODO add other data I want for tooltip into orig dataset and add functionality in chart js code
-    conditional = false;
     iconChange(_e);
 };
 // Change the bubbles to reflect proportional electoral bubbles
@@ -572,7 +574,7 @@ const changeElectoral = (_e) => {
     BubbleChart.config.data.datasets[i].data[0].r = voting[i].proportionalElectoral;    
     }
     // Conditional to change tooltip
-    conditional = true;
+    conditional = 2;
     BubbleChart.update();       
     iconChange(_e);
 };
@@ -581,7 +583,7 @@ const changeBackElectoral = (_e) => {
  for (i=0; i < voting.length; i++){
     BubbleChart.config.data.datasets[i].data[0].r = voting[i].electoralVotes;    
     }
-    conditional = false;
+    conditional = 1;
     BubbleChart.update();   
     iconChange(_e);
 };
@@ -590,7 +592,7 @@ const popElectoral = (_e) => {
  for (i=0; i < voting.length; i++){
     BubbleChart.config.data.datasets[i].data[0].r = voting[i].popPerElectoralVote/30000;   
     }
-    conditional = false;
+    toolTip = 3;
     BubbleChart.update();   
     iconChange(_e);
 };
