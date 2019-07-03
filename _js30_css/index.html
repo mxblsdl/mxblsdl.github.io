@@ -1,0 +1,82 @@
+<html>
+<head>
+<title>Scoping Css Variables</title>
+
+<style>
+ body {
+      text-align: center;
+      background: #193549;
+      color: white;
+      font-family: 'helvetica neue', sans-serif;
+      font-weight: 100;
+      font-size: 50px;
+    }
+
+    .controls {
+      margin-bottom: 50px;
+    }
+
+    input {
+      width: 100px;
+    }
+
+/*Set base values for the initial css variables that will be changed*/
+:root{
+    --base:#ffc600;
+    --spacing: 10px;
+    --blur: 10px;
+}
+
+img{
+    padding: var(--spacing);
+    background: var(--base);
+    filter: blur(var(--blur));
+}
+
+.hl{
+    color: var(--base);
+}
+
+</style>
+
+</head>
+<body>
+<h2>Updating CSS variables with <span class="hl">Javascript</span></h2>
+
+<div class="controls">
+    <label>Spacing: </label>
+    <input id="spacing" type="range" min="10" max="200" value="10" name="spacing" data-sizing="px">
+
+    <label>Blur: </label>
+    <input id="blur" type="range" min="0" max="25" value="10" name="blur" data-sizing="px">
+
+    <label>Color: </label>
+    <input id="base" type="color" name="base" value="#ffc600">
+</div>
+
+<img src="https://source.unsplash.com/7bwQXzbF6KE/800x500">
+
+</body>
+
+<script>
+// handle the input and change of the sliders  
+function handleInput() {
+    const suffix = this.dataset.sizing || "";
+    document.documentElement.style.setProperty(`--${this.name}`, this.value + suffix);
+}
+
+// define the nodelist of inputs
+const inputs = document.querySelectorAll(".controls input");
+
+// add listeners to each input
+inputs.forEach(input => input.addEventListener('change', handleInput))
+inputs.forEach(input => input.addEventListener("mousemove", handleInput))
+
+</script>
+
+
+
+
+
+
+</html>
