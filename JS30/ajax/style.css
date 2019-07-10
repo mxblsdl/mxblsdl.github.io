@@ -11,12 +11,12 @@ html {
 }
 
 input {
-  width: 100%;
+  width: 50%;
   padding: 20px;
 }
 
 .search-form {
-  max-width: 400px;
+  max-width: 300px;
   margin: 50px auto;
 }
 
@@ -25,8 +25,8 @@ input.search {
   text-align: center;
   outline: 0;
   border: 10px solid #F7F7F7;
-  width: 120%;
-  left: -10%;
+  width: 80%;
+  left: 0%;
   position: relative;
   top: 10px;
   z-index: 2;
@@ -55,7 +55,7 @@ input.search {
   text-transform: capitalize;
 }
 
-.suggestions li:nth-child(even) {
+/* .suggestions li:nth-child(even) {
   transform: perspective(100px) rotateX(3deg) translateY(2px) scale(1.001);
   background: linear-gradient(to bottom,  #ffffff 0%,#EFEFEF 100%);
 }
@@ -63,7 +63,7 @@ input.search {
 .suggestions li:nth-child(odd) {
   transform: perspective(100px) rotateX(-3deg) translateY(3px);
   background: linear-gradient(to top,  #ffffff 0%,#EFEFEF 100%);
-}
+} */
 
 span.population {
   font-size: 15px;
