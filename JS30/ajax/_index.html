@@ -23,7 +23,22 @@ fetch(endpoint)
   .then(blob => blob.json())
   .then(data => cities.push(...data));
 
+function findCity() {
+  // let searchTerm = this.value
+  const searchTerm = new RegExp(this.value, 'gi')
+  const stateFind = cities.filter(_e => _e.state.match(searchTerm) && _e.city )
+  const cityFind = cities.filter(_e => _e.city.match(searchTerm))
+  
+};
 
+
+const suggestion = document.querySelector('.suggestions');
+const searchBox = document.querySelector('.search');
+
+// suggestion.addEventListener("change", findCity);
+
+searchBox.addEventListener("change", findCity);
+searchBox.addEventListener("keyup", findCity);
 
 
 </script>
