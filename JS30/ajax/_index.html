@@ -26,24 +26,28 @@ fetch(endpoint)
   // create a function that just does one thing, it finds the matches from the array
 function findCity(words, cities) {
   const out = cities.filter(_e => {
+    // Regex -g global -i indiscriminate capotalization
     const searchTerm = new RegExp(words, 'gi');
    return _e.state.match(searchTerm) || _e.city.match(searchTerm)
   })   
   return out
 };
 
+// from SO add commas to numbers
   function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 function displayMatches() {
+  // run function to find matches, seperate function to do one task
 const arrayMatches = findCity(this.value, cities);
   const html = arrayMatches.map(_e => {
+    // create expression to find search term and replace with highlighted class
     const highLight = new RegExp(this.value, "gi")
 
     const newCity = _e.city.replace(highLight, `<span class="hl">${this.value}</span>`)
     const newState = _e.state.replace(highLight, `<span class="hl">${this.value}</span>`)
-
+// return html snippets
 return  `<li>
               <span class = "name">${newCity}, ${newState}</span>
               <span class = "population">Pop: ${numberWithCommas(_e.population)}</span>  
@@ -52,12 +56,11 @@ return  `<li>
                 suggestion.innerHTML = html;
 };
 
-
+// get the DOM elements of interest
 const suggestion = document.querySelector('.suggestions');
 const searchBox = document.querySelector('.search');
 
-// suggestion.addEventListener("change", findCity);
-
+// add events to the search box, needs for keystroke and change
 searchBox.addEventListener("change", displayMatches);
 searchBox.addEventListener("keyup", displayMatches);
 
