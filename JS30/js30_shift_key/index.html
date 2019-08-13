@@ -49,6 +49,14 @@
       font-weight: 200;
       border-left: 1px solid #D1E2FF;
     }
+    .control{
+      display: flex;
+      max-width: 400px;
+      margin: 50px auto;
+      background: white;
+      border-radius: 5px;
+      box-shadow: 10px 10px 0 rgba(0,0,0,0.1);
+    }
   </style>
    <!--
    The following is a common layout you would see in an email client.
@@ -56,6 +64,17 @@
    When a user clicks a checkbox, holds Shift, and then clicks another checkbox a few rows down, all the checkboxes inbetween those two checkboxes should be checked.
 
   -->
+<div class="controls">
+  <div class="control check-all">
+      <input type="checkbox">
+      <p>Check All</p>
+  </div>
+  <div class="control uncheck">
+    <input type="checkbox">
+    <p>Uncheck All</p>
+  </div>
+</div>
+
   <div class="inbox">
     <div class="item">
       <input type="checkbox">
@@ -96,6 +115,46 @@
   </div>
 
 <script>
+
+const list = document.querySelectorAll(".inbox input[type=checkbox]");
+
+function handleEvent(e) {
+let inBetween = false;
+// this refers to the top element in the scope
+  if(this.checked && e.shiftKey) {
+
+    // loop through each checkbox to see if it is checked
+    list.forEach(item => {
+      if(item === this || item === lastChecked){
+        inBetween = !inBetween;
+      };
+      if(inBetween === true) {
+        item.checked = true
+      };
+    });
+  }
+// a flag for the last element that is checked
+  lastChecked = this;
+};
+
+list.forEach(item => item.addEventListener("click", handleEvent));
+
+// adding my own thing to check and uncheck all the boxes
+const check_all = document.querySelector(".check-all input[type=checkbox]");
+check_all.addEventListener("click", checkAll);
+
+function checkAll() {
+  list.forEach(item => item.checked = true)
+};
+
+document.querySelector(".uncheck input[type=checkbox]").addEventListener("click", unCheck);
+
+function unCheck() {
+  list.forEach(item => item.checked = false)
+  check_all.checked = false
+  this.checked = false
+};
+
 </script>
 </body>
 </html>
