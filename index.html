@@ -22,16 +22,16 @@
 <div class="container grey lighten-1">
 <ul id="dropdown1" class="dropdown-content">
     <li><a class="black-text" href="about.html">About</a></li>
-    <li><a class="black-text" href="urls/Resume">Resume</a></li>
-    <li><a class="black-text" href="urls/projects">Project</a></li>
+    <li><a class="black-text" href="urls/Resume.html">Resume</a></li>
+    <li><a class="black-text" href="urls/projects.html">Project</a></li>
 </ul>
   <nav>
     <div class="nav-wrapper blue-grey darken-1">
       <a href="index" class="brand-logo left grey-text lighten-5-text"><i class="material-icons right">map</i>&nbsp;Max Blasdel</a>
       <ul class="right hide-on-med-and-down">
-        <li><a class=" tooltipped grey-text lighten-5-text" data-position="bottom" data-tooltip="About Me" href="#"><i class="material-icons">contacts</i></a></li>
-        <li><a class="tooltipped grey-text lighten-5-text" data-position="bottom" data-tooltip="Resume and Work" href="urls/Resume"><i class="material-icons">work</i></a></li>
-        <li><a class="tooltipped grey-text lighten-5-text" data-position="bottom" data-tooltip="Projects" href="urls/projects"><i class="material-icons">build</i></a></li>
+        <li><a class="tooltipped grey-text lighten-5-text" data-position="bottom" data-tooltip="About Me" href="#"><i class="material-icons">contacts</i></a></li>
+        <li><a class="tooltipped grey-text lighten-5-text" data-position="bottom" data-tooltip="Resume and Work" href="urls/Resume.html"><i class="material-icons">work</i></a></li>
+        <li><a class="tooltipped grey-text lighten-5-text" data-position="bottom" data-tooltip="Projects" href="urls/projects.html"><i class="material-icons">build</i></a></li>
       </ul>
       <ul class="right hide-on-large-only">
         <li><a href="#!" class="dropdown-trigger" data-target="dropdown1"><i class="material-icons black-text">view_headline</i></a></li>
@@ -61,7 +61,7 @@
           <p>R programming for data preparation and automation</p>
         </div>
         <div class="card-action center">
-          <a href="#"><i class="material-icons">link</i></a>
+          <a href="urls/error-page.html"><i class="material-icons">link</i></a>
         </div>
       </div>
     </div>
@@ -118,6 +118,16 @@ document.addEventListener('DOMContentLoaded', function() {
   var elems = document.querySelectorAll('.tooltipped');
   var instances = M.Tooltip.init(elems);
   });
+
+// Toast popups
+document.querySelectorAll("a[href='#']").addEventListener('click', function() {
+	M.toast({html:"Oops! Looks like I don't have the github link up yet."})
+});
+
+// Toast popups
+document.getElementById("git").addEventListener('click', function() {
+	M.toast({html:"Oops! Looks like I don't have the github link up yet."})
+});
 </script>
 
 </body>
