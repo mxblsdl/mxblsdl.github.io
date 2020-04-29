@@ -1,0 +1,74 @@
+---
+title: "Bubble Chart"
+author: "Max Blasdel"
+date: "January 9, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r warning=FALSE, message=FALSE}
+require(sf)
+require(jsonlite)
+require(tidyverse)
+```
+
+Turns out gapminder has this data available with their own tool so abandoning this for now.
+```{r}
+forests <- read.csv("data/environmental/forest_land_total_area_ha.csv", stringsAsFactors = F)
+colnames(forests) <- gsub("X", "", colnames(forests))
+
+jsonlite::toJSON(forests)
+```
+
+Read in NBA data and convert height to usable format.
+```{r}
+nba <- read.csv("data/player_data.csv", stringsAsFactors = F)
+
+# Remove hyphen from data
+heights <- strsplit(nba$height, split = "-")
+
+# Write function to change character feet/inches to cm and sum
+heightToCent <- function(object){
+  object[1] %>% as.numeric() * 30.48 +
+  object[2] %>% as.numeric() * 2.54
+}
+
+# Apply function to all heights
+heights <- lapply(heights, function(x) heightToCent(x))
+
+# Add new heights to df
+nba$height <- do.call(rbind, heights)
+
+# Drop the University attribute as I dont think that will end up being used
+nba$college <- NULL
+```
+
+Conver to JSON object for reading in JS
+```{r}
+nba_js <- jsonlite::toJSON(nba, pretty = T)
+nba_js
+
+# calculated heights are in brackets[] probably becuase they are format double, watch out for this
+# use parseFloat() in JS to deal with brackets
+writeLines(paste("var nba =", nba_js , sep = " "), "nba.js")
+```
+
+Reading in voting power data
+```{r}
+votingPower <- read.csv("data/voting power/Electoral Info.csv")
+votingPower %<>% 
+  rename(electoralVotes = Electoral.Votes)
+
+# Arrange alphabetically
+votingPower %<>% arrange(state)
+
+
+toJSON(votingPower)
+writeLines(paste("var voting =", toJSON(votingPower, pretty = T), sep = " "), "data/voting.js")
+```
+
+

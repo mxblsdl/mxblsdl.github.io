@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style type="text/css">
+		.code-chunk{
+			font-family: lucida console;
+			font-size: 14px;	
+			border-left: #bbdefb solid 2px;
+			margin-left: 30px;
+			margin-right: 10%;
+			padding: 10px 0px 10px 20px;
+			background-color: #eceff1;
+		}
+		#one, #two, #three, #four, #five, #six, #seven, #eight{
+			opacity: 0;
+		}
+	</style>
+	<title>R code for nba map</title>
+</head>
+
+<script type="text/javascript" src="js/d3.min.js"></script>
+<script type="text/javascript" src="../materialize/js/materialize.min.js"></script>
+<link rel="stylesheet" type="text/css" href="../materialize/css/materialize.min.css">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<body>
+<div class="container">
+	
+	<div id="one">
+		<div class="row center">
+			<h3>R Code for Web Scraping</h3>
+		</div>
+	</div>
+	
+	<div id="two">
+		<div class="row">
+			R was used to scrape and prepare data into GeoJSON format
+		</div>
+		<div class="row">
+			First load all relevent libraries
+		</div>
+		<div class="row code-chunk">
+			library(rvest)<br>
+			library(dplyr)<br>
+			library(geojsonio)<br>
+			library(sp)
+		</div>
+	</div>
+	
+	<div id="three">
+		<div class="row">
+			Read in the Wikipedia Page with information on Basketball Stadiums
+		</div>
+		<div class="row code-chunk">
+			arenas <- read_html('https://en.wikipedia.org/wiki/List_of_National_Basketball_Association_arenas
+		</div>
+	</div>
+
+	<div id="four">
+		<div class="row">
+			Parse out the data by tables preserving the header
+		</div>
+		<div class="row code-chunk">
+			arenas <- html_node(arenas, 'table')<br>arenas <- html_table(arenas, header = T)
+		</div>	
+	</div>
+	
+	<div id="five">
+		<div class="row">
+			Remove a couple of unneeded columns
+		</div>
+		<div class="row code-chunk">
+			arenas <- arenas %>%<br>
+			&emsp;select(-c('Ref(s)', Image))
+		</div>
+	</div>
+
+	<div id="six">
+		<div class="row">
+			Write the csv to disk then manually add in the locations of the stadiums with Excel.<br>
+			Read the csv back into R to finish processing.
+		</div>
+		<div class="row code-chunk">
+			#write.csv(arenas, "../data/arenas.csv")<br>
+			arenas <- read.csv("../data/arenas.csv", stringsAsFactors = F) %>%<br> 
+  						&emsp;select(-X) %>% <br>
+  						&emsp;rename(Team = Team.s.)
+		</div>
+	</div>
+
+	<div id="seven">
+		<div class="row">
+			Convert the dataframe to a spatial object with the sp package, then convert to geoJSON with the geojsonio package.
+		</div>
+		<div class="row code-chunk">
+			coordinates(arenas) <- ~lon + lat<br>
+			arenas_geojson <- geojsonio::geojson_json(arenas)
+		</div>
+	</div>
+
+	<div id="eight">
+		<div class="row">
+			Write out as a .js file. I add in a <i>var</i> tag so the geoJSON can be read in the script.<br>
+			The stadiums can now be read in leaflet as <i>areans_geo</i>
+		</div>
+		<div class="row code-chunk">
+			writeLines(paste("var arenas_geo =", arenas_geojson), "../data/arena_geo.js")	
+		</div>
+	</div>
+	<div class="left section">
+		<a href="nba_fission.html" class="btn-floating red waves-light"><i class="material-icons">arrow_back</i></a>
+	</div>
+</div>
+
+
+</body>
+<script type="text/javascript">
+// d3 version
+d3.select("#one").transition().duration(1000)
+		.style("opacity", 1);
+
+d3.select("#two").transition().duration(2000)
+		.style("opacity", 1);
+
+d3.select("#three").transition().duration(3000)
+		.style("opacity", 1);
+
+d3.select("#four").transition().duration(4000)
+		.style("opacity", 1);
+
+d3.select("#five").transition().duration(5000)
+		.style("opacity", 1);
+
+d3.select("#six").transition().duration(6000)
+		.style("opacity", 1);
+
+d3.select("#seven").transition().duration(7000)
+		.style("opacity", 1);
+
+d3.select("#eight").transition().duration(8000)
+		.style("opacity", 1);
+
+</script>
+</html>

@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<!-- All website development was done by myself. I took one class on web mapping in graduate school and have become incredibly interested in JavaScript and website development since that class. I have continued to work on projects and learn as much as I can about reactive web applications. I think the internet is great forum for displaying data and creating wyas to effectively communicate information. I am looking for work and want to be in a place where I can continue to learn and grow as an analyst and building of tools -->
+<html lang="en">
+<head>
+	<title>Work and Education</title>
+<!-- Loading Materialize at end of script for optimized loading -->
+<script type="text/javascript" src="../materialize/js/materialize.min.js"></script>
+
+<!-- Load Materialize and font awesome -->
+ <!--Import Google Icon Font-->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+<link type="text/css" rel="stylesheet" href="../materialize/css/materialize.min.css"  media="screen,projection"/>
+<!-- Load mxblsdl styles -->
+ <link rel="stylesheet" type="text/css" href="../css/mxblsdl.css">
+
+ <!-- jquery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<style type="text/css">
+	body {
+     display: flex;
+     min-height: 100vh;
+     flex-direction: column;
+ }
+ 	main {
+     flex: 1 0 auto;
+ }
+</style>
+
+</head>
+<body class="grey lighten-1">
+<header class="container">
+	<ul id="dropdown1" class="dropdown-content">
+	    <li><a class="black-text" href="about_me.html">About</a></li>
+	    <li class="active"><a class="black-text">Resume</a></li>
+	    <li><a class="black-text" href="projects.html">Project</a></li>
+	</ul>
+  <nav>
+    <div class="nav-wrapper blue-grey darken-1" id="top-page">
+      <a href="../index.html" class="brand-logo left grey-text lighten-5-text"><i class="material-icons right">map</i>&nbsp;mxblsdl</a>
+      <ul class="right hide-on-med-and-down">
+        <li><a class=" tooltipped grey-text lighten-5-text" data-position="bottom" data-tooltip="About Me" href="about_me.html"><i class="material-icons">contacts</i></a></li>
+        <li class="active"><a class="tooltipped grey-text lighten-5-text" data-position="bottom" data-tooltip="Resume and Work"><i class="material-icons">work</i></a></li>
+        <li><a class="tooltipped grey-text lighten-5-text" data-position="bottom" data-tooltip="Projects" href="projects.html"><i class="material-icons">build</i></a></li>
+      </ul>
+      <ul class="right hide-on-large-only">
+        <li><a href="#!" class="dropdown-trigger" data-target="dropdown1"><i class="material-icons black-text">view_headline</i></a></li>
+    </ul>
+    </div>
+  </nav>
+</header>
+
+<main class="container">
+<!-- Buttons for opening the collapsibles -->
+<ul class="collapsible popout row section">
+	<li>
+		<div class="collapsible-header col s12 blue-grey darken-1 grey-text lighten-5-text"><h4>Summary</h4></div>
+			<h6 class="collapsible-body center">
+				Graduate student in the Natural Resources department of Humboldt State University. Focus and interest in energy policy, life-cycle assessment, GIS analysis, data visualization, and data analysis. Seeking full and long-term employment where I can continue to use data analysis skills, research methods, and GIS applications to convey information.
+			</h6>
+	
+	</li>
+</ul>
+<div class="row section">
+	<div class="col s2">
+		<button id="open-work" class="btn floating waves-effect waves-light"><a href="#work-drop" data-position="top" data-tooltip="Work" class="tooltipped white-text"><i class="material-icons">work</i></a></button>
+	</div>
+	<div class="col s2">
+		<button id="open-edu" class="btn floating waves-effect waves-light"><a href="#edu-drop" data-position="top" data-tooltip="Education" class="tooltipped white-text"><i class="material-icons">school</i></a></button>
+	</div>
+	<div class="col s2">
+		<button id="open-sof" class="btn floating waves-effect waves-light"><a href="#sof-drop" data-position="top" data-tooltip="Software Skills" class="tooltipped white-text"><i class="material-icons">computer</i></a></button>
+	</div>
+	<div class="col s2">
+		<button id="open-vol" class="btn floating waves-effect waves-light"><a href="#vol-drop" data-position="top" data-tooltip="Volunteer" class="tooltipped white-text"><i class="material-icons">explore</i></a></button>
+	</div>
+	<div class="col s2">
+		<button id="open-ref" class="btn floating waves-effect waves-light"><a href="#ref-drop" data-position="top" data-tooltip="References" class="tooltipped white-text"><i class="material-icons">contact_mail</i></a></button>
+	</div>
+</div>
+
+<!-- Collapsibles -->
+<div class="row">
+	<ul class="collapsible popout resume">
+		<li>
+			<div id="work-drop" class="collapsible-header blue-grey darken-1">Recent Work Experience</div>
+			<div class="collapsible-body">
+				<div class="row">
+					<div class="col s8">
+						<h5>Graduate Research Assistant</h5>
+						<div><u>Schatz Energy Research Center</u></div>
+						<div>&#9679; Research and development in support of the <a class="black-text" href="http://schatzcenter.org/2017/10/california-biopower-impact-project-creating-a-life-cycle-assessment-for-bioenergy-systems/" target="_blank">California Biomass Impact Project</a></div>
+						<div>&#9679; Work focused on modeling decompostion of coarse woody materials</div>
+						<div>&#9679; Managed large raster and tabular databases using ArcMap and R Studio to organize, extract, and visualize dataset inputs for the modeling process. </div>
+						<div>&#9679; Developed website and web tool interface to display project results</div>
+					</div>
+					<div class="col s4">
+						<h6>Aug 2017 - Present</h6>
+						<a class="btn-flat" href="http://schatzcenter.org"><i class="material-icons" target="_blank">link</i></a>
+					</div>
+				</div>
+					<div class="divider"></div>
+				<div class="row">
+					<div class="col s8">
+						<h5>Teaching Assistant</h5>
+						<div><u>Humboldt State University</u></div>
+						<div>&#9679; Instruction of undergraduate students in classroom and lab setting</div>
+						<div>&#9679; Taught Excel labs focusing on basic program usage, data organization, and visualizations</div>
+						<div>&#9679; Responsible for grading assignments and communicating expectations to students</div>
+					</div>
+					<div class="col s4">
+						<h6>Aug 2017 - Present</h6>
+						<a class="btn-flat" href="http://schatzcenter.org"><i class="material-icons" target="_blank">link</i></a>
+					</div>
+				</div>
+					<div class="divider"></div>
+				<div class="row">
+					<div class="col s8">
+						<h5>GIS/Data Analyst</h5>
+						<div>Contract</div>	
+						<div>Analyze data and model scenarios for emissions in India</div>
+					</div>
+					<div class="col s4">
+						<h6>Sept 2018 - Present</h6>
+					</div>
+				</div>
+					
+			</div>
+		</li>
+		<li>
+			<div id="edu-drop" class="collapsible-header blue-grey darken-1">Education</div>
+			<div class="collapsible-body">
+				<div class="row">
+					<div class="col s8">
+						<h5>Humboldt State University</h5>
+						<div>Master's of Science in Environmental Natural Resource Sciences &nbsp;<a class="btn-floating" href="https://environment.humboldt.edu/graduate-program" target="_blank"><i class="material-icons">school</i></a></div>	
+					</div>
+					<div class="col s4">
+						Aug 2017 - Present
+					</div>
+				</div>
+					<div class="divider"></div>
+				<div class="row">
+					<div class="col s8">
+						<h5>Portland State University</h5>
+						<div>Graduate Certificate Program in GIS &nbsp;<a href="https://www.pdx.edu/geography/GIS" target="_blank" class="btn-floating"><i class="material-icons">school</i></a></div>	
+					</div>
+					<div class="col s4">
+						Sept 2014 - Sept 2015
+					</div>
+				</div>
+					<div class="divider"></div>
+				<div class="row">
+					<div class="col s8">
+						<h5>Oregon State University</h5>
+						<div>Bachelor's of Science in Natural Resources Management</div>
+					</div>
+					<div class="col s4">
+						Sept 2011 - June 2014
+					</div>
+				</div>
+					
+			</div>
+		</li>
+		<li>
+			<div id="sof-drop" class="collapsible-header blue-grey darken-1">Software Skills</div>
+			<div class="collapsible-body">
+					<h5>Programming</h5>
+					<div>R, JavaScript, and some Python</div>
+				<div class="divider"></div>
+					<h5>Geographic Information Systems</h5>
+					<div>ESRI ArcGIS Suite, QGIS, R for spatial data, ENVI, lidar data analysis with R &nbsp;<a href="https://www.pdx.edu/geography/GIS" target="_blank" class="btn-floating"><i class="material-icons">code</i></a></div>
+				<div class="divider"></div>
+					<h5>Web Development</h5>
+					<div>HTML, CSS, JS, WordPress, Github, Chart JS, Leaflet Web Mapping, Materialize CSS Library &nbsp;<a href="#" class="btn-floating"><i class="material-icons">code</i></a></div>
+				<div class="divider"></div>
+					<h5>Graphic Design</h5>
+					<div>Photoshop, Illustrator</div>
+				<div class="divider"></div>
+					<h5>Operating Systems</h5>
+					<div>Mac, Windows</div>
+			</div>
+		</li>
+		<li>
+			<div id="vol-drop" class="collapsible-header blue-grey darken-1">Volunteer</div>
+			<div class="collapsible-body">
+					<h5>City of Portland Urban Forestry <a class="btn-floating black-text" href="https://www.portlandoregon.gov/parks/article/433143" target="_blank"><i class="material-icons">nature_people</i></a></h5>
+					<div><u>GIS Data Entry</u></div>
+					<div>• Worked in ArcMap digitizing shapes and populating attribute fields for a GIS database of every urban tree in Portland metro area.</div>
+					<div>• Used data sheets and aerial imagery for reference in placing point features</div>
+				<div class="divider"></div>
+			</div>
+		</li>
+		<li>
+			<div id="ref-drop" class="collapsible-header blue-grey darken-1">References</div>
+			<div class="collapsible-body">
+					<h5><i>Available upon request</i></h5>
+				<div class="divider"></div>
+			</div>
+		</li>
+	</ul>
+</div>
+
+</script>
+<!-- Floating action button to return to top of page -->
+	<div class="fixed-action-btn">
+		<a href="#top-page" id="floater" class="btn-floating btn-medium scale-transition scale-out">
+			<i class="material-icons">publish</i>
+		</a>
+	</div>
+</main>
+
+<!-- footer currently only links to linkedin -->
+<footer class="scale-transition scale-in bottomMenu page-footer blue-grey darken-1" id="foot">
+	<div class="footer-copyright">
+		<div class="container">
+				Made By Me
+			<div class="right">
+				<a href="http://www.linkedin.com/in/max-blasdel" class="grey-text"><i class="material-icons right">face</i></a>
+				<a href="https://github.com/mxblsdl?tab=repositories" class="grey-text"><img style="height: 26px;" src="../images/GitHub-Mark-32px.png"></a>
+			</div>
+		</div>
+	</div>
+</footer>
+
+</body>
+<script type="text/javascript">
+
+//<!-- automatically opening the first dropdown -->
+const openSummary = () => M.Collapsible.init(document.querySelector(".collapsible")).open(0);
+
+// call function
+openSummary();
+//<!-- ******************* All intis  *********** -->
+// Dropdown trigger initialize
+document.addEventListener('DOMContentLoaded', function() {
+  let elems = document.querySelectorAll('.dropdown-trigger');
+  let instances = M.Dropdown.init(elems,{
+    belowOrigin: true,
+    hover: true,
+    alignment: 'right',
+    coverTrigger: false
+  });
+});
+
+// tooltips
+document.addEventListener('DOMContentLoaded', function() {
+  let elems = document.querySelectorAll('.tooltipped');
+  let instances = M.Tooltip.init(elems);
+  });
+  
+  // Initiate the collapsibles
+ document.addEventListener('DOMContentLoaded', function() {
+    let elems = document.querySelectorAll('.collapsible');
+    let instances = M.Collapsible.init(elems);
+  });
+// init the action button
+document.addEventListener('DOMContentLoaded', function() {
+    let elems = document.querySelectorAll('.fixed-action-btn');
+    let instances = M.FloatingActionButton.init(elems);
+  });
+// *************************************************************
+
+// #############################################################
+// Function to add event listeners to btns and open collapsibles
+// #############################################################
+// find all buttons
+var btns = document.querySelectorAll('.btn');
+
+// for each button add event listener
+btns.forEach(function(elem){
+	elem.addEventListener('mousedown', function(){
+// find all collapsible elements
+// I want to use a unique identifier here to only get the resume elements and not the summary element
+	let elems = document.querySelector('.resume');
+	var val = [];
+// based on id of the btn, get a value that corresponds to each <li> element
+	var val = elem.id == 'open-work' ? 0 :
+			 elem.id == 'open-edu' ? 1 :
+			 elem.id == 'open-sof' ? 2 : 
+			 elem.id == 'open-vol' ? 3 : 
+			 elem.id == 'open-ref' ? 4 : NULL;
+
+// open the element if it is not open
+		let instance = M.Collapsible.init(elems);
+		instance.open(val);
+	})
+});
+
+// Function for smooth scolling based on # anchor tags
+	let anchorlinks = document.querySelectorAll('a[href^="#"]')
+ 
+	for (let item of anchorlinks) { // reiterate 
+	    item.addEventListener('click', (e)=> {
+	        let hashval = item.getAttribute('href')
+	        let target = document.querySelector(hashval)
+	        target.scrollIntoView({
+	            behavior: 'smooth',
+	            block: 'start'
+	        })
+	        history.pushState(null, null, null)
+	        e.preventDefault()
+    	})
+	}
+// Function to show and hide the arrow action button
+el = document.getElementById('floater');
+
+var scrollFunc = function() {
+	var y = window.scrollY;
+	if (y >= 100) {addClass(el, 'scale-in')}
+		else if (y <= 100) {removeClass(el, 'scale-in')}
+};
+
+window.addEventListener('scroll', scrollFunc);
+
+// ####################################################
+// Functions for changing class
+// TODO change to d3 implementation, could be cleaner
+function addClass(el, className) {
+  if (el.classList)
+    el.classList.add(className)
+  else if (!hasClass(el, className)) el.className += " " + className
+};
+
+function removeClass(el, className) {
+  if (el.classList)
+    el.classList.remove(className)
+  else if (hasClass(el, className)) {
+    var reg = new RegExp('(\\s|^)' + className + '(\\s|$)')
+    el.className=el.className.replace(reg, ' ')
+  }
+};
+// This function gets called within the above functions
+function hasClass(el, className) {
+  if (el.classList)
+    return el.classList.contains(className)
+  else
+    return !!el.className.match(new RegExp('(\\s|^)' + className + '(\\s|$)'))
+};
+
+</script>
+
+</html>
